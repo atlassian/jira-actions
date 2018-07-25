@@ -1,0 +1,35 @@
+image: openjdk:8
+
+pipelines:
+  default:
+    - step:
+        name: Build project
+        caches:
+          - gradle
+        script:
+          - bash ./gradlew build
+    - step:
+        name: Publish snapshot
+        caches:
+          - gradle
+        trigger: manual
+        script:
+          - bash ./gradlew publish
+  branches:
+    master:
+      - step:
+          name: Build project
+          caches:
+          - gradle
+          script:
+          - bash ./gradlew build
+      - step:
+          name: Release project
+          caches:
+          - gradle
+          trigger: manual
+          script:
+          - git config --global user.email "bitbucketci-team@atlassian.com"
+          - git config --global user.name "Bitbucket Pipelines"
+          - bash ./gradlew release -Prelease.customKeyFile="/opt/atlassian/pipelines/agent/data/id_rsa"
+          - bash ./gradlew publish
