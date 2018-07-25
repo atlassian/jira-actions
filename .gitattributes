@@ -1,0 +1,4 @@
+# Declare files that will always have LF line endings on checkout.
+*.kt text eol=lf
+*.csv text eol=lf
+*.jpt text eol=lf

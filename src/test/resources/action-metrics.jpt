@@ -1,0 +1,5 @@
+{"label":"View Dashboard","result":"OK","duration":"PT0.982S","start":"2017-12-12T10:37:52.749Z","virtualUser":"0e5ead7c-dc9c-4f48-854d-5200a1a71058"}
+{"label":"Edit Issue","result":"OK","duration":"PT1.4S","start":"2017-12-12T10:38:04.493Z","virtualUser":"7609ea12-b926-4761-acf8-e3e0858c5294"}
+{"label":"View Dashboard","result":"ERROR","duration":"PT0.294S","start":"2017-12-12T10:38:36.275Z","virtualUser":"7609ea12-b926-4761-acf8-e3e0858c5294"}
+{"label":"Create Issue","result":"OK","duration":"PT2M26.786S","start":"2017-12-12T10:38:36.275Z","virtualUser":"0e5ead7c-dc9c-4f48-854d-5200a1a71058"}
+{"label":"View Board","result":"OK","duration":"PT26.786S","start":"2017-12-12T10:38:36.277Z","virtualUser":"0e5ead7c-dc9c-4f48-854d-5200a1a71058","observation":{"issues":5}}
