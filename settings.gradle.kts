@@ -1,1 +1,1 @@
-rootProject.name = "actions"
+rootProject.name = "jira-actions"
