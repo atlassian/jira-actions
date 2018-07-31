@@ -37,7 +37,7 @@ scmVersion {
     tag.prefix = "release"
 }
 project.version = scmVersion.version
-project.group = "com.atlassian.test.performance"
+project.group = "com.atlassian.performance.tools"
 
 tasks["release"].doFirst {
     if (scmVersion.scmPosition.branch != "master") {
