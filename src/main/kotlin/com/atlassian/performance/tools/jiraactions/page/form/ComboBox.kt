@@ -3,7 +3,7 @@ package com.atlassian.performance.tools.jiraactions.page.form
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.WebElement
 
-class ComboBox : FormField {
+internal class ComboBox : FormField {
 
     override fun fillWithAnyValue() {
         throw NotImplementedError()

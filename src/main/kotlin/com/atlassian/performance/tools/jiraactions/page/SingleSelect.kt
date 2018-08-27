@@ -1,5 +1,6 @@
 package com.atlassian.performance.tools.jiraactions.page
 
+import com.atlassian.performance.tools.jiraactions.api.page.wait
 import org.openqa.selenium.By
 import org.openqa.selenium.Keys
 import org.openqa.selenium.WebDriver
@@ -8,7 +9,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions.elementToBeClickable
 import org.openqa.selenium.support.ui.ExpectedConditions.presenceOfElementLocated
 import java.time.Duration
 
-class SingleSelect(
+internal class SingleSelect(
     private val driver: WebDriver,
     element: By
 ) {

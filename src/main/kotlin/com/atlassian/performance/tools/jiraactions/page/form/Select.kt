@@ -1,11 +1,11 @@
 package com.atlassian.performance.tools.jiraactions.page.form
 
-import com.atlassian.performance.tools.jiraactions.SeededRandom
+import com.atlassian.performance.tools.jiraactions.api.SeededRandom
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.WebElement
 import java.time.Instant.now
 
-class Select(
+internal class Select(
     private val input: WebElement
 ) : FormField {
     private val random = SeededRandom(now().epochSecond)

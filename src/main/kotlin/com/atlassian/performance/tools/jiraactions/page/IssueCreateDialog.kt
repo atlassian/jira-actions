@@ -1,12 +1,14 @@
 package com.atlassian.performance.tools.jiraactions.page
 
+import com.atlassian.performance.tools.jiraactions.api.page.tolerateDirtyFormsOnCurrentPage
+import com.atlassian.performance.tools.jiraactions.api.page.wait
 import com.atlassian.performance.tools.jiraactions.page.form.IssueForm
 import org.openqa.selenium.By
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.support.ui.ExpectedConditions.*
 import java.time.Duration
 
-class IssueCreateDialog(
+internal class IssueCreateDialog(
     private val driver: WebDriver
 ) {
     private val form = IssueForm(By.cssSelector("form[name=jiraform]"), driver)

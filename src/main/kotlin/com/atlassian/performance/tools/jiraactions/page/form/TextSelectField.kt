@@ -1,6 +1,6 @@
 package com.atlassian.performance.tools.jiraactions.page.form
 
-import com.atlassian.performance.tools.jiraactions.SeededRandom
+import com.atlassian.performance.tools.jiraactions.api.SeededRandom
 import org.openqa.selenium.By
 import org.openqa.selenium.Keys
 import org.openqa.selenium.WebDriver
@@ -8,7 +8,7 @@ import org.openqa.selenium.WebElement
 import org.openqa.selenium.support.ui.Select
 import java.time.Instant.now
 
-class TextSelectField(
+internal class TextSelectField(
     private val fieldGroup: WebElement,
     private val input: WebElement
 ) : FormField {

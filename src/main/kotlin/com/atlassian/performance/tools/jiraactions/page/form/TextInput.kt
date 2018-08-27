@@ -1,11 +1,11 @@
 package com.atlassian.performance.tools.jiraactions.page.form
 
-import com.atlassian.performance.tools.jiraactions.page.wait
+import com.atlassian.performance.tools.jiraactions.api.page.wait
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.WebElement
 import org.openqa.selenium.support.ui.ExpectedConditions.elementToBeClickable
 
-class TextInput(
+internal class TextInput(
     private val driver: WebDriver,
     private val input: WebElement
 ) : FormField {

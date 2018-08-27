@@ -4,7 +4,7 @@ import org.openqa.selenium.By
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.WebElement
 
-class FormFieldFactory(
+internal class FormFieldFactory(
     private val driver: WebDriver,
     private val fieldDescriptors: List<FromFieldType>
 ) {

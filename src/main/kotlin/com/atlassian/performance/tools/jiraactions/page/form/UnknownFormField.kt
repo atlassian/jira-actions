@@ -2,7 +2,7 @@ package com.atlassian.performance.tools.jiraactions.page.form
 
 import org.openqa.selenium.WebElement
 
-class UnknownFormField(
+internal class UnknownFormField(
     private val fieldGroup: WebElement
 ) : FormField {
 

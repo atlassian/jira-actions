@@ -1,5 +1,6 @@
 package com.atlassian.performance.tools.jiraactions.page
 
+import com.atlassian.performance.tools.jiraactions.api.page.wait
 import org.openqa.selenium.By
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.support.ui.ExpectedConditions
@@ -13,7 +14,7 @@ fun splitTagTextIntoLines(text: String): List<String> {
         .filter { it.isNotBlank() }
 }
 
-class UserProfilePage(
+internal class UserProfilePage(
     private val driver: WebDriver
 ) {
     private val headerUserInfo = By.id("header-details-user-fullname")
