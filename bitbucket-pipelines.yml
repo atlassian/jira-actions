@@ -8,13 +8,6 @@ pipelines:
           - gradle
         script:
           - bash ./gradlew build
-    - step:
-        name: Publish snapshot
-        caches:
-          - gradle
-        trigger: manual
-        script:
-          - bash ./gradlew publish
   branches:
     master:
       - step:

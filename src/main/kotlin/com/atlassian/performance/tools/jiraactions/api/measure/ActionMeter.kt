@@ -1,9 +1,9 @@
 package com.atlassian.performance.tools.jiraactions.api.measure
 
-import com.atlassian.performance.tools.concurrency.representsInterrupt
-import com.atlassian.performance.tools.jiraactions.api.ActionType
+import com.atlassian.performance.tools.concurrency.api.representsInterrupt
 import com.atlassian.performance.tools.jiraactions.api.ActionMetric
 import com.atlassian.performance.tools.jiraactions.api.ActionResult
+import com.atlassian.performance.tools.jiraactions.api.ActionType
 import com.atlassian.performance.tools.jiraactions.api.measure.output.ActionMetricOutput
 import com.atlassian.performance.tools.jiraactions.api.measure.output.ThrowawayActionMetricOutput
 import java.time.Clock

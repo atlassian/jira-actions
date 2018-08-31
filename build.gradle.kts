@@ -4,49 +4,47 @@ object Versions {
 
 plugins {
     kotlin("jvm").version("1.2.30")
-    id("com.atlassian.performance.tools.gradle-release").version("0.0.2")
+    `java-library`
+    id("com.atlassian.performance.tools.gradle-release").version("0.3.0")
+}
+
+configurations.all {
+    resolutionStrategy {
+        failOnVersionConflict()
+        eachDependency {
+            when (requested.module.toString()) {
+                "commons-codec:commons-codec" -> useVersion("1.10")
+            }
+        }
+    }
 }
 
 dependencies {
-    compile("org.jetbrains.kotlin:kotlin-stdlib-jre8:${Versions.kotlin}")
-    compile("org.glassfish:javax.json:1.1")
-    compile("org.apache.commons:commons-math3:3.6.1")
-    log4j(
+    api("com.github.stephenc.jcip:jcip-annotations:1.0-1")
+    api(webdriver("selenium-api"))
+
+    implementation(webdriver("selenium-support"))
+    implementation(webdriver("selenium-chrome-driver"))
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jre8:${Versions.kotlin}")
+    implementation("org.glassfish:javax.json:1.1")
+    implementation("org.apache.commons:commons-math3:3.6.1")
+    implementation("com.atlassian.performance.tools:concurrency:[1.0.0,2.0.0)")
+    listOf(
         "api",
         "core",
-        "slf4j-impl"
-    ).forEach { compile(it) }
-    testCompile("junit:junit:4.12")
+        "slf4j-impl",
+        "jul"
+    ).map { module ->
+        "org.apache.logging.log4j:log4j-$module:2.10.0"
+    }.forEach { implementation(it) }
 
-
-    compile("com.atlassian.performance.tools:concurrency:0.0.1")
-    compile("net.jcip:jcip-annotations:1.0")
-    compile("org.jetbrains.kotlin:kotlin-stdlib-jre8:${Versions.kotlin}")
-    compile("org.glassfish:javax.json:1.1")
-    compile("org.apache.commons:commons-math3:3.6.1")
     testCompile("org.hamcrest:hamcrest-library:1.3")
     testCompile("junit:junit:4.12")
-    log4j(
-        "api",
-        "core",
-        "slf4j-impl"
-    ).forEach { compile(it) }
-    webdriver().forEach { compile(it) }
 }
 
-fun log4j(
-    vararg modules: String
-): List<String> = modules.map { module ->
-    "org.apache.logging.log4j:log4j-$module:2.10.0"
+fun webdriver(module: String): String = "org.seleniumhq.selenium:$module:3.11.0"
+
+task<Wrapper>("wrapper") {
+    gradleVersion = "4.9"
+    distributionType = Wrapper.DistributionType.ALL
 }
-
-fun webdriver(): List<String> = listOf(
-    "selenium-support",
-    "selenium-chrome-driver"
-).map { module ->
-    "org.seleniumhq.selenium:$module:3.11.0"
-} + log4j("jul")
-
-val wrapper = tasks["wrapper"] as Wrapper
-wrapper.gradleVersion = "4.9"
-wrapper.distributionType = Wrapper.DistributionType.ALL
