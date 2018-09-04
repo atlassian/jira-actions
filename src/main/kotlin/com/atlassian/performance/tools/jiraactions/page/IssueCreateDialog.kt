@@ -1,5 +1,6 @@
 package com.atlassian.performance.tools.jiraactions.page
 
+import com.atlassian.performance.tools.jiraactions.api.page.JiraErrors
 import com.atlassian.performance.tools.jiraactions.api.page.tolerateDirtyFormsOnCurrentPage
 import com.atlassian.performance.tools.jiraactions.api.page.wait
 import com.atlassian.performance.tools.jiraactions.page.form.IssueForm

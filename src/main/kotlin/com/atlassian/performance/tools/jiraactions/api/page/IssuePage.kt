@@ -1,7 +1,6 @@
 package com.atlassian.performance.tools.jiraactions.api.page
 
 import com.atlassian.performance.tools.jiraactions.api.memories.Project
-import com.atlassian.performance.tools.jiraactions.page.JiraErrors
 import com.atlassian.performance.tools.jiraactions.page.UserProfilePage
 import org.openqa.selenium.By
 import org.openqa.selenium.WebDriver

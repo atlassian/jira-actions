@@ -26,6 +26,9 @@ Dropping a requirement of a major version of a dependency is a new contract.
 ## [Unreleased]
 [Unreleased]: https://bitbucket.org/atlassian/jira-actions/branches/compare/master%0Drelease-2.0.0
 
+### Added
+- Expose `JiraErrors` page object.
+
 ## [2.0.0] - 2018-09-04
 [2.0.0]: https://bitbucket.org/atlassian/jira-actions/branches/compare/release-2.0.0%0Drelease-1.0.0
 

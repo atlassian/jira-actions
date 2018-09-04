@@ -1,6 +1,5 @@
-package com.atlassian.performance.tools.jiraactions.page
+package com.atlassian.performance.tools.jiraactions.api.page
 
-import com.atlassian.performance.tools.jiraactions.api.page.isElementPresent
 import org.openqa.selenium.By
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.WebElement
@@ -8,7 +7,7 @@ import org.openqa.selenium.support.ui.ExpectedCondition
 import org.openqa.selenium.support.ui.ExpectedConditions.or
 import org.openqa.selenium.support.ui.ExpectedConditions.presenceOfElementLocated
 
-internal class JiraErrors(
+class JiraErrors(
     private val driver: WebDriver
 ) {
     private val errorLocators = listOf(
