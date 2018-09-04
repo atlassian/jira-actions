@@ -5,7 +5,7 @@ object Versions {
 plugins {
     kotlin("jvm").version("1.2.30")
     `java-library`
-    id("com.atlassian.performance.tools.gradle-release").version("0.3.0")
+    id("com.atlassian.performance.tools.gradle-release").version("0.4.0")
 }
 
 configurations.all {
