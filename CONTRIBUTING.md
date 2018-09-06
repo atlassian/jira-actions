@@ -50,4 +50,4 @@ those contributing as an individual.
 
 Versioning, releasing and distribution are managed by the [gradle-release] plugin.
 
-[gradle-release]: https://bitbucket.org/atlassian/gradle-release/src/release-0.4.0/README.md
+[gradle-release]: https://bitbucket.org/atlassian/gradle-release/src/release-0.4.1/README.md
