@@ -17,7 +17,7 @@ class CreateIssueAction(
     override fun run() {
         val project = projectMemory.recall()
         if (project == null) {
-            logger.info("Skipping Create issue action. I have no knowledge of projects.")
+            logger.debug("Skipping Create issue action. I have no knowledge of projects.")
             return
         }
         meter.measure(CREATE_ISSUE) {

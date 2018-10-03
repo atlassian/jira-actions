@@ -22,7 +22,7 @@ class ViewIssueAction(
     override fun run() {
         val issueKey = issueKeyMemory.recall()
         if (issueKey == null) {
-            logger.info("Skipping View Issue action. I have no knowledge of issue keys.")
+            logger.debug("Skipping View Issue action. I have no knowledge of issue keys.")
             return
         }
         val issuePage = meter.measure(VIEW_ISSUE) {

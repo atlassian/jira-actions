@@ -19,7 +19,7 @@ class EditIssueAction(
     override fun run() {
         val issue = issueMemory.recall { it.editable && it.type != "Epic" }
         if (issue == null) {
-            logger.info("Cannot edit any issue, because I didn't see any editable issues")
+            logger.debug("Cannot edit any issue, because I didn't see any editable issues")
             return
         }
         meter.measure(EDIT_ISSUE) {

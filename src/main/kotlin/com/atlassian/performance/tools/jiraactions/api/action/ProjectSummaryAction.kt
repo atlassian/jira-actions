@@ -17,7 +17,7 @@ class ProjectSummaryAction(
     override fun run() {
         val project = projectMemory.recall()
         if (project == null) {
-            logger.info("Skipping Project summary action. I have no knowledge of projects.")
+            logger.debug("Skipping Project summary action. I have no knowledge of projects.")
             return
         }
         meter.measure(PROJECT_SUMMARY) {

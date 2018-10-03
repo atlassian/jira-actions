@@ -18,7 +18,7 @@ class AddCommentAction(
     override fun run() {
         val issue = issueMemory.recall()
         if (issue == null) {
-            logger.info("Cannot add a comment, because I didn't see any issues yet")
+            logger.debug("Cannot add a comment, because I didn't see any issues yet")
             return
         }
         meter.measure(ADD_COMMENT) {
