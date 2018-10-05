@@ -48,6 +48,7 @@ class RichTextEditorConfiguration(
                 logger.info("Admin access already granted, clicking the RTE switch...")
                 driver.wait(elementToBeClickable(switchLocator)).click()
                 driver.wait(not(attributeToBe(getSwitchInput(), "aria-busy", "true")))
+                driver.wait(not(elementToBeSelected(getSwitchInput())))
                 logger.info("RTE should be disabled now")
             } else {
                 logger.info("Admin access not granted yet, gaining access proactively and retrying...")

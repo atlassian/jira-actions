@@ -28,11 +28,13 @@ Dropping a requirement of a major version of a dependency is a new contract.
 
 ### Fixed
 - Decrease log level for actions complaining about skipping run, which resolves [JPERF-162].
+- Ensure Rich Text Editor toggle is disabled after clicking it during Jira setup [JPERF-183].
 
 [JPERF-162]: https://ecosystem.atlassian.net/browse/JPERF-162
+[JPERF-183]: https://ecosystem.atlassian.net/browse/JPERF-183
 
 ## [2.1.0] - 2018-09-04
-[2.0.0]: https://bitbucket.org/atlassian/jira-actions/branches/compare/release-2.1.0%0Drelease-2.0.0
+[2.1.0]: https://bitbucket.org/atlassian/jira-actions/branches/compare/release-2.1.0%0Drelease-2.0.0
 
 ### Added
 - Expose `JiraErrors` page object.
