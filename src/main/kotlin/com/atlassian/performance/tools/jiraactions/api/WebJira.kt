@@ -68,12 +68,12 @@ data class WebJira(
     fun goToCommentForm(
         issueId: Long
     ): CommentForm {
-        navigateTo("/secure/AddComment!default.jspa?id=$issueId")
+        navigateTo("secure/AddComment!default.jspa?id=$issueId")
         return CommentForm(driver)
     }
 
     fun goToEditIssue(issueId: Long): EditIssuePage {
-        navigateTo("/secure/EditIssue!default.jspa?id=$issueId")
+        navigateTo("secure/EditIssue!default.jspa?id=$issueId")
         return EditIssuePage(driver)
     }
 
