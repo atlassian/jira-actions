@@ -3,6 +3,7 @@ package com.atlassian.performance.tools.jiraactions.api.page
 import com.atlassian.performance.tools.jiraactions.api.memories.Project
 import org.openqa.selenium.By
 import org.openqa.selenium.WebDriver
+import org.openqa.selenium.WebElement
 import org.openqa.selenium.support.ui.ExpectedConditions
 import java.time.Duration
 
@@ -26,14 +27,25 @@ class BrowseProjectsPage(
     }
 
     private fun hasNextPage(): Boolean {
-        return !isNextPageDisabled()
+        val element = getNextPageElement()
+        return element != null && isNextPageEnabled(element)
     }
 
-    private fun isNextPageDisabled(): Boolean {
-        val nextPage = driver.findElement(nextPageLocator)
-        return nextPage.getAttribute("aria-disabled")
+    private fun getNextPageElement(): WebElement? {
+        val elements = driver.findElements(nextPageLocator)
+        return when (elements.size) {
+            1 -> elements.first()
+            0 -> null
+            else -> throw Exception("Unexpected state: BrowseProjects page contains more than 1 'Next page' elements")
+        }
+    }
+
+    private fun isNextPageEnabled(element: WebElement): Boolean {
+        return element
+            .getAttribute("aria-disabled")
             ?.toBoolean()
-            ?: false
+            ?.not()
+            ?: true
     }
 
     fun getNextPage(): Int? {

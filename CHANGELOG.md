@@ -26,6 +26,11 @@ Dropping a requirement of a major version of a dependency is a new contract.
 ## [Unreleased]
 [Unreleased]: https://bitbucket.org/atlassian/jira-actions/branches/compare/master%0Drelease-2.1.1
 
+### Fixed
+- Do not fail 'Browse Projects' for low number of projects. Fix [JPERF-151].
+
+[JPERF-151]: https://ecosystem.atlassian.net/browse/JPERF-151
+
 ## [2.1.1] - 2018-10-09
 [2.1.1]: https://bitbucket.org/atlassian/jira-actions/branches/compare/release-2.1.1%0Drelease-2.1.0
 
