@@ -25,9 +25,12 @@ org.apache.logging.log4j:log4j-slf4j-impl:2.10.0
 org.checkerframework:checker-compat-qual:2.0.0
 org.codehaus.mojo:animal-sniffer-annotations:1.14
 org.glassfish:javax.json:1.1
-org.jetbrains.kotlin:kotlin-stdlib-jre7:1.2.30
-org.jetbrains.kotlin:kotlin-stdlib-jre8:1.2.30
-org.jetbrains.kotlin:kotlin-stdlib:1.2.30
+org.jetbrains.kotlin:kotlin-stdlib-common:1.2.70
+org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.2.70
+org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.2.70
+org.jetbrains.kotlin:kotlin-stdlib-jre7:1.2.70
+org.jetbrains.kotlin:kotlin-stdlib-jre8:1.2.70
+org.jetbrains.kotlin:kotlin-stdlib:1.2.70
 org.jetbrains:annotations:13.0
 org.seleniumhq.selenium:selenium-api:3.11.0
 org.seleniumhq.selenium:selenium-chrome-driver:3.11.0

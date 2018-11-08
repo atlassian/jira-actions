@@ -26,6 +26,11 @@ Dropping a requirement of a major version of a dependency is a new contract.
 ## [Unreleased]
 [Unreleased]: https://bitbucket.org/atlassian/jira-actions/branches/compare/master%0Drelease-2.1.2
 
+### Added
+- Customize Jira login and setup. Resolves [JPERF-127].
+
+[JPERF-127]: https://ecosystem.atlassian.net/browse/JPERF-127
+
 ## [2.1.2] - 2018-10-22
 [2.1.2]: https://bitbucket.org/atlassian/jira-actions/branches/compare/release-2.1.2%0Drelease-2.1.1
 
