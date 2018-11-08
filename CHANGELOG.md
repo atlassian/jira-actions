@@ -24,12 +24,16 @@ Adding a requirement of a major version of a dependency is breaking a contract.
 Dropping a requirement of a major version of a dependency is a new contract.
 
 ## [Unreleased]
-[Unreleased]: https://bitbucket.org/atlassian/jira-actions/branches/compare/master%0Drelease-2.1.2
+[Unreleased]: https://bitbucket.org/atlassian/jira-actions/branches/compare/master%0Drelease-2.2.0
+
+## [2.2.0] - 2018-11-08
+[2.2.0]: https://bitbucket.org/atlassian/jira-actions/branches/compare/release-2.2.0%0Drelease-2.1.2
 
 ### Added
-- Customize Jira login and setup. Resolves [JPERF-127].
+- Customize Jira login and setup. Resolves [JPERF-127] and [JPERF-150].
 
 [JPERF-127]: https://ecosystem.atlassian.net/browse/JPERF-127
+[JPERF-150]: https://ecosystem.atlassian.net/browse/JPERF-150
 
 ## [2.1.2] - 2018-10-22
 [2.1.2]: https://bitbucket.org/atlassian/jira-actions/branches/compare/release-2.1.2%0Drelease-2.1.1
