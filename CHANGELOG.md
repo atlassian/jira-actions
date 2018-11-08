@@ -26,6 +26,10 @@ Dropping a requirement of a major version of a dependency is a new contract.
 ## [Unreleased]
 [Unreleased]: https://bitbucket.org/atlassian/jira-actions/branches/compare/master%0Drelease-2.2.0
 
+### Fixed
+- Restore `com.atlassian.performance.tools.jiraactions.api.scenario.Scenario` source compatibility with `2.1.0`
+ by reverting [JPERF-127] and [JPERF-150].
+
 ## [2.2.0] - 2018-11-08
 [2.2.0]: https://bitbucket.org/atlassian/jira-actions/branches/compare/release-2.2.0%0Drelease-2.1.2
 
