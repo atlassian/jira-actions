@@ -26,6 +26,12 @@ Dropping a requirement of a major version of a dependency is a new contract.
 ## [Unreleased]
 [Unreleased]: https://bitbucket.org/atlassian/jira-actions/branches/compare/master%0Drelease-2.2.0
 
+### Added
+- Customize Jira login and setup. Resolves [JPERF-127] and [JPERF-150].
+
+### Removed
+- Named parameters in Scenario are no longer supported.
+
 ## [2.3.0] - 2018-11-08
 [2.3.0]: https://bitbucket.org/atlassian/jira-actions/branches/compare/release-2.3.0%0Drelease-2.2.0
 
