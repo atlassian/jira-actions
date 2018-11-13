@@ -24,7 +24,10 @@ Adding a requirement of a major version of a dependency is breaking a contract.
 Dropping a requirement of a major version of a dependency is a new contract.
 
 ## [Unreleased]
-[Unreleased]: https://bitbucket.org/atlassian/jira-actions/branches/compare/master%0Drelease-2.2.0
+[Unreleased]: https://bitbucket.org/atlassian/jira-actions/branches/compare/master%0Drelease-3.0.0
+
+## [3.0.0] - 2018-11-13
+[3.0.0]: https://bitbucket.org/atlassian/jira-actions/branches/compare/release-3.0.0%0Drelease-2.3.0
 
 ### Added
 - Customize Jira login and setup. Resolves [JPERF-127] and [JPERF-150].
@@ -32,7 +35,7 @@ Dropping a requirement of a major version of a dependency is a new contract.
 ### Removed
 - Named parameters in Scenario are no longer supported.
 
-## [2.3.0] - 2018-11-08
+## [2.3.0] - 2018-11-13
 [2.3.0]: https://bitbucket.org/atlassian/jira-actions/branches/compare/release-2.3.0%0Drelease-2.2.0
 
 ### Fixed
@@ -52,7 +55,7 @@ Roll back to `2.1.2` to restore this compatibility.
 - Customize Jira login and setup. Resolves [JPERF-127] and [JPERF-150].
 
 WARNING, this new API is unstable. It cannot be shipped without breaking API.
-Therefore it is removed in `2.3.0` as per SemVer spec.
+Therefore it is removed in `2.3.0` as per SemVer spec. The feature is reintroduced in `3.0.0`.
 
 [JPERF-127]: https://ecosystem.atlassian.net/browse/JPERF-127
 [JPERF-150]: https://ecosystem.atlassian.net/browse/JPERF-150
