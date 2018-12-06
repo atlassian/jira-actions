@@ -26,6 +26,11 @@ Dropping a requirement of a major version of a dependency is a new contract.
 ## [Unreleased]
 [Unreleased]: https://bitbucket.org/atlassian/jira-actions/branches/compare/master%0Drelease-3.0.0
 
+### Fixed
+- Wait for web elements while disabling RTE. Resolves [JPERF-296].
+
+[JPERF-296]: https://ecosystem.atlassian.net/browse/JPERF-296
+
 ## [3.0.0] - 2018-11-13
 [3.0.0]: https://bitbucket.org/atlassian/jira-actions/branches/compare/release-3.0.0%0Drelease-2.3.0
 

@@ -1,5 +1,6 @@
 package com.atlassian.performance.tools.jiraactions.api.page
 
+import com.atlassian.performance.tools.jiraactions.Patience
 import org.apache.logging.log4j.LogManager
 import org.openqa.selenium.By
 import org.openqa.selenium.WebDriver
@@ -26,7 +27,7 @@ class RichTextEditorConfiguration(
         if (prompted) {
             access.gain()
         }
-        if (driver.isElementPresent(switchLocator)) {
+        if (isSwitchPresent()) {
             ensureSwitchIsOff()
         } else {
             logger.info("This Jira does not support RTE configuration, so RTE should be de facto disabled")
@@ -35,6 +36,10 @@ class RichTextEditorConfiguration(
             access.drop()
         }
         return this
+    }
+
+    private fun isSwitchPresent(): Boolean {
+        return Patience().test { driver.isElementPresent(switchLocator) }
     }
 
     /**

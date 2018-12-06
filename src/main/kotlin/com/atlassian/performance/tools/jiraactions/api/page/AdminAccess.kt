@@ -1,8 +1,10 @@
 package com.atlassian.performance.tools.jiraactions.api.page
 
+import com.atlassian.performance.tools.jiraactions.Patience
 import com.atlassian.performance.tools.jiraactions.api.WebJira
 import org.openqa.selenium.By
 import org.openqa.selenium.WebDriver
+import org.openqa.selenium.support.ui.ExpectedConditions.elementToBeClickable
 
 class AdminAccess(
     private val driver: WebDriver,
@@ -16,11 +18,15 @@ class AdminAccess(
         "login-form-authenticatePassword"
     )
 
-    fun isPrompted() = driver.isElementPresent(passwordLocator)
+    fun isPrompted(): Boolean {
+        return Patience().test {
+            driver.isElementPresent(passwordLocator)
+        }
+    }
 
     fun isGranted(): Boolean {
         jira.goToSystemInfo()
-        val granted = driver.isElementPresent(passwordLocator).not()
+        val granted = isPrompted().not()
         driver.navigate().back()
         return granted
     }
@@ -38,14 +44,14 @@ class AdminAccess(
     }
 
     fun gain() {
-        driver.findElement(passwordLocator).sendKeys(password)
+        driver.wait(elementToBeClickable(passwordLocator)).sendKeys(password)
         driver.findElement(By.id("login-form-submit")).click()
     }
 
     fun drop() {
         jira.goToDashboard().waitForDashboard()
         if (isGranted()) {
-            driver.findElement(dropLocator).click()
+            driver.wait(elementToBeClickable(dropLocator)).click()
         }
     }
 }
