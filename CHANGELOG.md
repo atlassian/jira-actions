@@ -24,7 +24,10 @@ Adding a requirement of a major version of a dependency is breaking a contract.
 Dropping a requirement of a major version of a dependency is a new contract.
 
 ## [Unreleased]
-[Unreleased]: https://bitbucket.org/atlassian/jira-actions/branches/compare/master%0Drelease-3.0.0
+[Unreleased]: https://bitbucket.org/atlassian/jira-actions/branches/compare/master%0Drelease-3.0.1
+
+## [3.0.1] - 2018-12-06
+[3.0.1]: https://bitbucket.org/atlassian/jira-actions/branches/compare/release-3.0.1%0Drelease-3.0.0
 
 ### Fixed
 - Wait for web elements while disabling RTE. Resolves [JPERF-296].
