@@ -24,7 +24,10 @@ Adding a requirement of a major version of a dependency is breaking a contract.
 Dropping a requirement of a major version of a dependency is a new contract.
 
 ## [Unreleased]
-[Unreleased]: https://bitbucket.org/atlassian/jira-actions/branches/compare/master%0Drelease-3.0.1
+[Unreleased]: https://bitbucket.org/atlassian/jira-actions/branches/compare/master%0Drelease-3.0.2
+
+## [3.0.2] - 2018-12-18
+[3.0.2]: https://bitbucket.org/atlassian/jira-actions/branches/compare/release-3.0.2%0Drelease-3.0.1
 
 ### Fixed
 - Stop assuming description field is always available. Resolves [JPERF-303].
