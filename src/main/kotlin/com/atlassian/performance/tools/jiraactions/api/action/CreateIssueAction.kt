@@ -34,7 +34,6 @@ class CreateIssueAction(
                     )!!
                 )
                 .fill("summary", "This is a simple summary")
-                .fill("description", "And this is even simpler description")
             issueCreateDialog.fillRequiredFields()
             meter.measure(CREATE_ISSUE_SUBMIT) { filledForm.submit() }
         }

@@ -26,6 +26,11 @@ Dropping a requirement of a major version of a dependency is a new contract.
 ## [Unreleased]
 [Unreleased]: https://bitbucket.org/atlassian/jira-actions/branches/compare/master%0Drelease-3.0.1
 
+### Fixed
+- Stop assuming description field is always available. Resolves [JPERF-303].
+
+[JPERF-303]: https://ecosystem.atlassian.net/browse/JPERF-303
+
 ## [3.0.1] - 2018-12-06
 [3.0.1]: https://bitbucket.org/atlassian/jira-actions/branches/compare/release-3.0.1%0Drelease-3.0.0
 
