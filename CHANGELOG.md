@@ -35,6 +35,7 @@ Dropping a requirement of a major version of a dependency is a new contract.
 - Deprecate constructors of `ActionMetric`.
 - Deprecate the data class status of `ActionMetric`.
 - Deprecate serialization details of `ActionMetric`.
+- Deprecate the internal `Recording` data structure.
 
 [JPERF-316]: https://ecosystem.atlassian.net/browse/JPERF-316
 

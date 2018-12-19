@@ -79,7 +79,7 @@ class ActionMeter(
         return record(key) {
             val result = action()
             val duration = Duration.between(start, clock.instant())
-            val recording = Recording(result, duration, observation(result))
+            @Suppress("DEPRECATION") val recording = Recording(result, duration, observation(result))
             recording.drilldown = w3cPerformanceTimeline.record()
             return@record recording
         }
@@ -95,7 +95,7 @@ class ActionMeter(
      */
     private fun <T> record(
         key: ActionType<*>,
-        action: () -> Recording<T>
+        @Suppress("DEPRECATION") action: () -> Recording<T>
     ): T {
         val start = clock.instant()
         try {
@@ -143,6 +143,7 @@ class ActionMeter(
     )
 }
 
+@Deprecated("This is an internal data structure used by ActionMeter. Use ActionMeter public methods instead.")
 data class Recording<out T>(
     val result: T,
     val duration: Duration,
