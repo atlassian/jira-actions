@@ -26,6 +26,13 @@ Dropping a requirement of a major version of a dependency is a new contract.
 ## [Unreleased]
 [Unreleased]: https://bitbucket.org/atlassian/jira-actions/branches/compare/master%0Drelease-3.0.2
 
+### Added
+- Add `drilldown` property to `ActionMetric`. See [JPERF-316].
+- Record standard W3C performance entries via `W3cPerformanceTimeline`. Provide raw data for [JPERF-316].
+- Let `ActionMeter`s copy themselves with a different `W3cPerformanceTimeline`.
+
+[JPERF-316]: https://ecosystem.atlassian.net/browse/JPERF-316
+
 ## [3.0.2] - 2018-12-18
 [3.0.2]: https://bitbucket.org/atlassian/jira-actions/branches/compare/release-3.0.2%0Drelease-3.0.1
 

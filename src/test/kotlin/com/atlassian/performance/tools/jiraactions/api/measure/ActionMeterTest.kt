@@ -1,12 +1,10 @@
 package com.atlassian.performance.tools.jiraactions.api.measure
 
-import com.atlassian.performance.tools.jiraactions.api.ActionMetric
+import com.atlassian.performance.tools.jiraactions.api.*
 import com.atlassian.performance.tools.jiraactions.api.ActionResult.ERROR
 import com.atlassian.performance.tools.jiraactions.api.ActionResult.OK
-import com.atlassian.performance.tools.jiraactions.api.CREATE_ISSUE
-import com.atlassian.performance.tools.jiraactions.api.EDIT_ISSUE
-import com.atlassian.performance.tools.jiraactions.api.VIEW_BOARD
 import com.atlassian.performance.tools.jiraactions.api.measure.output.CollectionActionMetricOutput
+import com.atlassian.performance.tools.jiraactions.api.w3c.DisabledW3cPerformanceTimeline
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 import org.hamcrest.collection.IsIterableContainingInAnyOrder.containsInAnyOrder
@@ -35,15 +33,16 @@ class ActionMeterTest {
         val actionMeter = ActionMeter(
             virtualUser = vu,
             output = output,
-            clock = clock
+            clock = clock,
+            w3cPerformanceTimeline = DisabledW3cPerformanceTimeline()
         )
 
         actionMeter.measure(CREATE_ISSUE, clock::tick)
-        actionMeter.measure(VIEW_BOARD, {})
+        actionMeter.measure(VIEW_BOARD) {}
         actionMeter.measure(EDIT_ISSUE, clock::tick)
-        actionMeter.measure(CREATE_ISSUE, {})
+        actionMeter.measure(CREATE_ISSUE) {}
         actionMeter.measure(VIEW_BOARD, clock::tick)
-        actionMeter.measure(EDIT_ISSUE, {})
+        actionMeter.measure(EDIT_ISSUE) {}
 
         val oneTickLater = start + tick
         val twoTicksLater = oneTickLater + tick
@@ -51,15 +50,30 @@ class ActionMeterTest {
         assertThat(
             output.metrics,
             containsInAnyOrder(
-                ActionMetric(CREATE_ISSUE.label, OK, tick, start, vu),
-                ActionMetric(VIEW_BOARD.label, OK, ZERO, oneTickLater, vu),
-                ActionMetric(EDIT_ISSUE.label, OK, tick, oneTickLater, vu),
-                ActionMetric(CREATE_ISSUE.label, OK, ZERO, twoTicksLater, vu),
-                ActionMetric(VIEW_BOARD.label, OK, tick, twoTicksLater, vu),
-                ActionMetric(EDIT_ISSUE.label, OK, ZERO, threeTicksLater, vu)
+                expectedActionMetric(CREATE_ISSUE, OK, tick, start),
+                expectedActionMetric(VIEW_BOARD, OK, ZERO, oneTickLater),
+                expectedActionMetric(EDIT_ISSUE, OK, tick, oneTickLater),
+                expectedActionMetric(CREATE_ISSUE, OK, ZERO, twoTicksLater),
+                expectedActionMetric(VIEW_BOARD, OK, tick, twoTicksLater),
+                expectedActionMetric(EDIT_ISSUE, OK, ZERO, threeTicksLater)
             )
         )
     }
+
+    private fun expectedActionMetric(
+        actionType: ActionType<*>,
+        result: ActionResult,
+        duration: Duration,
+        start: Instant
+    ): ActionMetric = ActionMetric(
+        label = actionType.label,
+        result = result,
+        duration = duration,
+        start = start,
+        virtualUser = vu,
+        observation = null,
+        drilldown = null
+    )
 
     @Test
     fun shouldMeasureErrors() {
@@ -67,21 +81,22 @@ class ActionMeterTest {
         val actionMeter = ActionMeter(
             output = output,
             virtualUser = vu,
-            clock = Clock.fixed(start, ZoneId.of("UTC"))
+            clock = Clock.fixed(start, ZoneId.of("UTC")),
+            w3cPerformanceTimeline = DisabledW3cPerformanceTimeline()
         )
 
         try {
-            actionMeter.measure(CREATE_ISSUE, { throw Exception("oops") })
+            actionMeter.measure(CREATE_ISSUE) { throw Exception("oops") }
         } catch (e: Exception) {
             logger.info("Ignoring exception", e)
         }
-        actionMeter.measure(VIEW_BOARD, {})
+        actionMeter.measure(VIEW_BOARD) {}
 
         assertThat(
             output.metrics,
             containsInAnyOrder(
-                ActionMetric(CREATE_ISSUE.label, ERROR, ZERO, start, vu),
-                ActionMetric(VIEW_BOARD.label, OK, ZERO, start, vu)
+                expectedActionMetric(CREATE_ISSUE, ERROR, ZERO, start),
+                expectedActionMetric(VIEW_BOARD, OK, ZERO, start)
             )
         )
     }

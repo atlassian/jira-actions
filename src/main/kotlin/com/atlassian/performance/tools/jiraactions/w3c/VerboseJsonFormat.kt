@@ -1,0 +1,151 @@
+package com.atlassian.performance.tools.jiraactions.w3c
+
+import com.atlassian.performance.tools.jiraactions.api.w3c.*
+import java.time.Duration
+import javax.json.Json
+import javax.json.JsonArray
+import javax.json.JsonObject
+
+internal class VerboseJsonFormat {
+
+    fun serializeRecordedEntries(
+        entries: RecordedPerformanceEntries
+    ): JsonObject = entries.run {
+        Json.createObjectBuilder()
+            .add("navigations", navigations.map { serializeNavigationTiming(it) }.toJsonArray())
+            .add("resources", resources.map { serializeResourceTiming(it) }.toJsonArray())
+            .build()
+    }
+
+    fun deserializeRecordedEntries(
+        json: JsonObject
+    ): RecordedPerformanceEntries = json.run {
+        RecordedPerformanceEntries(
+            navigations = getJsonArray("navigations")
+                .map { it.asJsonObject() }
+                .map { deserializeNavigationTiming(it) },
+            resources = getJsonArray("resources")
+                .map { it.asJsonObject() }
+                .map { deserializeResourceTiming(it) }
+        )
+    }
+
+    private fun serializeEntry(
+        entry: PerformanceEntry
+    ): JsonObject = entry.run {
+        Json.createObjectBuilder()
+            .add("name", name)
+            .add("entryType", entryType)
+            .add("startTime", startTime.toString())
+            .add("duration", duration.toString())
+            .build()
+    }
+
+    private fun deserializeEntry(
+        json: JsonObject
+    ): PerformanceEntry = json.run {
+        PerformanceEntry(
+            name = getString("name"),
+            entryType = getString("entryType"),
+            startTime = getDuration("startTime"),
+            duration = getDuration("duration")
+        )
+    }
+
+    private fun serializeResourceTiming(
+        resourceTiming: PerformanceResourceTiming
+    ): JsonObject = resourceTiming.run {
+        Json.createObjectBuilder()
+            .add("entry", serializeEntry(entry))
+            .add("initiatorType", initiatorType)
+            .add("nextHopProtocol", nextHopProtocol)
+            .add("workerStart", workerStart.toString())
+            .add("redirectStart", redirectStart.toString())
+            .add("redirectEnd", redirectEnd.toString())
+            .add("fetchStart", fetchStart.toString())
+            .add("domainLookupStart", domainLookupStart.toString())
+            .add("domainLookupEnd", domainLookupEnd.toString())
+            .add("connectStart", connectStart.toString())
+            .add("connectEnd", connectEnd.toString())
+            .add("secureConnectionStart", secureConnectionStart.toString())
+            .add("requestStart", requestStart.toString())
+            .add("responseStart", responseStart.toString())
+            .add("responseEnd", responseEnd.toString())
+            .add("transferSize", transferSize)
+            .add("encodedBodySize", encodedBodySize)
+            .add("decodedBodySize", decodedBodySize)
+            .build()
+    }
+
+    private fun deserializeResourceTiming(
+        json: JsonObject
+    ): PerformanceResourceTiming = json.run {
+        PerformanceResourceTiming(
+            entry = deserializeEntry(getJsonObject("entry")),
+            initiatorType = getString("initiatorType"),
+            nextHopProtocol = getString("nextHopProtocol"),
+            workerStart = getDuration("workerStart"),
+            redirectStart = getDuration("redirectStart"),
+            redirectEnd = getDuration("redirectEnd"),
+            fetchStart = getDuration("fetchStart"),
+            domainLookupStart = getDuration("domainLookupStart"),
+            domainLookupEnd = getDuration("domainLookupEnd"),
+            connectStart = getDuration("connectStart"),
+            connectEnd = getDuration("connectEnd"),
+            secureConnectionStart = getDuration("secureConnectionStart"),
+            requestStart = getDuration("requestStart"),
+            responseStart = getDuration("responseStart"),
+            responseEnd = getDuration("responseEnd"),
+            transferSize = getJsonNumber("transferSize").longValueExact(),
+            encodedBodySize = getJsonNumber("encodedBodySize").longValueExact(),
+            decodedBodySize = getJsonNumber("decodedBodySize").longValueExact()
+
+        )
+    }
+
+    private fun serializeNavigationTiming(
+        navigationTiming: PerformanceNavigationTiming
+    ): JsonObject = navigationTiming.run {
+        Json.createObjectBuilder()
+            .add("resource", serializeResourceTiming(resource))
+            .add("unloadEventStart", unloadEventStart.toString())
+            .add("unloadEventEnd", unloadEventEnd.toString())
+            .add("domInteractive", domInteractive.toString())
+            .add("domContentLoadedEventStart", domContentLoadedEventStart.toString())
+            .add("domContentLoadedEventEnd", domContentLoadedEventEnd.toString())
+            .add("domComplete", domComplete.toString())
+            .add("loadEventStart", loadEventStart.toString())
+            .add("loadEventEnd", loadEventEnd.toString())
+            .add("type", type.name)
+            .add("redirectCount", redirectCount)
+            .build()
+    }
+
+    private fun deserializeNavigationTiming(
+        json: JsonObject
+    ): PerformanceNavigationTiming = json.run {
+        PerformanceNavigationTiming(
+            resource = deserializeResourceTiming(getJsonObject("resource")),
+            unloadEventStart = getDuration("unloadEventStart"),
+            unloadEventEnd = getDuration("unloadEventEnd"),
+            domInteractive = getDuration("domInteractive"),
+            domContentLoadedEventStart = getDuration("domContentLoadedEventStart"),
+            domContentLoadedEventEnd = getDuration("domContentLoadedEventEnd"),
+            domComplete = getDuration("domComplete"),
+            loadEventStart = getDuration("loadEventStart"),
+            loadEventEnd = getDuration("loadEventEnd"),
+            type = NavigationType.valueOf(getString("type")),
+            redirectCount = getJsonNumber("redirectCount").intValueExact()
+        )
+    }
+
+    private fun List<JsonObject>.toJsonArray(): JsonArray {
+        val builder = Json.createArrayBuilder()
+        forEach { builder.add(it) }
+        return builder.build()
+    }
+
+    private fun JsonObject.getDuration(
+        field: String
+    ): Duration = Duration.parse(getString(field))
+}

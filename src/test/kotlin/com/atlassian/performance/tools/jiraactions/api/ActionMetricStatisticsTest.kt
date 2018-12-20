@@ -5,6 +5,7 @@ import com.atlassian.performance.tools.jiraactions.api.ActionResult.OK
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Test
+import java.time.Duration
 import java.time.Duration.ofSeconds
 import java.time.Instant.now
 import java.util.UUID.randomUUID
@@ -13,15 +14,29 @@ import java.util.UUID.randomUUID
 class ActionMetricStatisticsTest {
 
     private val actionMetrics = listOf(
-        ActionMetric("view", OK, ofSeconds(1), now(), randomUUID(), null),
-        ActionMetric("view", OK, ofSeconds(2), now(), randomUUID(), null),
-        ActionMetric("view", OK, ofSeconds(3), now(), randomUUID(), null),
-        ActionMetric("view", ERROR, ofSeconds(4), now(), randomUUID(), null),
-        ActionMetric("view", ERROR, ofSeconds(5), now(), randomUUID(), null),
-        ActionMetric("create", ERROR, ofSeconds(1), now(), randomUUID(), null),
-        ActionMetric("create", ERROR, ofSeconds(2), now(), randomUUID(), null),
-        ActionMetric("create", ERROR, ofSeconds(3), now(), randomUUID(), null),
-        ActionMetric("login", OK, ofSeconds(1), now(), randomUUID(), null)
+        givenActionMetric("view", OK, ofSeconds(1)),
+        givenActionMetric("view", OK, ofSeconds(2)),
+        givenActionMetric("view", OK, ofSeconds(3)),
+        givenActionMetric("view", ERROR, ofSeconds(4)),
+        givenActionMetric("view", ERROR, ofSeconds(5)),
+        givenActionMetric("create", ERROR, ofSeconds(1)),
+        givenActionMetric("create", ERROR, ofSeconds(2)),
+        givenActionMetric("create", ERROR, ofSeconds(3)),
+        givenActionMetric("login", OK, ofSeconds(1))
+    )
+
+    private fun givenActionMetric(
+        label: String,
+        result: ActionResult,
+        duration: Duration
+    ): ActionMetric = ActionMetric(
+        label = label,
+        result = result,
+        duration = duration,
+        start = now(),
+        virtualUser = randomUUID(),
+        observation = null,
+        drilldown = null
     )
 
     @Test

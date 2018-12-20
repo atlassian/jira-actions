@@ -6,6 +6,9 @@ import com.atlassian.performance.tools.jiraactions.api.ActionResult
 import com.atlassian.performance.tools.jiraactions.api.ActionType
 import com.atlassian.performance.tools.jiraactions.api.measure.output.ActionMetricOutput
 import com.atlassian.performance.tools.jiraactions.api.measure.output.ThrowawayActionMetricOutput
+import com.atlassian.performance.tools.jiraactions.api.w3c.DisabledW3cPerformanceTimeline
+import com.atlassian.performance.tools.jiraactions.api.w3c.RecordedPerformanceEntries
+import com.atlassian.performance.tools.jiraactions.api.w3c.W3cPerformanceTimeline
 import java.time.Clock
 import java.time.Duration
 import java.util.*
@@ -17,12 +20,28 @@ import javax.json.JsonObject
  * @param virtualUser identifies a virtual user
  * @param output writes the metrics
  * @param clock measures latencies
+ * @param w3cPerformanceTimeline records W3C performance entries
  */
 class ActionMeter(
     private val virtualUser: UUID,
-    private val output: ActionMetricOutput = ThrowawayActionMetricOutput(),
-    private val clock: Clock = Clock.systemUTC()
+    private val output: ActionMetricOutput,
+    private val clock: Clock,
+    private val w3cPerformanceTimeline: W3cPerformanceTimeline
 ) {
+
+    @Deprecated(
+        message = "Use the primary constructor"
+    )
+    constructor(
+        virtualUser: UUID,
+        output: ActionMetricOutput = ThrowawayActionMetricOutput(),
+        clock: Clock = Clock.systemUTC()
+    ) : this(
+        virtualUser = virtualUser,
+        output = output,
+        clock = clock,
+        w3cPerformanceTimeline = DisabledW3cPerformanceTimeline()
+    )
 
     /**
      * Measures the latency of the [action].
@@ -60,7 +79,9 @@ class ActionMeter(
         return record(key) {
             val result = action()
             val duration = Duration.between(start, clock.instant())
-            Recording(result, duration, observation(result))
+            val recording = Recording(result, duration, observation(result))
+            recording.drilldown = w3cPerformanceTimeline.record()
+            return@record recording
         }
     }
 
@@ -86,7 +107,8 @@ class ActionMeter(
                     start = start,
                     duration = recording.duration,
                     virtualUser = virtualUser,
-                    observation = recording.observation
+                    observation = recording.observation,
+                    drilldown = recording.drilldown
                 )
             )
             return recording.result
@@ -102,17 +124,29 @@ class ActionMeter(
                     result = result,
                     start = start,
                     duration = Duration.between(start, clock.instant()),
-                    virtualUser = virtualUser
+                    virtualUser = virtualUser,
+                    observation = null,
+                    drilldown = null
                 )
             )
             throw Exception("Action '${key.label}' $result", e)
         }
     }
 
+    fun withW3cPerformanceTimeline(
+        w3cPerformanceTimeline: W3cPerformanceTimeline
+    ): ActionMeter = ActionMeter(
+        virtualUser = virtualUser,
+        output = output,
+        clock = clock,
+        w3cPerformanceTimeline = w3cPerformanceTimeline
+    )
 }
 
 data class Recording<out T>(
     val result: T,
     val duration: Duration,
     val observation: JsonObject? = null
-)
+) {
+    internal var drilldown: RecordedPerformanceEntries? = null
+}
