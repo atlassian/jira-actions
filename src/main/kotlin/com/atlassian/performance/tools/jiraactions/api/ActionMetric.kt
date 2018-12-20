@@ -8,7 +8,10 @@ import java.util.*
 import javax.json.Json
 import javax.json.JsonObject
 
-data class ActionMetric(
+/**
+ * @deprecated The generated `copy` and `componentN` methods should not be used. It will become a non-data class.
+ */
+data class ActionMetric @Deprecated("Use ActionMetricsParser instead.") constructor(
     val label: String,
     val result: ActionResult,
     val duration: Duration,
@@ -26,6 +29,7 @@ data class ActionMetric(
 
     val end: Instant = start + duration
 
+    @Deprecated("Use ActionMetricsParser instead.")
     constructor(serialized: JsonObject) : this(
         serialized.getString("label"),
         serialized.getString("result").let { ActionResult.valueOf(it) },
@@ -36,6 +40,7 @@ data class ActionMetric(
         serialized.getJsonObject("drilldown")?.let { VerboseJsonFormat().deserializeRecordedEntries(it) }
     )
 
+    @Suppress("DEPRECATION")
     internal constructor(
         label: String,
         result: ActionResult,
@@ -55,6 +60,7 @@ data class ActionMetric(
         this.drilldown = drilldown
     }
 
+    @Deprecated("Use AppendableActionMetricOutput instead.")
     fun toJson(): JsonObject {
         val builder = Json.createObjectBuilder()
             .add("label", label)

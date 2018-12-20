@@ -1,6 +1,7 @@
 package com.atlassian.performance.tools.jiraactions.api.parser
 
 import com.atlassian.performance.tools.jiraactions.api.ActionMetric
+import com.atlassian.performance.tools.jiraactions.MetricVerboseJsonFormat
 import org.apache.logging.log4j.LogManager
 import java.io.InputStream
 import java.io.StringReader
@@ -10,6 +11,7 @@ import javax.json.JsonStructure
 class ActionMetricsParser {
 
     private val logger = LogManager.getLogger(this::class.java)
+    private val format = MetricVerboseJsonFormat()
 
     fun parse(
         metricsStream: InputStream
@@ -17,7 +19,7 @@ class ActionMetricsParser {
         .bufferedReader()
         .lineSequence()
         .mapNotNull { parseOrNull(it) }
-        .map { ActionMetric(it.asJsonObject()) }
+        .map { format.deserialize(it.asJsonObject()) }
         .toList()
 
     private fun parseOrNull(

@@ -31,6 +31,11 @@ Dropping a requirement of a major version of a dependency is a new contract.
 - Record standard W3C performance entries via `W3cPerformanceTimeline`. Provide raw data for [JPERF-316].
 - Let `ActionMeter`s copy themselves with a different `W3cPerformanceTimeline`.
 
+### Deprecated
+- Deprecate constructors of `ActionMetric`.
+- Deprecate the data class status of `ActionMetric`.
+- Deprecate serialization details of `ActionMetric`.
+
 [JPERF-316]: https://ecosystem.atlassian.net/browse/JPERF-316
 
 ## [3.0.2] - 2018-12-18

@@ -1,6 +1,7 @@
 package com.atlassian.performance.tools.jiraactions.api.measure.output
 
 import com.atlassian.performance.tools.jiraactions.api.ActionMetric
+import com.atlassian.performance.tools.jiraactions.MetricVerboseJsonFormat
 import net.jcip.annotations.NotThreadSafe
 
 @NotThreadSafe
@@ -8,8 +9,10 @@ class AppendableActionMetricOutput(
     private val target: Appendable
 ) : ActionMetricOutput {
 
+    private val format = MetricVerboseJsonFormat()
+
     override fun write(metric: ActionMetric) {
-        target.append(metric.toJson().toString())
+        target.append(format.serialize(metric).toString())
         target.append('\n')
     }
 }
