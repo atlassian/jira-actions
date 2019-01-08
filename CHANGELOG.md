@@ -26,6 +26,11 @@ Dropping a requirement of a major version of a dependency is a new contract.
 ## [Unreleased]
 [Unreleased]: https://bitbucket.org/atlassian/jira-actions/branches/compare/master%0Drelease-3.1.0
 
+### Added
+- Provide builder for ActionMetric. Resolves [JPERF-340]
+
+[JPERF-340]: https://ecosystem.atlassian.net/browse/JPERF-340
+
 ## [3.1.0] - 2018-12-20
 [3.1.0]: https://bitbucket.org/atlassian/jira-actions/branches/compare/release-3.1.0%0Drelease-3.0.2
 

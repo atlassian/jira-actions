@@ -24,7 +24,7 @@ class ActionMetricsParserTest {
 
         val metrics = metricsStream.use { metricsParser.parse(it) }
 
-        val expectedMetric = ActionMetric(
+        val expectedMetric = ActionMetric.Builder(
             start = ZonedDateTime.of(
                 2017,
                 12,
@@ -37,11 +37,11 @@ class ActionMetricsParserTest {
             ).toInstant(),
             label = VIEW_BOARD.label,
             duration = ofMillis(982),
-            virtualUser = UUID.fromString("0e5ead7c-dc9c-4f48-854d-5200a1a71058"),
-            result = ActionResult.OK,
-            observation = IssuesOnBoard(19).serialize(),
-            drilldown = null
+            result = ActionResult.OK
         )
+            .virtualUser(UUID.fromString("0e5ead7c-dc9c-4f48-854d-5200a1a71058"))
+            .observation(IssuesOnBoard(19).serialize())
+            .build()
         assertThat(metrics, hasItem(expectedMetric))
     }
 

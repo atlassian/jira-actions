@@ -25,69 +25,65 @@ class AppendableActionMetricOutputTest {
         val uuid1 = UUID.fromString("0e5ead7c-dc9c-4f48-854d-5200a1a71058")
         val uuid2 = UUID.fromString("7609ea12-b926-4761-acf8-e3e0858c5294")
         val metrics = listOf(
-            ActionMetric(
+            ActionMetric.Builder(
                 label = "View Dashboard",
                 result = OK,
                 duration = ofMillis(982),
-                start = parse("2017-12-12T10:37:52.749Z"),
-                virtualUser = uuid1,
-                observation = null,
-                drilldown = null
-            ),
-            ActionMetric(
+                start = parse("2017-12-12T10:37:52.749Z")
+            )
+                .virtualUser(uuid1)
+                .build(),
+            ActionMetric.Builder(
                 label = "Edit Issue",
                 result = OK,
                 duration = ofMillis(1400),
-                start = parse("2017-12-12T10:38:04.493Z"),
-                virtualUser = uuid2,
-                observation = null,
-                drilldown = null
-            ),
-            ActionMetric(
+                start = parse("2017-12-12T10:38:04.493Z")
+            )
+                .virtualUser(uuid2)
+                .build(),
+            ActionMetric.Builder(
                 label = "View Dashboard",
                 result = ERROR,
                 duration = ofMillis(294),
-                start = parse("2017-12-12T10:38:36.275Z"),
-                virtualUser = uuid2,
-                observation = null,
-                drilldown = null
-            ),
-            ActionMetric(
+                start = parse("2017-12-12T10:38:36.275Z")
+            )
+                .virtualUser(uuid2)
+                .build(),
+            ActionMetric.Builder(
                 label = "Create Issue",
                 result = OK,
                 duration = ofMinutes(2) + ofSeconds(26) + ofMillis(786),
-                start = parse("2017-12-12T10:38:36.275Z"),
-                virtualUser = uuid1,
-                observation = null,
-                drilldown = null
-            ),
-            ActionMetric(
+                start = parse("2017-12-12T10:38:36.275Z")
+            )
+                .virtualUser(uuid1)
+                .build(),
+            ActionMetric.Builder(
                 label = "View Board",
                 result = OK,
                 duration = ofSeconds(26) + ofMillis(786),
-                start = parse("2017-12-12T10:38:36.277Z"),
-                virtualUser = uuid1,
-                observation = IssuesOnBoard(5).serialize(),
-                drilldown = null
-            ),
-            ActionMetric(
+                start = parse("2017-12-12T10:38:36.277Z")
+            )
+                .virtualUser(uuid1)
+                .observation(IssuesOnBoard(5).serialize())
+                .build(),
+            ActionMetric.Builder(
                 label = "View Board",
                 result = OK,
                 duration = ofSeconds(26) + ofMillis(786),
-                start = parse("2017-12-12T10:38:36.277Z"),
-                virtualUser = uuid1,
-                observation = IssuesOnBoard(6).serialize(),
-                drilldown = null
-            ),
-            ActionMetric(
+                start = parse("2017-12-12T10:38:36.277Z")
+            )
+                .virtualUser(uuid1)
+                .observation(IssuesOnBoard(6).serialize())
+                .build(),
+            ActionMetric.Builder(
                 label = "Log In",
                 result = OK,
                 duration = ofSeconds(3) + ofMillis(860),
-                start = parse("2018-12-18T16:10:23.088Z"),
-                virtualUser = uuid1,
-                observation = null,
-                drilldown = drilldown
+                start = parse("2018-12-18T16:10:23.088Z")
             )
+                .virtualUser(uuid1)
+                .drilldown(drilldown)
+                .build()
         )
         val file = folder.newFile("results.csv")
 

@@ -101,15 +101,16 @@ class ActionMeter(
         try {
             val recording = action()
             output.write(
-                ActionMetric(
+                ActionMetric.Builder(
                     label = key.label,
                     result = ActionResult.OK,
                     start = start,
-                    duration = recording.duration,
-                    virtualUser = virtualUser,
-                    observation = recording.observation,
-                    drilldown = recording.drilldown
+                    duration = recording.duration
                 )
+                    .virtualUser(virtualUser)
+                    .observation(recording.observation)
+                    .drilldown(recording.drilldown)
+                    .build()
             )
             return recording.result
         } catch (e: Exception) {
@@ -119,15 +120,14 @@ class ActionMeter(
                 ActionResult.ERROR
             }
             output.write(
-                ActionMetric(
+                ActionMetric.Builder(
                     label = key.label,
                     result = result,
                     start = start,
-                    duration = Duration.between(start, clock.instant()),
-                    virtualUser = virtualUser,
-                    observation = null,
-                    drilldown = null
+                    duration = Duration.between(start, clock.instant())
                 )
+                    .virtualUser(virtualUser)
+                    .build()
             )
             throw Exception("Action '${key.label}' $result", e)
         }

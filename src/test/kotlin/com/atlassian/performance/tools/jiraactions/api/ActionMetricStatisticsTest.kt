@@ -8,7 +8,6 @@ import org.junit.Test
 import java.time.Duration
 import java.time.Duration.ofSeconds
 import java.time.Instant.now
-import java.util.UUID.randomUUID
 
 
 class ActionMetricStatisticsTest {
@@ -29,15 +28,12 @@ class ActionMetricStatisticsTest {
         label: String,
         result: ActionResult,
         duration: Duration
-    ): ActionMetric = ActionMetric(
+    ): ActionMetric = ActionMetric.Builder(
         label = label,
         result = result,
         duration = duration,
-        start = now(),
-        virtualUser = randomUUID(),
-        observation = null,
-        drilldown = null
-    )
+        start = now()
+    ).build()
 
     @Test
     fun testErrors() {

@@ -65,15 +65,12 @@ class ActionMeterTest {
         result: ActionResult,
         duration: Duration,
         start: Instant
-    ): ActionMetric = ActionMetric(
+    ): ActionMetric = ActionMetric.Builder(
         label = actionType.label,
         result = result,
         duration = duration,
-        start = start,
-        virtualUser = vu,
-        observation = null,
-        drilldown = null
-    )
+        start = start
+    ).virtualUser(vu).build()
 
     @Test
     fun shouldMeasureErrors() {

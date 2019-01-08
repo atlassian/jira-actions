@@ -30,14 +30,15 @@ internal class MetricVerboseJsonFormat {
     fun deserialize(
         json: JsonObject
     ): ActionMetric = json.run {
-        ActionMetric(
+        ActionMetric.Builder(
             label = getString("label"),
             result = getString("result").let { ActionResult.valueOf(it) },
             duration = getString("duration").let { Duration.parse(it) },
-            start = getString("start").let { Instant.parse(it) },
-            virtualUser = getString("virtualUser").let { UUID.fromString(it) },
-            observation = getJsonObject("observation"),
-            drilldown = getJsonObject("drilldown")?.let { drilldownFormat.deserializeRecordedEntries(it) }
+            start = getString("start").let { Instant.parse(it) }
         )
+            .virtualUser(getString("virtualUser").let { UUID.fromString(it) })
+            .observation(getJsonObject("observation"))
+            .drilldown(getJsonObject("drilldown")?.let { drilldownFormat.deserializeRecordedEntries(it) })
+            .build()
     }
 }

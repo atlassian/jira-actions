@@ -11,7 +11,7 @@ import javax.json.JsonObject
 /**
  * @deprecated The generated `copy` and `componentN` methods should not be used. It will become a non-data class.
  */
-data class ActionMetric @Deprecated("Use ActionMetricsParser instead.") constructor(
+data class ActionMetric @Deprecated("Use ActionMetric.Builder instead.") constructor(
     val label: String,
     val result: ActionResult,
     val duration: Duration,
@@ -41,6 +41,7 @@ data class ActionMetric @Deprecated("Use ActionMetricsParser instead.") construc
     )
 
     @Suppress("DEPRECATION")
+    @Deprecated("Use ActionMetric.Builder instead.")
     internal constructor(
         label: String,
         result: ActionResult,
@@ -72,6 +73,32 @@ data class ActionMetric @Deprecated("Use ActionMetricsParser instead.") construc
         observation?.let { builder.add("observation", it) }
         drilldown?.let { builder.add("drilldown", VerboseJsonFormat().serializeRecordedEntries(it)) }
         return builder.build()
+    }
+
+    class Builder(
+        private val label: String,
+        private val result: ActionResult,
+        private val duration: Duration,
+        private val start: Instant
+    ) {
+        private var observation: JsonObject? = null
+        private var drilldown: RecordedPerformanceEntries? = null
+        private var virtualUser: UUID = UUID.randomUUID()
+
+        fun observation(observation: JsonObject?) = apply { this.observation = observation }
+        fun drilldown(drilldown: RecordedPerformanceEntries?) = apply { this.drilldown = drilldown }
+        fun virtualUser(virtualUser: UUID) = apply { this.virtualUser = virtualUser }
+
+        @Suppress("DEPRECATION")
+        fun build() = ActionMetric(
+            label = label,
+            result = result,
+            duration = duration,
+            start = start,
+            virtualUser = virtualUser,
+            observation = observation,
+            drilldown = drilldown
+        )
     }
 }
 
