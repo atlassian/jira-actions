@@ -24,7 +24,10 @@ Adding a requirement of a major version of a dependency is breaking a contract.
 Dropping a requirement of a major version of a dependency is a new contract.
 
 ## [Unreleased]
-[Unreleased]: https://bitbucket.org/atlassian/jira-actions/branches/compare/master%0Drelease-3.1.0
+[Unreleased]: https://bitbucket.org/atlassian/jira-actions/branches/compare/master%0Drelease-3.2.0
+
+## [3.2.0] - 2019-01-08
+[3.2.0]: https://bitbucket.org/atlassian/jira-actions/branches/compare/release-3.2.0%0Drelease-3.1.0
 
 ### Added
 - Provide builder for ActionMetric. Resolves [JPERF-340]
