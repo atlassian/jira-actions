@@ -1,4 +1,4 @@
-image: openjdk:8
+image: openjdk:8u171
 options:
   docker: true
   size: 2x
