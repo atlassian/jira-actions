@@ -41,8 +41,7 @@ dependencies {
     ).map { module ->
         "org.apache.logging.log4j:log4j-$module:2.10.0"
     }.forEach { implementation(it) }
-
-    testCompile("org.hamcrest:hamcrest-library:1.3")
+    testCompile("org.assertj:assertj-core:3.11.0")
     testCompile("junit:junit:4.12")
 }
 

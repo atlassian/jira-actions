@@ -7,8 +7,7 @@ import com.atlassian.performance.tools.jiraactions.api.measure.output.Collection
 import com.atlassian.performance.tools.jiraactions.api.w3c.DisabledW3cPerformanceTimeline
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
-import org.hamcrest.collection.IsIterableContainingInAnyOrder.containsInAnyOrder
-import org.junit.Assert.assertThat
+import org.assertj.core.api.Assertions.*
 import org.junit.Test
 import java.time.Clock
 import java.time.Duration
@@ -47,16 +46,14 @@ class ActionMeterTest {
         val oneTickLater = start + tick
         val twoTicksLater = oneTickLater + tick
         val threeTicksLater = twoTicksLater + tick
-        assertThat(
-            output.metrics,
-            containsInAnyOrder(
-                expectedActionMetric(CREATE_ISSUE, OK, tick, start),
-                expectedActionMetric(VIEW_BOARD, OK, ZERO, oneTickLater),
-                expectedActionMetric(EDIT_ISSUE, OK, tick, oneTickLater),
-                expectedActionMetric(CREATE_ISSUE, OK, ZERO, twoTicksLater),
-                expectedActionMetric(VIEW_BOARD, OK, tick, twoTicksLater),
-                expectedActionMetric(EDIT_ISSUE, OK, ZERO, threeTicksLater)
-            )
+
+        assertThat(output.metrics).containsExactlyInAnyOrder(
+            expectedActionMetric(CREATE_ISSUE, OK, tick, start),
+            expectedActionMetric(VIEW_BOARD, OK, ZERO, oneTickLater),
+            expectedActionMetric(EDIT_ISSUE, OK, tick, oneTickLater),
+            expectedActionMetric(CREATE_ISSUE, OK, ZERO, twoTicksLater),
+            expectedActionMetric(VIEW_BOARD, OK, tick, twoTicksLater),
+            expectedActionMetric(EDIT_ISSUE, OK, ZERO, threeTicksLater)
         )
     }
 
@@ -89,12 +86,9 @@ class ActionMeterTest {
         }
         actionMeter.measure(VIEW_BOARD) {}
 
-        assertThat(
-            output.metrics,
-            containsInAnyOrder(
-                expectedActionMetric(CREATE_ISSUE, ERROR, ZERO, start),
-                expectedActionMetric(VIEW_BOARD, OK, ZERO, start)
-            )
+        assertThat(output.metrics).containsExactlyInAnyOrder(
+            expectedActionMetric(CREATE_ISSUE, ERROR, ZERO, start),
+            expectedActionMetric(VIEW_BOARD, OK, ZERO, start)
         )
     }
 
