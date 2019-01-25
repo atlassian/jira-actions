@@ -1,5 +1,7 @@
 image: openjdk:8
-
+options:
+  docker: true
+  size: 2x
 pipelines:
   default:
     - step:
@@ -8,6 +10,8 @@ pipelines:
           - gradle
         script:
           - bash ./gradlew build
+        services:
+          - docker
   branches:
     master:
       - step:
@@ -26,3 +30,9 @@ pipelines:
           - git config --global user.name "Bitbucket Pipelines"
           - bash ./gradlew release -Prelease.customKeyFile="/opt/atlassian/pipelines/agent/data/id_rsa"
           - bash ./gradlew publish
+        services:
+          - docker
+definitions:
+  services:
+    docker:
+      memory: 6144
