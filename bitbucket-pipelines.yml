@@ -8,6 +8,9 @@ pipelines:
         name: Build project
         caches:
           - gradle
+          - gradlewrapper
+          - docker
+          - maven
         script:
           - bash ./gradlew build
         services:
@@ -24,6 +27,9 @@ pipelines:
           name: Release project
           caches:
           - gradle
+          - gradlewrapper
+          - docker
+          - maven
           trigger: manual
           script:
           - git config --global user.email "bitbucketci-team@atlassian.com"
@@ -36,3 +42,5 @@ definitions:
   services:
     docker:
       memory: 6144
+  caches:
+    gradlewrapper: ~/.gradle/wrapper
