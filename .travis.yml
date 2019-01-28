@@ -1,0 +1,10 @@
+language: java
+
+stages:
+  - name: release
+    if: branch == master AND fork == false AND type == api
+
+jobs:
+  include:
+    - stage: release
+      script: echo "Releasing..."
