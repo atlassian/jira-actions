@@ -3,13 +3,11 @@ language: java
 stages:
   - test
   - name: release
-    if: env(RELEASE) == true AND branch == master AND fork == false
+    if: env(RELEASE) == true
 
 jobs:
   include:
     - stage: test
-    - script: git tag pushback
-    - script: git push pushback
-    - script: ./gradlew build
+      script: ./gradlew build
     - stage: release
-    - script: echo "Releasing..."
+      script: ./scripts/pushback.sh
