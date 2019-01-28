@@ -1,10 +1,13 @@
 language: java
 
 stages:
+  - test
   - name: release
     if: env(RELEASE) == true AND branch == master AND fork == false
 
 jobs:
   include:
+    - stage: test
+      script: ./gradlew build
     - stage: release
       script: echo "Releasing..."
