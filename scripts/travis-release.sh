@@ -1,3 +1,6 @@
 #!/bin/bash
 set -ev
-./gradlew release -Prelease.customUsername=${github_pushback_personal_token} -Prelease.disableRemoteCheck
+git status
+git checkout ${TRAVIS_BRANCH}
+git status
+./gradlew release -Prelease.customUsername=${github_pushback_personal_token}
