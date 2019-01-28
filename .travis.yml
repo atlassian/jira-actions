@@ -7,3 +7,7 @@ jobs:
   include:
     - stage: test
       script: ./scripts/pushback.sh
+
+cache:
+  directories:
+    - $HOME/.m2
