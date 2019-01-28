@@ -2,12 +2,8 @@ language: java
 
 stages:
   - test
-  - name: release
-    if: env(RELEASE) == true
 
 jobs:
   include:
     - stage: test
-      script: ./gradlew build
-    - stage: release
       script: ./scripts/pushback.sh
