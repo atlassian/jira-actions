@@ -6,7 +6,7 @@ stages:
 jobs:
   include:
     - stage: test
-      script: ./scripts/pushback.sh
+      script: ./scripts/travis-release.sh
 
 cache:
   directories:
