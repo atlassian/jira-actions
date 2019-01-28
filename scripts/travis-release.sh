@@ -1,4 +1,4 @@
 #!/bin/bash
 set -ev
-git remote set-url origin https://${github_pushback_personal_token}@github.com/${TRAVIS_REPO_SLUG}
-./gradlew release
+git status
+./gradlew release -Prelease.customUsername=${github_pushback_personal_token}
