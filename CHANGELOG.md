@@ -29,7 +29,11 @@ Dropping a requirement of a major version of a dependency is a new contract.
 ### Added
 - Provide Jira Core scenario. Resolves [JPERF-373].
 
+### Fixed
+- `Search with JQL` action handles JQL which returns no results. Resolves [JPERF-371].
+
 [JPERF-373]: https://ecosystem.atlassian.net/browse/JPERF-373
+[JPERF-371]: https://ecosystem.atlassian.net/browse/JPERF-371
 
 ## [3.2.0] - 2019-01-08
 [3.2.0]: https://bitbucket.org/atlassian/jira-actions/branches/compare/release-3.2.0%0Drelease-3.1.0

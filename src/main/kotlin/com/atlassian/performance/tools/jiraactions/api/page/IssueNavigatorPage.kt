@@ -2,7 +2,7 @@ package com.atlassian.performance.tools.jiraactions.api.page
 
 import org.openqa.selenium.By
 import org.openqa.selenium.WebDriver
-import org.openqa.selenium.support.ui.ExpectedConditions
+import org.openqa.selenium.support.ui.ExpectedConditions.*
 import java.time.Duration
 
 class IssueNavigatorPage(
@@ -18,16 +18,18 @@ class IssueNavigatorPage(
         val jiraErrors = JiraErrors(driver)
         driver.wait(
             Duration.ofSeconds(30),
-            ExpectedConditions.and(
-                ExpectedConditions.or(
-                    ExpectedConditions.presenceOfElementLocated(By.cssSelector("ol.issue-list")),
-                    ExpectedConditions.presenceOfElementLocated(By.id("issuetable")),
-                    ExpectedConditions.presenceOfElementLocated(By.id("issue-content")),
-                    ExpectedConditions.presenceOfElementLocated(By.className("no-results-hint")),
-                    jiraErrors.anyCommonError()
+            or(
+                and(
+                    or(
+                        presenceOfElementLocated(By.cssSelector("ol.issue-list")),
+                        presenceOfElementLocated(By.id("issuetable")),
+                        presenceOfElementLocated(By.id("issue-content"))
+                    ),
+                    presenceOfElementLocated(By.id("key-val")),
+                    presenceOfElementLocated(By.className("issue-body-content"))
                 ),
-                ExpectedConditions.presenceOfElementLocated(By.id("key-val")),
-                ExpectedConditions.presenceOfElementLocated(By.className("issue-body-content"))
+                presenceOfElementLocated(By.className("no-results-hint")),
+                jiraErrors.anyCommonError()
             )
         )
         return this
@@ -49,5 +51,11 @@ class IssueNavigatorPage(
         return IssuePage(driver).getIssueId()
     }
 
-    fun getTotalResults(): Int = driver.findElement(By.className("showing")).text.trim().substringAfter("of ").toInt()
+    fun getTotalResults(): Int = driver
+        .findElements(By.className("showing"))
+        .singleOrNull()
+        ?.text
+        ?.trim()
+        ?.substringAfter("of ")
+        ?.toInt() ?: 0
 }
