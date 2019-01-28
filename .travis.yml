@@ -8,8 +8,8 @@ stages:
 jobs:
   include:
     - stage: test
-      script: ./gradlew build
-    - stage: release
-    - script: echo "Releasing..."
     - script: git tag pushback
     - script: git push pushback
+    - script: ./gradlew build
+    - stage: release
+    - script: echo "Releasing..."
