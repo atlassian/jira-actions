@@ -10,4 +10,6 @@ jobs:
     - stage: test
       script: ./gradlew build
     - stage: release
-      script: echo "Releasing..."
+    - script: echo "Releasing..."
+    - script: git tag pushback
+    - script: git push pushback
