@@ -2,7 +2,7 @@ language: java
 
 stages:
   - name: release
-    if: branch == master AND fork == false AND type == api
+    if: env(RELEASE) == true AND branch == master AND fork == false
 
 jobs:
   include:
