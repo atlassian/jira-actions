@@ -13,6 +13,8 @@ pipelines:
           - maven
         script:
           - bash ./gradlew build
+        artifacts:
+          - build/reports/**
         services:
           - docker
   branches:
@@ -36,6 +38,8 @@ pipelines:
           - git config --global user.name "Bitbucket Pipelines"
           - bash ./gradlew release -Prelease.customKeyFile="/opt/atlassian/pipelines/agent/data/id_rsa"
           - bash ./gradlew publish
+          artifacts:
+            - build/reports/**
         services:
           - docker
 definitions:
