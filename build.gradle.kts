@@ -61,7 +61,7 @@ tasks
 
 fun webdriver(module: String): String = "org.seleniumhq.selenium:$module:3.11.0"
 
-task<Wrapper>("wrapper") {
-    gradleVersion = "4.9"
+tasks.wrapper {
+    gradleVersion = "5.1.1"
     distributionType = Wrapper.DistributionType.ALL
 }
