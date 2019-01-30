@@ -8,7 +8,7 @@ stages:
 jobs:
   include:
     - stage: test
-      script: ./gradlew build
+      script: travis_wait 14 ./gradlew build
     - stage: release
       script: ./scripts/travis-release.sh
 
