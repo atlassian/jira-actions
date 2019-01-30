@@ -18,13 +18,9 @@ You can build and run virtual users on MacOS, Windows or Linux. You'll need JDK 
 Pull requests, issues and comments are welcome. For pull requests:
 
   - Create your own [fork] of the repository and raise a pull request targeting master branch in the main repository
-  - Enable Bitbucket pipelines, it is important that you do it via *Settings* menu and not *Pipelines* menu otherwise 
-    Bitbucket will create an empty commit polluting Git history of your fork
   - Add tests for new features and bug fixes
   - Follow the existing style
   - Separate unrelated changes into multiple pull requests
-
-[fork]: https://confluence.atlassian.com/bitbucket/forking-a-repository-221449527.html
   
 See the [existing issues](https://ecosystem.atlassian.net/projects/JPERF/issues/?filter=allissues) for things to start contributing.
 
