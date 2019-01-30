@@ -1,1 +1,13 @@
 language: java
+
+stages:
+  - test
+  - name: release
+    if: env(RELEASE) == true AND fork == false
+
+jobs:
+  include:
+    - stage: test
+      script: ./gradlew build
+    - stage: release
+      script: ./scripts/travis-release.sh
