@@ -26,6 +26,11 @@ Dropping a requirement of a major version of a dependency is a new contract.
 ## [Unreleased]
 [Unreleased]: https://bitbucket.org/atlassian/jira-actions/branches/compare/master%0Drelease-3.3.0
 
+### Fixed - 2019-02-27
+- Support RTE with a fallback to plain-text editor. Resolve [JPERF-184]
+
+[JPERF-184]: https://ecosystem.atlassian.net/browse/JPERF-184
+
 ## [3.3.0] - 2019-01-29
 [3.3.0]: https://bitbucket.org/atlassian/jira-actions/branches/compare/release-3.3.0%0Drelease-3.2.0
 

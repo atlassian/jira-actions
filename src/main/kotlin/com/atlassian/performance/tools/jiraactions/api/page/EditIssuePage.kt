@@ -1,17 +1,16 @@
 package com.atlassian.performance.tools.jiraactions.api.page
 
 import com.atlassian.performance.tools.jiraactions.page.form.IssueForm
-import org.openqa.selenium.By
-import org.openqa.selenium.WebDriver
+import org.openqa.selenium.*
 import org.openqa.selenium.support.ui.ExpectedConditions.*
 import java.time.Duration
+
 
 class EditIssuePage(
     private val driver: WebDriver
 ) {
     private val form = IssueForm(By.id("issue-edit"), driver)
     private val summaryLocator = By.id("summary")
-    private val descriptionLocator = By.id("description")
     private val updateButtonLocator = By.id("issue-edit-submit")
 
     fun waitForEditIssueForm(): EditIssuePage {
@@ -31,7 +30,11 @@ class EditIssuePage(
 
     fun fillForm(): EditIssuePage {
         summaryLocator.clearAndTypeIfPresent("summary")
-        descriptionLocator.clearAndTypeIfPresent("description")
+        val descriptionFieldId = "description"
+        if(driver.isElementPresent(By.id(descriptionFieldId))){
+            RichTextEditorTextArea(driver, driver.findElement(By.id(descriptionFieldId)))
+                .overwriteIfPresent("description")
+        }
         form.fillRequiredFields()
         return this
     }
@@ -49,4 +52,5 @@ class EditIssuePage(
             webElement.sendKeys(text)
         }
     }
+
 }

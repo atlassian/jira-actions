@@ -1,0 +1,163 @@
+package com.atlassian.performance.tools.jiraactions.api.scenario
+
+import com.atlassian.performance.tools.dockerinfrastructure.api.browser.DockerisedChrome
+import com.atlassian.performance.tools.dockerinfrastructure.api.jira.JiraCoreFormula
+import com.atlassian.performance.tools.jiraactions.api.ActionMetric
+import com.atlassian.performance.tools.jiraactions.api.ActionResult
+import com.atlassian.performance.tools.jiraactions.api.SeededRandom
+import com.atlassian.performance.tools.jiraactions.api.WebJira
+import com.atlassian.performance.tools.jiraactions.api.action.*
+import com.atlassian.performance.tools.jiraactions.api.measure.ActionMeter
+import com.atlassian.performance.tools.jiraactions.api.measure.output.CollectionActionMetricOutput
+import com.atlassian.performance.tools.jiraactions.api.memories.User
+import com.atlassian.performance.tools.jiraactions.api.memories.UserMemory
+import com.atlassian.performance.tools.jiraactions.api.memories.adaptive.AdaptiveIssueKeyMemory
+import com.atlassian.performance.tools.jiraactions.api.memories.adaptive.AdaptiveIssueMemory
+import com.atlassian.performance.tools.jiraactions.api.memories.adaptive.AdaptiveJqlMemory
+import com.atlassian.performance.tools.jiraactions.api.memories.adaptive.AdaptiveProjectMemory
+import com.atlassian.performance.tools.jiraactions.api.w3c.DisabledW3cPerformanceTimeline
+import org.assertj.core.api.Assertions
+import org.junit.Test
+import java.time.Clock
+import java.util.*
+
+/**
+ * Test Editing issue without SetupAction (i.e Rich Text editor enabled)
+ * Covers:
+ *      EditIssue
+ *      AddComment
+ */
+class RichTextEditorIT {
+
+    @Test
+    fun shouldRunScenarioWithoutErrors() {
+
+        /**
+         * Original intention was to test multiple JIRA version in one test case.
+         *
+         * This is not working now due to:
+         * 1. the static network alias is used
+         * 2. the jira.close() does not release the resource properly yet
+         *
+         * So we will keep it for one version per run now.
+         */
+        val versions = listOf(
+            "8.0.0"
+//            "7.13.0"
+//            "7.3.0"
+//            "7.2.0"
+        )
+        var basePort = 8080;
+
+        for (version in versions) {
+            runTestOnOneInstance(version, basePort++)
+        }
+    }
+
+    private fun runTestOnOneInstance(version: String, port : Int) {
+        println("Testing JIRA with port : $port, version : $version")
+        val scenario = JiraEditScenario()
+        val metrics = mutableListOf<ActionMetric>()
+        val actionMeter = ActionMeter(
+            virtualUser = UUID.randomUUID(),
+            output = CollectionActionMetricOutput(metrics),
+            clock = Clock.systemUTC(),
+            w3cPerformanceTimeline = DisabledW3cPerformanceTimeline()
+        )
+        val user = User("admin", "admin")
+        val userMemory = object : UserMemory {
+            override fun recall(): User {
+                return user
+            }
+
+            override fun remember(memories: Collection<User>) {
+                throw Exception("not implemented")
+            }
+        }
+        JiraCoreFormula.Builder()
+            .version(version)
+            .port(port)
+            .build()
+            .provision()
+            .use { jira ->
+                DockerisedChrome().start().use { browser ->
+                    val webJira = WebJira(
+                        browser.driver,
+                        jira.getUri(),
+                        user.password
+                    )
+                    val logInAction = scenario.getLogInAction(
+                        webJira,
+                        actionMeter,
+                        userMemory
+                    )
+                    val actions = scenario.getActions(
+                        webJira,
+                        SeededRandom(123),
+                        actionMeter
+                    )
+
+                    logInAction.run()
+                    actions.forEach { action ->
+                        action.run()
+                    }
+                }
+                jira.close()
+            }
+
+        val results = metrics.map { metric ->
+            metric.result
+        }
+        Assertions.assertThat(results).containsOnly(ActionResult.OK)
+    }
+}
+
+class JiraEditScenario constructor() : Scenario {
+
+    override fun getActions(jira: WebJira, seededRandom: SeededRandom, meter: ActionMeter): List<Action> {
+        val projectMemory = AdaptiveProjectMemory(random = seededRandom)
+        val jqlMemory = AdaptiveJqlMemory(seededRandom)
+        val issueKeyMemory = AdaptiveIssueKeyMemory(random = seededRandom)
+        val issueMemory = AdaptiveIssueMemory(issueKeyMemory, seededRandom)
+
+        val createIssue = CreateIssueAction(
+            jira = jira,
+            meter = meter,
+            seededRandom = seededRandom,
+            projectMemory = projectMemory
+        )
+        val searchWithJql = SearchJqlAction(
+            jira = jira,
+            meter = meter,
+            jqlMemory = jqlMemory,
+            issueKeyMemory = issueKeyMemory
+        )
+        val viewIssue = ViewIssueAction(
+            jira = jira,
+            meter = meter,
+            issueKeyMemory = issueKeyMemory,
+            issueMemory = issueMemory,
+            jqlMemory = jqlMemory
+        )
+        val editIssue = EditIssueAction(
+            jira = jira,
+            meter = meter,
+            issueMemory = issueMemory
+        )
+        val addComment = AddCommentAction(
+            jira = jira,
+            meter = meter,
+            issueMemory = issueMemory
+        )
+
+        return mutableListOf(
+            createIssue,
+            searchWithJql,
+            viewIssue,
+            editIssue,
+            addComment
+        )
+    }
+
+
+}
