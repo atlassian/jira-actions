@@ -11,8 +11,8 @@ class EditIssuePage(
 ) {
     private val form = IssueForm(By.id("issue-edit"), driver)
     private val summaryLocator = By.id("summary")
-    private val descriptionLocator = By.id("description")
     private val updateButtonLocator = By.id("issue-edit-submit")
+    private val descriptionFieldLocator = By.id("description")
 
     fun waitForEditIssueForm(): EditIssuePage {
         val jiraErrors = JiraErrors(driver)
@@ -31,7 +31,10 @@ class EditIssuePage(
 
     fun fillForm(): EditIssuePage {
         summaryLocator.clearAndTypeIfPresent("summary")
-        descriptionLocator.clearAndTypeIfPresent("description")
+        if (driver.isElementPresent(descriptionFieldLocator)) {
+            RichTextEditorTextArea(driver, driver.findElement(descriptionFieldLocator))
+                .overwriteIfPresent("description")
+        }
         form.fillRequiredFields()
         return this
     }
