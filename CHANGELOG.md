@@ -29,6 +29,10 @@ Dropping a requirement of a major version of a dependency is a new contract.
 ### Added
 - Expose `IssueForm` to make custom issue form actions easier. Resolve [JPERF-450].
 
+### Fixed
+- Support RTE with a fallback to plain-text editor. Resolve [JPERF-184].
+
+[JPERF-184]: https://ecosystem.atlassian.net/browse/JPERF-184
 [JPERF-450]: https://ecosystem.atlassian.net/browse/JPERF-450
 
 ## [3.4.0] - 2019-03-28

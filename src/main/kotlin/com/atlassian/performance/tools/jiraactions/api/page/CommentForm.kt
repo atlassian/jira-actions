@@ -34,7 +34,8 @@ class CommentForm(
     fun enterCommentText(
         comment: String
     ): CommentForm {
-        driver.findElement(By.id("comment")).sendKeys(comment)
+        RichTextEditorTextArea(driver, driver.findElement(By.id("comment")))
+            .overwriteIfPresent(comment)
         return this
     }
 }
