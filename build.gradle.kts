@@ -44,6 +44,7 @@ dependencies {
         "org.apache.logging.log4j:log4j-$module:2.10.0"
     }.forEach { implementation(it) }
     testCompile("org.assertj:assertj-core:3.11.0")
+    testCompile("com.atlassian.performance.tools:io:[1.0.0,2.0.0)")
     testCompile("com.atlassian.performance.tools:docker-infrastructure:0.1.2")
     testCompile("junit:junit:4.12")
 }
