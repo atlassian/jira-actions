@@ -11,7 +11,7 @@ import java.util.zip.ZipFile
 class MergingActionMetricsParserTest {
 
     @Test
-    fun shouldParseDrilldown() {
+    fun shouldStreamDrilldown() {
         val metricsFiles = this::class.java
             .getResource("/QUICK-54.zip")
             .toURI()
@@ -22,7 +22,7 @@ class MergingActionMetricsParserTest {
             .flatMap { it.directories() }
             .map { it.resolve("action-metrics.jpt") }
 
-        val metricsCount = MergingActionMetricsParser().parse(metricsFiles).count()
+        val metricsCount = MergingActionMetricsParser().stream(metricsFiles).count()
 
         assertThat(metricsCount).isEqualTo(20099)
     }

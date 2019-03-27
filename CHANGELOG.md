@@ -26,6 +26,14 @@ Dropping a requirement of a major version of a dependency is a new contract.
 ## [Unreleased]
 [Unreleased]: https://bitbucket.org/atlassian/jira-actions/branches/compare/master%0Drelease-3.3.0
 
+### Added
+- Stream metrics in `MergingActionMetricsParser` and `ActionMetricsParser`. Unblock [JPERF-395].
+
+### Deprecated
+- Discourage memory leaks caused by `MergingActionMetricsParser.parse` and `ActionMetricsParser.parse`.
+
+[JPERF-395]: https://ecosystem.atlassian.net/browse/JPERF-395
+
 ## [3.3.0] - 2019-01-29
 [3.3.0]: https://bitbucket.org/atlassian/jira-actions/branches/compare/release-3.3.0%0Drelease-3.2.0
 
