@@ -13,6 +13,7 @@ import java.time.Duration.ofSeconds
 import java.time.ZoneId
 import java.time.ZonedDateTime
 import java.util.*
+import kotlin.streams.asSequence
 
 class ActionMetricsParserTest {
 
@@ -22,6 +23,7 @@ class ActionMetricsParserTest {
     fun shouldParse() {
         val metricsStream = javaClass.classLoader.getResourceAsStream("virtual-user-results/1/action-metrics.jpt")
 
+        @Suppress("Deprecation")
         val metrics = metricsStream.use { metricsParser.parse(it) }
 
         val expectedMetric = ActionMetric.Builder(
@@ -46,12 +48,18 @@ class ActionMetricsParserTest {
     }
 
     @Test
-    fun shouldParseWithDrilldown() {
+    fun shouldStreamWithDrilldown() {
         val metricsStream = javaClass.classLoader.getResourceAsStream("virtual-user-results/2/action-metrics.jpt")
 
-        val metrics = metricsStream.use { metricsParser.parse(it) }
+        val fourthMetric = metricsStream.use {
+            metricsParser
+                .stream(it)
+                .asSequence()
+                .drop(3)
+                .first()
+        }
 
-        val drilldown = metrics[3].drilldown!!
+        val drilldown = fourthMetric.drilldown!!
         assertThat(
             drilldown.navigations[0].resource.entry.name,
             equalTo("http://3.120.138.107:8080/issues/?jql=resolved+is+not+empty+order+by+description")
