@@ -24,7 +24,7 @@ Adding a requirement of a major version of a dependency is breaking a contract.
 Dropping a requirement of a major version of a dependency is a new contract.
 
 ## [Unreleased]
-[Unreleased]: https://bitbucket.org/atlassian/jira-actions/branches/compare/master%0Drelease-3.3.0
+[Unreleased]: https://github.com/atlassian/jira-actions/compare/release-3.3.0...master
 
 ### Added
 - Stream metrics in `MergingActionMetricsParser` and `ActionMetricsParser`. Unblock [JPERF-395].
@@ -35,7 +35,7 @@ Dropping a requirement of a major version of a dependency is a new contract.
 [JPERF-395]: https://ecosystem.atlassian.net/browse/JPERF-395
 
 ## [3.3.0] - 2019-01-29
-[3.3.0]: https://bitbucket.org/atlassian/jira-actions/branches/compare/release-3.3.0%0Drelease-3.2.0
+[3.3.0]: https://github.com/atlassian/jira-actions/compare/release-3.2.0...release-3.3.0
 
 ### Added
 - Provide Jira Core scenario. Resolves [JPERF-373].
@@ -47,7 +47,7 @@ Dropping a requirement of a major version of a dependency is a new contract.
 [JPERF-371]: https://ecosystem.atlassian.net/browse/JPERF-371
 
 ## [3.2.0] - 2019-01-08
-[3.2.0]: https://bitbucket.org/atlassian/jira-actions/branches/compare/release-3.2.0%0Drelease-3.1.0
+[3.2.0]: https://github.com/atlassian/jira-actions/compare/release-3.1.0...release-3.2.0
 
 ### Added
 - Provide builder for ActionMetric. Resolves [JPERF-340]
@@ -55,7 +55,7 @@ Dropping a requirement of a major version of a dependency is a new contract.
 [JPERF-340]: https://ecosystem.atlassian.net/browse/JPERF-340
 
 ## [3.1.0] - 2018-12-20
-[3.1.0]: https://bitbucket.org/atlassian/jira-actions/branches/compare/release-3.1.0%0Drelease-3.0.2
+[3.1.0]: https://github.com/atlassian/jira-actions/compare/release-3.0.2...release-3.1.0
 
 ### Added
 - Add `drilldown` property to `ActionMetric`. See [JPERF-316].
@@ -71,7 +71,7 @@ Dropping a requirement of a major version of a dependency is a new contract.
 [JPERF-316]: https://ecosystem.atlassian.net/browse/JPERF-316
 
 ## [3.0.2] - 2018-12-18
-[3.0.2]: https://bitbucket.org/atlassian/jira-actions/branches/compare/release-3.0.2%0Drelease-3.0.1
+[3.0.2]: https://github.com/atlassian/jira-actions/compare/release-3.0.1...release-3.0.2
 
 ### Fixed
 - Stop assuming description field is always available. Resolves [JPERF-303].
@@ -79,7 +79,7 @@ Dropping a requirement of a major version of a dependency is a new contract.
 [JPERF-303]: https://ecosystem.atlassian.net/browse/JPERF-303
 
 ## [3.0.1] - 2018-12-06
-[3.0.1]: https://bitbucket.org/atlassian/jira-actions/branches/compare/release-3.0.1%0Drelease-3.0.0
+[3.0.1]: https://github.com/atlassian/jira-actions/compare/release-3.0.0...release-3.0.1
 
 ### Fixed
 - Wait for web elements while disabling RTE. Resolves [JPERF-296].
@@ -87,7 +87,7 @@ Dropping a requirement of a major version of a dependency is a new contract.
 [JPERF-296]: https://ecosystem.atlassian.net/browse/JPERF-296
 
 ## [3.0.0] - 2018-11-13
-[3.0.0]: https://bitbucket.org/atlassian/jira-actions/branches/compare/release-3.0.0%0Drelease-2.3.0
+[3.0.0]: https://github.com/atlassian/jira-actions/compare/release-2.3.0...release-3.0.0
 
 ### Added
 - Customize Jira login and setup. Resolves [JPERF-127] and [JPERF-150].
@@ -96,14 +96,14 @@ Dropping a requirement of a major version of a dependency is a new contract.
 - Named parameters in Scenario are no longer supported.
 
 ## [2.3.0] - 2018-11-13
-[2.3.0]: https://bitbucket.org/atlassian/jira-actions/branches/compare/release-2.3.0%0Drelease-2.2.0
+[2.3.0]: https://github.com/atlassian/jira-actions/compare/release-2.2.0...release-2.3.0
 
 ### Fixed
 - Restore `com.atlassian.performance.tools.jiraactions.api.scenario.Scenario` source compatibility with `2.1.0`
  by reverting [JPERF-127] and [JPERF-150].
 
 ## [2.2.0] - 2018-11-08
-[2.2.0]: https://bitbucket.org/atlassian/jira-actions/branches/compare/release-2.2.0%0Drelease-2.1.2
+[2.2.0]: https://github.com/atlassian/jira-actions/compare/release-2.1.2...release-2.2.0
 
 ### INCOMPATIBILITY BUG
 Breaks source compatibility for `com.atlassian.performance.tools.jiraactions.api.scenario.Scenario`. See [JPERF-260].
@@ -121,7 +121,7 @@ Therefore it is removed in `2.3.0` as per SemVer spec. The feature is reintroduc
 [JPERF-150]: https://ecosystem.atlassian.net/browse/JPERF-150
 
 ## [2.1.2] - 2018-10-22
-[2.1.2]: https://bitbucket.org/atlassian/jira-actions/branches/compare/release-2.1.2%0Drelease-2.1.1
+[2.1.2]: https://github.com/atlassian/jira-actions/compare/release-2.1.1...release-2.1.2
 
 ### Fixed
 - Do not fail 'Browse Projects' for low number of projects. Fix [JPERF-151].
@@ -129,7 +129,7 @@ Therefore it is removed in `2.3.0` as per SemVer spec. The feature is reintroduc
 [JPERF-151]: https://ecosystem.atlassian.net/browse/JPERF-151
 
 ## [2.1.1] - 2018-10-09
-[2.1.1]: https://bitbucket.org/atlassian/jira-actions/branches/compare/release-2.1.1%0Drelease-2.1.0
+[2.1.1]: https://github.com/atlassian/jira-actions/compare/release-2.1.0...release-2.1.1
 
 ### Fixed
 - Decrease log level for actions complaining about skipping run, which resolves [JPERF-162].
@@ -141,13 +141,13 @@ Therefore it is removed in `2.3.0` as per SemVer spec. The feature is reintroduc
 [JPERF-193]: https://ecosystem.atlassian.net/browse/JPERF-193
 
 ## [2.1.0] - 2018-09-04
-[2.1.0]: https://bitbucket.org/atlassian/jira-actions/branches/compare/release-2.1.0%0Drelease-2.0.0
+[2.1.0]: https://github.com/atlassian/jira-actions/compare/release-2.0.0...release-2.1.0
 
 ### Added
 - Expose `JiraErrors` page object.
 
 ## [2.0.0] - 2018-09-04
-[2.0.0]: https://bitbucket.org/atlassian/jira-actions/branches/compare/release-2.0.0%0Drelease-1.0.0
+[2.0.0]: https://github.com/atlassian/jira-actions/compare/release-1.0.0...release-2.0.0
 
 ### Changed
 - Require APT `concurrency:1`.
@@ -157,14 +157,14 @@ Therefore it is removed in `2.3.0` as per SemVer spec. The feature is reintroduc
 - Gain freedom from APT `concurrency:0`.
 
 ## [1.0.0] - 2018-08-31
-[1.0.0]: https://bitbucket.org/atlassian/jira-actions/branches/compare/release-1.0.0%0Drelease-0.0.1
+[1.0.0]: https://github.com/atlassian/jira-actions/compare/release-0.0.1...release-1.0.0
 
 ### Changed
 - Define the public API.
 - Add this change log.
 
 ## [0.0.1] - 2018-08-01
-[0.0.1]: https://bitbucket.org/atlassian/jira-actions/branches/compare/release-0.0.1%0Dinitial-commit
+[0.0.1]: https://github.com/atlassian/jira-actions/compare/initial-commit...release-0.0.1
 
 ### Added
 - Extract performance reporting from [JPT submodule].
