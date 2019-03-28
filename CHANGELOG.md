@@ -24,7 +24,10 @@ Adding a requirement of a major version of a dependency is breaking a contract.
 Dropping a requirement of a major version of a dependency is a new contract.
 
 ## [Unreleased]
-[Unreleased]: https://github.com/atlassian/jira-actions/compare/release-3.3.0...master
+[Unreleased]: https://github.com/atlassian/jira-actions/compare/release-3.4.0...master
+
+## [3.4.0] - 2019-03-28
+[3.4.0]: https://github.com/atlassian/jira-actions/compare/release-3.3.0...release-3.4.0
 
 ### Added
 - Stream metrics in `MergingActionMetricsParser` and `ActionMetricsParser`. Unblock [JPERF-395].
