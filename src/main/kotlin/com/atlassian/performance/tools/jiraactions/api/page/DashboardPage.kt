@@ -14,10 +14,10 @@ class DashboardPage(
     private val jiraErrors = JiraErrors(driver)
 
     fun dismissAllPopups() {
-        driver.findElements(By.cssSelector(".aui-flag .icon-close")).forEach { it.click() }
-        driver.findElements(By.id("nps-acknowledgement-accept-button")).forEach { it.click() }
-        driver.findElements(By.cssSelector(".jira-help-tip .cancel")).forEach { it.click() }
-        driver.findElements(By.className("postsetup-close-link")).forEach { it.click() }
+        driver.findElements(By.cssSelector(".aui-flag .icon-close")).filter { it.isEnabled && it.isDisplayed }.forEach { it.click() }
+        driver.findElements(By.id("nps-acknowledgement-accept-button")).filter { it.isEnabled && it.isDisplayed }.forEach { it.click() }
+        driver.findElements(By.cssSelector(".jira-help-tip .cancel")).filter { it.isEnabled && it.isDisplayed }.forEach { it.click() }
+        driver.findElements(By.className("postsetup-close-link")).filter { it.isEnabled && it.isDisplayed }.forEach { it.click() }
     }
 
     fun waitForDashboard(): DashboardPage {

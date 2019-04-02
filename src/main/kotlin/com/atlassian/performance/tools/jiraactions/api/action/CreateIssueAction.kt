@@ -23,10 +23,13 @@ class CreateIssueAction(
         meter.measure(CREATE_ISSUE) {
             val dashboardPage = meter.measure(VIEW_DASHBOARD) {
                 jira.goToDashboard().waitForDashboard()
+            }.apply {
+                dismissAllPopups();
             }
             val issueCreateDialog = dashboardPage.openIssueCreateDialog()
             val filledForm = issueCreateDialog
                 .waitForDialog()
+                .showAllFields()
                 .selectProject(project.name)
                 .selectIssueType(
                     seededRandom.pick(
