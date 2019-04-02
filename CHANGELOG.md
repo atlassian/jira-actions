@@ -26,6 +26,10 @@ Dropping a requirement of a major version of a dependency is a new contract.
 ## [Unreleased]
 [Unreleased]: https://github.com/atlassian/jira-actions/compare/release-3.7.0...master
 
+### Added
+- update CreateIssueAction to show 'All' Fields
+- update Select to choose an option with value > 0
+
 ## [3.7.0] - 2019-07-25
 [3.7.0]: https://github.com/atlassian/jira-actions/compare/release-3.6.0...release-3.7.0
 

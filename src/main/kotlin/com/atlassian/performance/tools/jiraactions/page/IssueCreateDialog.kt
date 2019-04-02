@@ -2,6 +2,7 @@ package com.atlassian.performance.tools.jiraactions.page
 
 import com.atlassian.performance.tools.jiraactions.api.page.JiraErrors
 import com.atlassian.performance.tools.jiraactions.api.page.form.IssueForm
+import com.atlassian.performance.tools.jiraactions.api.page.isElementPresent
 import com.atlassian.performance.tools.jiraactions.api.page.tolerateDirtyFormsOnCurrentPage
 import com.atlassian.performance.tools.jiraactions.api.page.wait
 import org.openqa.selenium.By
@@ -16,6 +17,7 @@ internal class IssueCreateDialog(
     private val form = IssueForm(By.cssSelector("form[name=jiraform]"), driver)
     private val projectField = SingleSelect(driver, By.id("project-field"))
     private val issueTypeField = SingleSelect(driver, By.id("issuetype-field"))
+    private val configColumnField = By.id("qf-field-picker-trigger")
 
     fun waitForDialog(): IssueCreateDialog {
         val jiraErrors = JiraErrors(driver)
@@ -49,6 +51,29 @@ internal class IssueCreateDialog(
         return this
     }
 
+    /**
+     * Click 'Configure Fields' to display 'All' to ensure
+     * all mandatory fields are displayed in creation dialog.
+     *
+     */
+    fun showAllFields(): IssueCreateDialog {
+        driver.wait(elementToBeClickable(configColumnField)).click()
+        val configureFieldsDialogId = "inline-dialog-field_picker_popup"
+        driver.wait(visibilityOfElementLocated(By.id(configureFieldsDialogId)))
+        val locator = By.xpath("//div[@id='$configureFieldsDialogId']//dd[1]//a")
+        if (driver.isElementPresent(locator)) {
+            driver.wait(elementToBeClickable(locator)).click()
+            driver.wait(invisibilityOfElementLocated(By.id(configureFieldsDialogId)))
+            driver.wait(visibilityOfElementLocated(By.id(configureFieldsDialogId)))
+        }
+        dismissConfigureFieldsDialog()
+        return this
+    }
+
+    private fun dismissConfigureFieldsDialog(){
+        driver.wait(elementToBeClickable(By.xpath("//div[@id='create-issue-dialog']//h2"))).click()
+    }
+
     fun fillRequiredFields(): IssueCreateDialog {
         form.fillRequiredFields()
         return this
@@ -58,4 +83,5 @@ internal class IssueCreateDialog(
         driver.wait(elementToBeClickable(By.id("create-issue-submit"))).click()
         driver.wait(Duration.ofSeconds(30), invisibilityOfElementLocated(By.className("aui-blanket")))
     }
+
 }

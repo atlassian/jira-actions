@@ -17,14 +17,26 @@ internal class Select(
     }
 
     override fun fillWithAnyValue() {
-        select.selectByIndex(random.random.nextInt(select.options.size))
+        val options = select.options
+        val validOptions = options.filter { isValidOption(it) }
+        val optionToSelect = random.pick(validOptions) ?: random.pick(options)
+        select.selectByIndex(options.indexOf(optionToSelect))
     }
 
     override fun hasValue(): Boolean {
         return select
             .allSelectedOptions
             .isNotEmpty()
+            && isValidOption(select.firstSelectedOption)
     }
+
+    private fun isValidOption(
+        option: WebElement
+    ): Boolean = option
+        .getAttribute("value")
+        ?.toLongOrNull()
+        ?.let { it > 0 }
+        ?: false
 
     class Descriptor : FromFieldType {
         override fun isTypeOf(input: WebElement?): Boolean {
