@@ -3,6 +3,7 @@ package com.atlassian.performance.tools.jiraactions.api.page
 import com.atlassian.performance.tools.jiraactions.page.form.IssueForm
 import org.openqa.selenium.*
 import org.openqa.selenium.support.ui.ExpectedConditions.*
+import org.openqa.selenium.support.ui.Select
 import java.time.Duration
 
 
@@ -36,7 +37,19 @@ class EditIssuePage(
                 .overwriteIfPresent("description")
         }
         form.fillRequiredFields()
+        selectResolution()
         return this
+    }
+
+    private fun selectResolution() {
+        val resolutionLocator = By.id("resolution")
+        if (driver.isElementPresent(resolutionLocator)) {
+            val dropDown = Select(driver.findElement(resolutionLocator))
+            if(dropDown.options != null && dropDown.options.size > 1){
+                val selection = dropDown.options.get(1)
+                dropDown.selectByVisibleText(selection.text)
+            }
+        }
     }
 
     fun submit(): IssuePage {

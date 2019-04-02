@@ -84,4 +84,9 @@ data class WebJira(
     fun navigateTo(path: String) {
         driver.navigate().to(base.resolve(path).toURL())
     }
+
+    fun adminPassword(): String {
+        return adminPassword
+    }
+
 }
