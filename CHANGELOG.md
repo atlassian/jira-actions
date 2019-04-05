@@ -26,6 +26,11 @@ Dropping a requirement of a major version of a dependency is a new contract.
 ## [Unreleased]
 [Unreleased]: https://github.com/atlassian/jira-actions/compare/release-3.4.0...master
 
+### Added
+- Expose `IssueForm` to make custom issue form actions easier. Resolve [JPERF-450].
+
+[JPERF-450]: https://ecosystem.atlassian.net/browse/JPERF-450
+
 ## [3.4.0] - 2019-03-28
 [3.4.0]: https://github.com/atlassian/jira-actions/compare/release-3.3.0...release-3.4.0
 

@@ -1,6 +1,6 @@
 package com.atlassian.performance.tools.jiraactions.api.page
 
-import com.atlassian.performance.tools.jiraactions.page.form.IssueForm
+import com.atlassian.performance.tools.jiraactions.api.page.form.IssueForm
 import org.openqa.selenium.By
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.support.ui.ExpectedConditions.*
