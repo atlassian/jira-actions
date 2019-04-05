@@ -1,23 +1,25 @@
-package com.atlassian.performance.tools.jiraactions.page.form
+package com.atlassian.performance.tools.jiraactions.api.page.form
 
 import com.atlassian.performance.tools.jiraactions.api.page.wait
+import com.atlassian.performance.tools.jiraactions.page.form.*
 import org.openqa.selenium.By
 import org.openqa.selenium.By.xpath
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.support.ui.ExpectedConditions
 import java.time.Duration
+import java.util.function.Supplier
 
-internal class IssueForm(
+class IssueForm(
     private val formLocator: By,
     private val driver: WebDriver
 ) {
     private val requiredFieldGroupsLocator = xpath("//span[contains(@class,'icon-required')]/ancestor::div[contains(@class,'field-group')]")
 
     fun <T> waitForRefresh(
-        action: () -> T
+        action: Supplier<T>
     ): T {
         val form = getForm()
-        val result = action()
+        val result = action.get()
         driver.wait(Duration.ofSeconds(30), ExpectedConditions.invisibilityOf(form))
         return result
     }

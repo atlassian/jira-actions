@@ -1,13 +1,14 @@
 package com.atlassian.performance.tools.jiraactions.page
 
 import com.atlassian.performance.tools.jiraactions.api.page.JiraErrors
+import com.atlassian.performance.tools.jiraactions.api.page.form.IssueForm
 import com.atlassian.performance.tools.jiraactions.api.page.tolerateDirtyFormsOnCurrentPage
 import com.atlassian.performance.tools.jiraactions.api.page.wait
-import com.atlassian.performance.tools.jiraactions.page.form.IssueForm
 import org.openqa.selenium.By
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.support.ui.ExpectedConditions.*
 import java.time.Duration
+import java.util.function.Supplier
 
 internal class IssueCreateDialog(
     private val driver: WebDriver
@@ -30,15 +31,15 @@ internal class IssueCreateDialog(
         return this
     }
 
-    fun selectProject(projectName: String) = form.waitForRefresh {
+    fun selectProject(projectName: String) = form.waitForRefresh(Supplier {
         projectField.select(projectName)
-        return@waitForRefresh this
-    }
+        return@Supplier this
+    })
 
-    fun selectIssueType(issueType: String) = form.waitForRefresh {
+    fun selectIssueType(issueType: String) = form.waitForRefresh(Supplier {
         issueTypeField.select(issueType)
-        return@waitForRefresh this
-    }
+        return@Supplier this
+    })
 
     fun getIssueTypes() = issueTypeField.getSuggestions()
         .plus(issueTypeField.getCurrentValue())
