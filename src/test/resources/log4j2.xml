@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration
+        strict="true"
+        xmlns="http://logging.apache.org/log4j/2.0/config"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="
+            http://logging.apache.org/log4j/2.0/config
+            https://raw.githubusercontent.com/apache/logging-log4j2/log4j-2.10.0/log4j-core/src/main/resources/Log4j-config.xsd
+        "
+>
+    <Appenders>
+        <Appender name="Console" type="Console">
+            <Layout type="PatternLayout" pattern="%d{ISO8601}{UTC}Z %-5level %t %x [%logger] %msg%n"/>
+        </Appender>
+        <Appender type="Null" name="Nothingness"/>
+    </Appenders>
+    <Loggers>
+        <Logger name="com.atlassian.performance.tools.jiraactions" level="info">
+            <AppenderRef ref="Console"/>
+        </Logger>
+        <Root>
+            <AppenderRef ref="Nothingness"/>
+        </Root>
+    </Loggers>
+</Configuration>
