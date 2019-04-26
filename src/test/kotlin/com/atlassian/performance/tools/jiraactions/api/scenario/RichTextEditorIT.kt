@@ -16,6 +16,8 @@ import com.atlassian.performance.tools.jiraactions.api.memories.adaptive.Adaptiv
 import com.atlassian.performance.tools.jiraactions.api.memories.adaptive.AdaptiveJqlMemory
 import com.atlassian.performance.tools.jiraactions.api.memories.adaptive.AdaptiveProjectMemory
 import com.atlassian.performance.tools.jiraactions.api.w3c.DisabledW3cPerformanceTimeline
+import org.apache.logging.log4j.LogManager
+import org.apache.logging.log4j.Logger
 import org.assertj.core.api.Assertions
 import org.junit.Test
 import java.time.Clock
@@ -28,11 +30,12 @@ import java.util.*
  *      AddComment
  */
 class RichTextEditorIT {
+    private val logger: Logger = LogManager.getLogger(this::class.java)
 
     @Test
     fun shouldRunScenarioWithoutErrors() {
-        val port = 8080
-        val version = "8.0.0"
+        val version = System.getenv("JIRA_SOFTWARE_VERSION") ?: "8.0.0"
+        logger.info("Testing Jira $version")
         val scenario = JiraEditScenario()
         val metrics = mutableListOf<ActionMetric>()
         val actionMeter = ActionMeter(
@@ -54,7 +57,6 @@ class RichTextEditorIT {
 
         JiraCoreFormula.Builder()
             .version(version)
-            .port(port)
             .build()
             .provision()
             .use { jira ->

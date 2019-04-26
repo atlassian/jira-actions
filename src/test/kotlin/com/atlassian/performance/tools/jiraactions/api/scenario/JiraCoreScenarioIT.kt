@@ -11,15 +11,20 @@ import com.atlassian.performance.tools.jiraactions.api.measure.output.Collection
 import com.atlassian.performance.tools.jiraactions.api.memories.User
 import com.atlassian.performance.tools.jiraactions.api.memories.UserMemory
 import com.atlassian.performance.tools.jiraactions.api.w3c.DisabledW3cPerformanceTimeline
+import org.apache.logging.log4j.LogManager
+import org.apache.logging.log4j.Logger
 import org.assertj.core.api.Assertions
 import org.junit.Test
 import java.time.Clock
 import java.util.*
 
 class JiraCoreScenarioIT {
+    private val logger: Logger = LogManager.getLogger(this::class.java)
 
     @Test
     fun shouldRunScenarioWithoutErrors() {
+        val version = System.getenv("JIRA_SOFTWARE_VERSION") ?: "8.0.0"
+        logger.info("Testing Jira $version")
         val scenario = JiraCoreScenario()
         val metrics = mutableListOf<ActionMetric>()
         val actionMeter = ActionMeter(
@@ -40,6 +45,7 @@ class JiraCoreScenarioIT {
         }
 
         JiraCoreFormula.Builder()
+            .version(version)
             .build()
             .provision()
             .use { jira ->
