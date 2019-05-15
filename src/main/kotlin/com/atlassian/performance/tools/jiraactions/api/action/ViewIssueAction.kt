@@ -9,6 +9,7 @@ import com.atlassian.performance.tools.jiraactions.api.memories.IssueMemory
 import com.atlassian.performance.tools.jiraactions.api.memories.JqlMemory
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
+import javax.json.Json
 
 class ViewIssueAction(
     private val jira: WebJira,
@@ -25,9 +26,15 @@ class ViewIssueAction(
             logger.debug("Skipping View Issue action. I have no knowledge of issue keys.")
             return
         }
-        val issuePage = meter.measure(VIEW_ISSUE) {
-            jira.goToIssue(issueKey).waitForSummary()
-        }
+        val issuePage = meter.measure(
+            key = VIEW_ISSUE,
+            action = { jira.goToIssue(issueKey).waitForSummary() },
+            observation = { page -> Json.createObjectBuilder()
+                .add("issueKey", issueKey)
+                .add("issueId", page.getIssueId())
+                .build()
+            }
+        )
         val issue = Issue(
             key = issueKey,
             editable = issuePage.isEditable(),

@@ -26,6 +26,11 @@ Dropping a requirement of a major version of a dependency is a new contract.
 ## [Unreleased]
 [Unreleased]: https://github.com/atlassian/jira-actions/compare/release-3.5.0...master
 
+### Fixed
+- Observe issue key and id in ViewIssueAction. Resolves [JPERF-482].
+
+[JPERF-482]: https://ecosystem.atlassian.net/browse/JPERF-482
+
 ## [3.5.0] - 2019-04-26
 [3.4.0]: https://github.com/atlassian/jira-actions/compare/release-3.4.0...release-3.5.0
 
