@@ -5,6 +5,7 @@ import com.atlassian.performance.tools.dockerinfrastructure.api.jira.JiraCoreFor
 import com.atlassian.performance.tools.jiraactions.api.ActionMetric
 import com.atlassian.performance.tools.jiraactions.api.ActionResult
 import com.atlassian.performance.tools.jiraactions.api.SeededRandom
+import com.atlassian.performance.tools.jiraactions.api.VIEW_ISSUE
 import com.atlassian.performance.tools.jiraactions.api.WebJira
 import com.atlassian.performance.tools.jiraactions.api.measure.ActionMeter
 import com.atlassian.performance.tools.jiraactions.api.measure.output.CollectionActionMetricOutput
@@ -16,7 +17,7 @@ import org.apache.logging.log4j.Logger
 import org.assertj.core.api.Assertions
 import org.junit.Test
 import java.time.Clock
-import java.util.*
+import java.util.UUID
 
 class JiraCoreScenarioIT {
     private val logger: Logger = LogManager.getLogger(this::class.java)
@@ -82,5 +83,9 @@ class JiraCoreScenarioIT {
             metric.result
         }
         Assertions.assertThat(results).containsOnly(ActionResult.OK)
+        val viewIssueMetrics = metrics.filter {
+            VIEW_ISSUE.label.equals(it.label)
+        }
+        Assertions.assertThat(viewIssueMetrics).allMatch { m -> m.observation != null }
     }
 }
