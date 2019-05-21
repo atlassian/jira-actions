@@ -70,3 +70,13 @@ tasks.wrapper {
     gradleVersion = "5.1.1"
     distributionType = Wrapper.DistributionType.ALL
 }
+
+tasks.getByName("test", Test::class).apply {
+    exclude("**/*IT.class")
+}
+
+val testIntegration = task<Test>("testIntegration") {
+    include("**/*IT.class")
+}
+
+tasks["check"].dependsOn(testIntegration)

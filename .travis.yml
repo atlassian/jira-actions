@@ -1,19 +1,18 @@
 language: java
 
+script: travis_wait 21 ./gradlew build
+
 env:
   - JIRA_SOFTWARE_VERSION=8.0.0
   - JIRA_SOFTWARE_VERSION=7.13.0
   - JIRA_SOFTWARE_VERSION=7.3.0
   - JIRA_SOFTWARE_VERSION=7.2.0
 stages:
-  - test
   - name: release
     if: env(RELEASE) == true AND fork == false
 
 jobs:
   include:
-    - stage: test
-      script: travis_wait 21 ./gradlew build
     - stage: release
       env: JIRA_SOFTWARE_VERSION=none
       script: ./scripts/travis-release.sh
