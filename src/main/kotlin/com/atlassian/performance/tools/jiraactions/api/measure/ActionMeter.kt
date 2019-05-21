@@ -76,43 +76,21 @@ class ActionMeter(
         observation: (T) -> JsonObject?
     ): T {
         val start = clock.instant()
-        return record(key) {
-            val result = action()
-            val duration = Duration.between(start, clock.instant())
-            @Suppress("DEPRECATION") val recording = Recording(result, duration, observation(result))
-            recording.drilldown = w3cPerformanceTimeline.record()
-            return@record recording
-        }
-    }
-
-    /**
-     * Records the latency and an optional observation of the self-measuring [action].
-     *
-     * @param action can measure and observe itself
-     * @param key logically groups the [action]s
-     * @param T the type of the result of the [action]
-     * @return result of the [action]
-     */
-    private fun <T> record(
-        key: ActionType<*>,
-        @Suppress("DEPRECATION") action: () -> Recording<T>
-    ): T {
-        val start = clock.instant()
         try {
-            val recording = action()
+            val result = action()
             output.write(
                 ActionMetric.Builder(
                     label = key.label,
                     result = ActionResult.OK,
                     start = start,
-                    duration = recording.duration
+                    duration = Duration.between(start, clock.instant())
                 )
                     .virtualUser(virtualUser)
-                    .observation(recording.observation)
-                    .drilldown(recording.drilldown)
+                    .observation(observation(result))
+                    .drilldown(w3cPerformanceTimeline.record())
                     .build()
             )
-            return recording.result
+            return result
         } catch (e: Exception) {
             val result = if (e.representsInterrupt()) {
                 ActionResult.INTERRUPTED
