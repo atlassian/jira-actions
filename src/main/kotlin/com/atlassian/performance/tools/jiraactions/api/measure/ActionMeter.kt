@@ -127,6 +127,7 @@ class ActionMeter(
                     duration = Duration.between(start, clock.instant())
                 )
                     .virtualUser(virtualUser)
+                    .drilldown(w3cPerformanceTimeline.record())
                     .build()
             )
             throw Exception("Action '${key.label}' $result", e)
