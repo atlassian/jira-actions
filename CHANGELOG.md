@@ -43,6 +43,11 @@ Dropping a requirement of a major version of a dependency is a new contract.
 [JPERF-184]: https://ecosystem.atlassian.net/browse/JPERF-184
 [JPERF-450]: https://ecosystem.atlassian.net/browse/JPERF-450
 
+### Fixed
+- Drill down into errored action metrics. Fix [JPERF-479].
+
+[JPERF-479]: https://ecosystem.atlassian.net/browse/JPERF-479
+
 ## [3.4.0] - 2019-03-28
 [3.4.0]: https://github.com/atlassian/jira-actions/compare/release-3.3.0...release-3.4.0
 
