@@ -5,9 +5,11 @@ import com.atlassian.performance.tools.jiraactions.api.ActionResult.ERROR
 import com.atlassian.performance.tools.jiraactions.api.ActionResult.OK
 import com.atlassian.performance.tools.jiraactions.api.measure.output.CollectionActionMetricOutput
 import com.atlassian.performance.tools.jiraactions.api.w3c.DisabledW3cPerformanceTimeline
+import com.atlassian.performance.tools.jiraactions.api.w3c.RecordedPerformanceEntries
+import com.atlassian.performance.tools.jiraactions.api.w3c.W3cPerformanceTimeline
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
-import org.assertj.core.api.Assertions.*
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 import java.time.Clock
 import java.time.Duration
@@ -72,11 +74,12 @@ class ActionMeterTest {
     @Test
     fun shouldMeasureErrors() {
         val output = CollectionActionMetricOutput(mutableListOf())
+        val entries = RecordedPerformanceEntries(emptyList(), emptyList())
         val actionMeter = ActionMeter(
             output = output,
             virtualUser = vu,
             clock = Clock.fixed(start, ZoneId.of("UTC")),
-            w3cPerformanceTimeline = DisabledW3cPerformanceTimeline()
+            w3cPerformanceTimeline = HardcodedTimeline(entries)
         )
 
         try {
@@ -90,6 +93,9 @@ class ActionMeterTest {
             expectedActionMetric(CREATE_ISSUE, ERROR, ZERO, start),
             expectedActionMetric(VIEW_BOARD, OK, ZERO, start)
         )
+        assertThat(output.metrics.first().drilldown)
+            .`as`("drilldown for errored metric")
+            .isNotNull
     }
 
     class TickingClock(
@@ -105,4 +111,11 @@ class ActionMeterTest {
         override fun withZone(zone: ZoneId?): Clock = throw Exception("We didn't expect a timezone would be needed")
         override fun getZone(): ZoneId = throw Exception("We didn't expect a timezone would be needed")
     }
+}
+
+class HardcodedTimeline(
+    private val entries: RecordedPerformanceEntries
+) : W3cPerformanceTimeline {
+
+    override fun record(): RecordedPerformanceEntries? = entries
 }
