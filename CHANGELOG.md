@@ -24,15 +24,20 @@ Adding a requirement of a major version of a dependency is breaking a contract.
 Dropping a requirement of a major version of a dependency is a new contract.
 
 ## [Unreleased]
-[Unreleased]: https://github.com/atlassian/jira-actions/compare/release-3.5.0...master
+[Unreleased]: https://github.com/atlassian/jira-actions/compare/release-3.5.1...master
+
+## [3.5.1] - 2019-05-22
+[3.5.1]: https://github.com/atlassian/jira-actions/compare/release-3.5.0...release-3.5.1
 
 ### Fixed
 - Observe issue key and id in ViewIssueAction. Resolves [JPERF-482].
+- Drill down into errored action metrics. Fix [JPERF-479].
 
 [JPERF-482]: https://ecosystem.atlassian.net/browse/JPERF-482
+[JPERF-479]: https://ecosystem.atlassian.net/browse/JPERF-479
 
 ## [3.5.0] - 2019-04-26
-[3.4.0]: https://github.com/atlassian/jira-actions/compare/release-3.4.0...release-3.5.0
+[3.5.0]: https://github.com/atlassian/jira-actions/compare/release-3.4.0...release-3.5.0
 
 ### Added
 - Expose `IssueForm` to make custom issue form actions easier. Resolve [JPERF-450].
@@ -42,11 +47,6 @@ Dropping a requirement of a major version of a dependency is a new contract.
 
 [JPERF-184]: https://ecosystem.atlassian.net/browse/JPERF-184
 [JPERF-450]: https://ecosystem.atlassian.net/browse/JPERF-450
-
-### Fixed
-- Drill down into errored action metrics. Fix [JPERF-479].
-
-[JPERF-479]: https://ecosystem.atlassian.net/browse/JPERF-479
 
 ## [3.4.0] - 2019-03-28
 [3.4.0]: https://github.com/atlassian/jira-actions/compare/release-3.3.0...release-3.4.0
