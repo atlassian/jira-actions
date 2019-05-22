@@ -8,6 +8,7 @@ env:
   - JIRA_SOFTWARE_VERSION=7.3.0
   - JIRA_SOFTWARE_VERSION=7.2.0
 stages:
+  - test
   - name: release
     if: env(RELEASE) == true AND fork == false
 
