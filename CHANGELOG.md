@@ -26,6 +26,11 @@ Dropping a requirement of a major version of a dependency is a new contract.
 ## [Unreleased]
 [Unreleased]: https://github.com/atlassian/jira-actions/compare/release-3.5.1...master
 
+### Added
+- Expose `WebJira.accessAdmin()`. Resolve [JPERF-207].
+
+[JPERF-207]: https://ecosystem.atlassian.net/browse/JPERF-207
+
 ## [3.5.1] - 2019-05-22
 [3.5.1]: https://github.com/atlassian/jira-actions/compare/release-3.5.0...release-3.5.1
 

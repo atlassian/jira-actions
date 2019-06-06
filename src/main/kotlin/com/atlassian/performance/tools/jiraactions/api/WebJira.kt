@@ -19,13 +19,17 @@ data class WebJira(
 
     fun configureRichTextEditor(): RichTextEditorConfiguration {
         navigateTo("secure/admin/ConfigureRTE!default.jspa")
-        val access = AdminAccess(
-            driver = driver,
-            jira = this,
-            password = adminPassword
-        )
-        return RichTextEditorConfiguration(driver, access)
+        return RichTextEditorConfiguration(driver, accessAdmin())
     }
+
+    /**
+     * Also known as WebSudo.
+     */
+    fun accessAdmin() = AdminAccess(
+        driver = driver,
+        jira = this,
+        password = adminPassword
+    )
 
     fun goToSystemInfo() {
         navigateTo("secure/admin/ViewSystemInfo.jspa")
