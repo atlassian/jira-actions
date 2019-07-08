@@ -24,20 +24,26 @@ Adding a requirement of a major version of a dependency is breaking a contract.
 Dropping a requirement of a major version of a dependency is a new contract.
 
 ## [Unreleased]
-[Unreleased]: https://github.com/atlassian/jira-actions/compare/release-3.5.1...master
+[Unreleased]: https://github.com/atlassian/jira-actions/compare/release-3.6.0...master
 
 ### Added
-- Expose `WebJira.accessAdmin()`. Resolve [JPERF-207].
 - JqlMemory modified to allow recall queries by tag/query type. Resolve [JPERF-522].
 - Add new action Search JQL wildcard. Resolve [JPERF-525].
 - Add new action Search JQL by previous reporter. Resolve [JPERF-528].
 - Add new action Search JQL simple search. Resolve [JPERF-526].
 
-[JPERF-207]: https://ecosystem.atlassian.net/browse/JPERF-207
 [JPERF-522]: https://ecosystem.atlassian.net/browse/JPERF-522
 [JPERF-525]: https://ecosystem.atlassian.net/browse/JPERF-525
 [JPERF-528]: https://ecosystem.atlassian.net/browse/JPERF-528
 [JPERF-526]: https://ecosystem.atlassian.net/browse/JPERF-526
+
+## [3.6.0] - 2019-06-06
+[3.6.0]: https://github.com/atlassian/jira-actions/compare/release-3.5.1...release-3.6.0
+
+### Added
+- Expose `WebJira.accessAdmin()`. Resolve [JPERF-207].
+
+[JPERF-207]: https://ecosystem.atlassian.net/browse/JPERF-207
 
 ## [3.5.1] - 2019-05-22
 [3.5.1]: https://github.com/atlassian/jira-actions/compare/release-3.5.0...release-3.5.1
