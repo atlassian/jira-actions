@@ -5,6 +5,7 @@ import com.atlassian.performance.tools.jiraactions.api.memories.JqlMemory
 import com.atlassian.performance.tools.jiraactions.api.memories.adaptive.jql.JqlPrescription
 import com.atlassian.performance.tools.jiraactions.api.memories.adaptive.jql.JqlPrescriptions
 import com.atlassian.performance.tools.jiraactions.api.page.IssuePage
+import com.atlassian.performance.tools.jiraactions.jql.BuiltInJQL
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
@@ -15,41 +16,49 @@ class AdaptiveJqlMemory(
     private val logger: Logger = LogManager.getLogger(this::class.java)
 
     private val jqls = mutableListOf(
-        "resolved is not empty order by description",
-        "text ~ \"a*\" order by summary"
+        BakedJql({ _ -> ""}, "resolved is not empty order by description", BuiltInJQL.RESOLVED.name),
+        BakedJql({ _ -> ""}, "text ~ \"a*\" order by summary", BuiltInJQL.GENERIC_WIDE.name)
     )
-    private val jqlPrescriptions = mutableSetOf(
-        JqlPrescriptions.prioritiesInEnumeratedList(random),
-        JqlPrescriptions.specifiedProject,
-        JqlPrescriptions.specifiedAssignee,
-        JqlPrescriptions.previousReporters,
-        JqlPrescriptions.specifiedAssigneeInSpecifiedProject,
-        JqlPrescriptions.filteredByGivenWord(random)
+
+    private val jqlPrescriptions = mutableMapOf(
+        BuiltInJQL.PRIORITIES.name to JqlPrescriptions.prioritiesInEnumeratedList(random),
+        BuiltInJQL.PROJECT.name to JqlPrescriptions.specifiedProject,
+        BuiltInJQL.ASSIGNEE.name to JqlPrescriptions.specifiedAssignee,
+        BuiltInJQL.REPORTERS.name to JqlPrescriptions.previousReporters,
+        BuiltInJQL.PROJECT_ASSIGNEE.name to JqlPrescriptions.specifiedAssigneeInSpecifiedProject,
+        BuiltInJQL.GIVEN_WORD.name to JqlPrescriptions.filteredByGivenWord(random)
     )
 
     override fun observe(issuePage: IssuePage) {
         val bakedJql = jqlPrescriptions.asSequence()
-            .map { BakedJql(it, it(issuePage)) }
+            .map { BakedJql(it.value, it.value(issuePage), it.key) }
             .filter { it.jql != null }
             .firstOrNull()
 
         bakedJql?.let {
             logger.debug("Rendered a new jql query: <<${it.jql!!}>>")
-            jqls.add(it.jql)
-            jqlPrescriptions.remove(it.jqlPrescription)
+            jqls.add(it)
+            jqlPrescriptions.remove(it.tag)
         }
     }
 
     override fun recall(): String? {
-        return random.pick(jqls)
+        return random.pick(jqls)?.jql
     }
 
     override fun remember(memories: Collection<String>) {
-        jqls.addAll(memories)
+        jqls.addAll(memories.map { BakedJql({ _ -> ""}, it) })
+    }
+
+    override fun recall(filter: (String) -> Boolean): String? {
+        return random.pick(jqls.filter {it.tag != null && filter.invoke(it.tag) }.toList())?.jql
     }
 }
 
 data class BakedJql(
     val jqlPrescription: JqlPrescription,
-    val jql: String?
-)
+    val jql: String?,
+    val tag: String?
+) {
+    constructor(jqlPrescription: JqlPrescription, jql: String?) : this(jqlPrescription, jql, null)
+}
