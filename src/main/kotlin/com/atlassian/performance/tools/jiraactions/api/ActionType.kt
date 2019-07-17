@@ -42,6 +42,7 @@ data class ActionType<out T>(
 @JvmField val PROJECT_SUMMARY = ActionType("Project Summary") { Unit }
 @JvmField val SEARCH_WITH_JQL = ActionType("Search with JQL") { SearchJqlObservation(it) }
 @JvmField val SEARCH_WITH_JQL_A_STAR = ActionType("Search with JQL a*") { SearchJqlObservation(it) }
+@JvmField val SEARCH_WITH_JQL_PREV_REPORTER = ActionType("Search with JQL by previous reporter") { SearchJqlObservation(it) }
 @JvmField val VIEW_ISSUE = ActionType("View Issue") { Unit }
 @JvmField val VIEW_DASHBOARD = ActionType("View Dashboard") { Unit }
 @JvmField val VIEW_BOARD = ActionType("View Board") { IssuesOnBoard(it) }
