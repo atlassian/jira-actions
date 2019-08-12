@@ -6,7 +6,7 @@ Reuse Jira Core user action types.
 
 Action              | Activity              |
 ------------------- | ----------------------
-Create Issue        | Go to Dashboard → Wait for Dashboard to load→ Open Issue Create Dialog → Fill in project, issue type, summary, description → Detect and fill in required fields → Submit → Wait for Submit to finish
+Create Issue        | Go to Dashboard → Wait for Dashboard to load → Open Issue Create Dialog → Show all fields → Fill in project, issue type, summary, description → Detect and fill in required fields → Submit → Wait for Submit to finish
 Create Issue Submit | While in Create Issue Action: Press Submit → Wait for Submit to finish
 Search with JQL     | Go to Issue Navigator with JQL in URL → Wait for results to load
 View Issue          | Go to View Issue Page for an issue → Wait for Summary to be visible
