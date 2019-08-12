@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.com/atlassian/jira-actions.svg?branch=master)](https://travis-ci.com/atlassian/jira-actions)
+
 # Core Jira user actions
 Define user experience with action metrics.
 Reuse Jira Core user action types.
