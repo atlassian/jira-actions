@@ -24,7 +24,10 @@ Adding a requirement of a major version of a dependency is breaking a contract.
 Dropping a requirement of a major version of a dependency is a new contract.
 
 ## [Unreleased]
-[Unreleased]: https://github.com/atlassian/jira-actions/compare/release-3.8.0...master
+[Unreleased]: https://github.com/atlassian/jira-actions/compare/release-3.9.0...master
+
+## [3.9.0] - 2019-08-13
+[3.9.0]: https://github.com/atlassian/jira-actions/compare/release-3.8.0...release-3.9.0
 
 ### Added
 - Add ability to delete backup service. Resolve [JPERF-334].
