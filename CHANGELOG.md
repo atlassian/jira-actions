@@ -26,6 +26,11 @@ Dropping a requirement of a major version of a dependency is a new contract.
 ## [Unreleased]
 [Unreleased]: https://github.com/atlassian/jira-actions/compare/release-3.8.0...master
 
+### Added
+- Add ability to delete backup service. Resolve [JPERF-334].
+
+[JPERF-344]: https://ecosystem.atlassian.net/browse/JPERF-344
+
 ## [3.8.0] - 2019-08-12
 [3.8.0]: https://github.com/atlassian/jira-actions/compare/release-3.7.0...release-3.8.0
 

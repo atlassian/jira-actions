@@ -1,27 +1,34 @@
 package com.atlassian.performance.tools.jiraactions.api.scenario
 
 import com.atlassian.performance.tools.dockerinfrastructure.api.browser.DockerisedChrome
+import com.atlassian.performance.tools.dockerinfrastructure.api.jira.Jira
 import com.atlassian.performance.tools.dockerinfrastructure.api.jira.JiraCoreFormula
-import com.atlassian.performance.tools.jiraactions.api.ActionMetric
-import com.atlassian.performance.tools.jiraactions.api.ActionResult
-import com.atlassian.performance.tools.jiraactions.api.SeededRandom
-import com.atlassian.performance.tools.jiraactions.api.VIEW_ISSUE
-import com.atlassian.performance.tools.jiraactions.api.WebJira
+import com.atlassian.performance.tools.jiraactions.api.*
 import com.atlassian.performance.tools.jiraactions.api.measure.ActionMeter
 import com.atlassian.performance.tools.jiraactions.api.measure.output.CollectionActionMetricOutput
 import com.atlassian.performance.tools.jiraactions.api.memories.User
 import com.atlassian.performance.tools.jiraactions.api.memories.UserMemory
+import com.atlassian.performance.tools.jiraactions.api.page.isElementPresent
 import com.atlassian.performance.tools.jiraactions.api.w3c.DisabledW3cPerformanceTimeline
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 import org.assertj.core.api.Assertions
 import org.junit.Test
+import org.openqa.selenium.By
+import org.openqa.selenium.remote.RemoteWebDriver
 import java.time.Clock
-import java.util.UUID
+import java.util.*
 
 class JiraCoreScenarioIT {
     private val logger: Logger = LogManager.getLogger(this::class.java)
 
+    /**
+     * During the test, you can connect to WebDriver by the VNC viewer.
+     * DockerisedChrome opens the port 5900 so executing command
+     * docker ps
+     * will show you which port on your host is open and mapped to 5900 on the container.
+     * The default password is `secret`.
+     */
     @Test
     fun shouldRunScenarioWithoutErrors() {
         val version = System.getenv("JIRA_SOFTWARE_VERSION") ?: "8.0.0"
@@ -44,6 +51,8 @@ class JiraCoreScenarioIT {
                 throw Exception("not implemented")
             }
         }
+        var firstBackupElement = true
+        var secondBackupElement = true
 
         JiraCoreFormula.Builder()
             .version(version)
@@ -51,8 +60,9 @@ class JiraCoreScenarioIT {
             .provision()
             .use { jira ->
                 DockerisedChrome().start().use { browser ->
+                    val driver = browser.driver
                     val webJira = WebJira(
-                        browser.driver,
+                        driver,
                         jira.getUri(),
                         user.password
                     )
@@ -76,6 +86,16 @@ class JiraCoreScenarioIT {
                     actions.forEach { action ->
                         action.run()
                     }
+
+                    goToServices(driver, jira)
+                    addBackupService(driver)
+                    webJira.configureBackupPolicy().delete()
+                    goToServices(driver, jira)
+
+                    val firstBackupId = "del_10001"
+                    val secondBackupId = "del_10200"
+                    firstBackupElement = driver.isElementPresent(By.id(firstBackupId))
+                    secondBackupElement = driver.isElementPresent(By.id(secondBackupId))
                 }
             }
 
@@ -87,5 +107,27 @@ class JiraCoreScenarioIT {
             VIEW_ISSUE.label.equals(it.label)
         }
         Assertions.assertThat(viewIssueMetrics).allMatch { m -> m.observation != null }
+        Assertions.assertThat(firstBackupElement).isFalse()
+        Assertions.assertThat(secondBackupElement).isFalse()
+    }
+
+    private fun goToServices(driver: RemoteWebDriver, jira: Jira) {
+        driver
+            .navigate()
+            .to(jira.getUri()
+                .resolve("secure/admin/ViewServices!default.jspa")
+                .toURL())
+
+        if (driver.isElementPresent(By.id("login-form-authenticatePassword"))) {
+            driver.findElementById("login-form-authenticatePassword").sendKeys("admin")
+            driver.findElement(By.id("login-form-submit")).click()
+        }
+    }
+
+    private fun addBackupService(driver: RemoteWebDriver) {
+        driver.findElementById("serviceName").sendKeys("another backup")
+        driver.findElementById("serviceClass").sendKeys("com.atlassian.jira.service.services.export.ExportService")
+        driver.findElementById("addservice_submit").click()
+        driver.findElementById("update_submit").click()
     }
 }

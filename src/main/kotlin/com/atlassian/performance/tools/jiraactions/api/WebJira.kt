@@ -1,6 +1,7 @@
 package com.atlassian.performance.tools.jiraactions.api
 
 import com.atlassian.performance.tools.jiraactions.api.page.*
+import com.atlassian.performance.tools.jiraactions.api.page.BackupConfiguration
 import org.openqa.selenium.By
 import org.openqa.selenium.WebDriver
 import java.net.URI
@@ -20,6 +21,11 @@ data class WebJira(
     fun configureRichTextEditor(): RichTextEditorConfiguration {
         navigateTo("secure/admin/ConfigureRTE!default.jspa")
         return RichTextEditorConfiguration(driver, accessAdmin())
+    }
+
+    fun configureBackupPolicy() : BackupConfiguration {
+        navigateTo("secure/admin/ViewServices!default.jspa")
+        return BackupConfiguration(driver, accessAdmin())
     }
 
     /**
