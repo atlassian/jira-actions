@@ -8,6 +8,7 @@ import com.atlassian.performance.tools.jiraactions.api.measure.ActionMeter
 import com.atlassian.performance.tools.jiraactions.api.measure.output.CollectionActionMetricOutput
 import com.atlassian.performance.tools.jiraactions.api.memories.User
 import com.atlassian.performance.tools.jiraactions.api.memories.UserMemory
+import com.atlassian.performance.tools.jiraactions.api.page.DashboardPage
 import com.atlassian.performance.tools.jiraactions.api.page.isElementPresent
 import com.atlassian.performance.tools.jiraactions.api.w3c.DisabledW3cPerformanceTimeline
 import org.apache.logging.log4j.LogManager
@@ -15,6 +16,7 @@ import org.apache.logging.log4j.Logger
 import org.assertj.core.api.Assertions
 import org.junit.Test
 import org.openqa.selenium.By
+import org.openqa.selenium.WebDriver
 import org.openqa.selenium.remote.RemoteWebDriver
 import java.time.Clock
 import java.util.*
@@ -82,6 +84,8 @@ class JiraCoreScenarioIT {
                     )
 
                     logInAction.run()
+                    createCustomDashboard(driver)
+                    logInAction.run()
                     setupAction.run()
                     actions.forEach { action ->
                         action.run()
@@ -109,6 +113,16 @@ class JiraCoreScenarioIT {
         Assertions.assertThat(viewIssueMetrics).allMatch { m -> m.observation != null }
         Assertions.assertThat(firstBackupElement).isFalse()
         Assertions.assertThat(secondBackupElement).isFalse()
+    }
+
+    private fun createCustomDashboard(
+        driver: WebDriver
+    ) {
+        DashboardPage(driver).dismissAllPopups()
+        driver.findElement(By.cssSelector("[aria-controls=tools-dropdown-items]")).click()
+        driver.findElement(By.id("create_dashboard")).click()
+        driver.findElement(By.cssSelector("[name=portalPageName]")).sendKeys("custom dashboard ${UUID.randomUUID()}")
+        driver.findElement(By.id("edit-entity-submit")).click()
     }
 
     private fun goToServices(driver: RemoteWebDriver, jira: Jira) {
