@@ -18,6 +18,7 @@ class DashboardPage(
         driver.findElements(By.id("nps-acknowledgement-accept-button")).filter { it.isEnabled && it.isDisplayed }.forEach { it.click() }
         driver.findElements(By.cssSelector(".jira-help-tip .cancel")).filter { it.isEnabled && it.isDisplayed }.forEach { it.click() }
         driver.findElements(By.className("postsetup-close-link")).filter { it.isEnabled && it.isDisplayed }.forEach { it.click() }
+        driver.findElements(By.className("helptip-close")).filter { it.isEnabled && it.isDisplayed }.forEach { it.click() }
     }
 
     fun waitForDashboard(): DashboardPage {
