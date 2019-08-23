@@ -2,10 +2,10 @@ package com.atlassian.performance.tools.jiraactions.api.page
 
 import com.atlassian.performance.tools.jiraactions.page.IssueCreateDialog
 import org.openqa.selenium.By
-import org.openqa.selenium.JavascriptExecutor
 import org.openqa.selenium.WebDriver
+import org.openqa.selenium.WebElement
 import org.openqa.selenium.support.ui.ExpectedCondition
-import org.openqa.selenium.support.ui.ExpectedConditions.*
+import org.openqa.selenium.support.ui.ExpectedConditions.and
 import java.time.Duration
 
 class DashboardPage(
@@ -14,6 +14,7 @@ class DashboardPage(
     private val jiraErrors = JiraErrors(driver)
 
     fun dismissAllPopups() {
+        Thread.sleep(4000)
         driver.findElements(By.cssSelector(".aui-flag .icon-close")).filter { it.isEnabled && it.isDisplayed }.forEach { it.click() }
         driver.findElements(By.id("nps-acknowledgement-accept-button")).filter { it.isEnabled && it.isDisplayed }.forEach { it.click() }
         driver.findElements(By.cssSelector(".jira-help-tip .cancel")).filter { it.isEnabled && it.isDisplayed }.forEach { it.click() }
@@ -22,35 +23,33 @@ class DashboardPage(
     }
 
     fun waitForDashboard(): DashboardPage {
-        driver.wait(
-            Duration.ofSeconds(60),
-            or(
-                and(
-                    presenceOfElementLocated(By.className("page-type-dashboard")),
-                    CheckIFrame()
-                ),
-                jiraErrors.anyCommonError()
-            )
-        )
+        val gadgets = driver.findElements(By.cssSelector("#dashboard-content > .gadget"))
+        waitForIframes(gadgets)
         jiraErrors.assertNoErrors()
+        return this
+    }
+
+    private fun waitForIframes(
+        gadgets: List<WebElement>
+    ): DashboardPage {
+        val iframes = gadgets.flatMap { it.findElements(By.tagName("iframe")) }
+        val iframesHaveContent = iframes.map { iframe ->
+            ExpectedCondition {
+                driver.switchTo().frame(iframe)
+                val iframeContent = driver.findElement(By.tagName("body")).text
+                driver.switchTo().parentFrame()
+                return@ExpectedCondition iframeContent.isNotBlank()
+            }
+        }
+        driver.wait(
+            condition = and(*iframesHaveContent.toTypedArray()),
+            timeout = Duration.ofSeconds(20)
+        )
         return this
     }
 
     internal fun openIssueCreateDialog(): IssueCreateDialog {
         driver.findElement(By.id("create_link")).click()
         return IssueCreateDialog(driver)
-    }
-
-    private class CheckIFrame : ExpectedCondition<Boolean> {
-        override fun apply(input: WebDriver?): Boolean? {
-            input as JavascriptExecutor
-            //we currently support only single iframe on dashboard in this check
-            return input.executeScript(
-                """
-                iframes = $('#dashboard').find('iframe');
-                return iframes.length === 1 && iframes.contents().find('body').children().length > 0
-                """
-            ) as Boolean
-        }
     }
 }

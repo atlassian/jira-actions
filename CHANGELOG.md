@@ -27,7 +27,10 @@ Dropping a requirement of a major version of a dependency is a new contract.
 [Unreleased]: https://github.com/atlassian/jira-actions/compare/release-3.9.0...master
 
 ### Fixed
+- Stop expecting a single iframe on dashboards. Fix [JPERF-379].
 - Dismiss the "find your work faster" popup on dashboards.
+
+[JPERF-379]: https://ecosystem.atlassian.net/browse/JPERF-379
 
 ## [3.9.0] - 2019-08-13
 [3.9.0]: https://github.com/atlassian/jira-actions/compare/release-3.8.0...release-3.9.0
