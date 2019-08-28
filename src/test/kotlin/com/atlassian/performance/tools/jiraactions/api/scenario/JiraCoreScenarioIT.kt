@@ -33,7 +33,7 @@ class JiraCoreScenarioIT {
      */
     @Test
     fun shouldRunScenarioWithoutErrors() {
-        val version = System.getenv("JIRA_SOFTWARE_VERSION") ?: "8.0.0"
+        val version = System.getenv("JIRA_SOFTWARE_VERSION") ?: "7.3.0"
         logger.info("Testing Jira $version")
         val scenario = JiraCoreScenario()
         val metrics = mutableListOf<ActionMetric>()

@@ -1,0 +1,83 @@
+version: 2
+executorType: machine
+
+build_template: &build_template
+  environment:
+    TERM: dumb
+  docker:
+    - image: circleci/openjdk:8u181-jdk
+  working_directory: ~/repo
+  steps:
+    - checkout
+    - restore_cache:
+        keys:
+          - v1-dependencies-{{ checksum "build.gradle.kts" }}
+          - v1-dependencies-
+    - run: ./gradlew compileTestKotlin
+    - save_cache:
+        paths:
+          - ~/.gradle
+        key: v1-dependencies-{{ checksum "build.gradle.kts" }}
+    - run:
+        command: ./gradlew build
+        no_output_timeout: 25m
+    - store_artifacts:
+        path: ./build/reports/tests
+        destination: test-reports
+    - store_artifacts:
+        path: ./diagnoses
+        destination: diagnoses
+    - store_test_results:
+        path: ./build/test-results
+
+jobs:
+  build_jsw_8_0_0:
+    environment:
+      JIRA_SOFTWARE_VERSION: 8.0.0
+    <<: *build_template
+  build_jsw_7_13_0:
+    environment:
+      JIRA_SOFTWARE_VERSION: 7.13.0
+    <<: *build_template
+  build_jsw_7_3_0:
+    environment:
+      JIRA_SOFTWARE_VERSION: 7.3.0
+    <<: *build_template
+  build_jsw_7_2_0:
+    environment:
+      JIRA_SOFTWARE_VERSION: 7.2.0
+    <<: *build_template
+  release:
+    docker:
+      - image: circleci/openjdk:8u181-jdk
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "build.gradle.kts" }}
+            - v1-dependencies-
+      - run: ./gradlew release
+      - run: ./gradlew publish
+workflows:
+  version: 2
+  release_workflow:
+    jobs:
+      - build_jsw_8_0_0
+      - build_jsw_7_13_0
+      - build_jsw_7_3_0
+      - build_jsw_7_2_0
+      - approve_release:
+          type: approval
+          requires:
+            - build_jsw_8_0_0
+            - build_jsw_7_13_0
+            - build_jsw_7_3_0
+            - build_jsw_7_2_0
+          filters:
+            branches:
+              only: master
+            tags:
+              only: /release-*-alpha/
+      - release:
+          requires:
+            - approve_release
