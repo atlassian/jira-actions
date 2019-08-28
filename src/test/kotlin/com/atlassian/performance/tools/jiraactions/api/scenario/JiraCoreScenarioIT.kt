@@ -11,9 +11,10 @@ import com.atlassian.performance.tools.jiraactions.api.memories.UserMemory
 import com.atlassian.performance.tools.jiraactions.api.page.DashboardPage
 import com.atlassian.performance.tools.jiraactions.api.page.isElementPresent
 import com.atlassian.performance.tools.jiraactions.api.w3c.DisabledW3cPerformanceTimeline
+import com.atlassian.performance.tools.jiraactions.lib.WebDriverDiagnostics
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
-import org.assertj.core.api.Assertions
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 import org.openqa.selenium.By
 import org.openqa.selenium.WebDriver
@@ -35,7 +36,6 @@ class JiraCoreScenarioIT {
     fun shouldRunScenarioWithoutErrors() {
         val version = System.getenv("JIRA_SOFTWARE_VERSION") ?: "7.3.0"
         logger.info("Testing Jira $version")
-        val scenario = JiraCoreScenario()
         val metrics = mutableListOf<ActionMetric>()
         val actionMeter = ActionMeter(
             virtualUser = UUID.randomUUID(),
@@ -43,76 +43,70 @@ class JiraCoreScenarioIT {
             clock = Clock.systemUTC(),
             w3cPerformanceTimeline = DisabledW3cPerformanceTimeline()
         )
-        val user = User("admin", "admin")
         val userMemory = object : UserMemory {
-            override fun recall(): User {
-                return user
-            }
-
-            override fun remember(memories: Collection<User>) {
-                throw Exception("not implemented")
-            }
+            override fun recall(): User = User("admin", "admin")
+            override fun remember(memories: Collection<User>) = throw Exception("not implemented")
         }
-        var firstBackupElement = true
-        var secondBackupElement = true
 
-        JiraCoreFormula.Builder()
+        val testOutput = JiraCoreFormula.Builder()
             .version(version)
             .build()
             .provision()
             .use { jira ->
                 DockerisedChrome().start().use { browser ->
-                    val driver = browser.driver
-                    val webJira = WebJira(
-                        driver,
-                        jira.getUri(),
-                        user.password
-                    )
-                    val logInAction = scenario.getLogInAction(
-                        webJira,
-                        actionMeter,
-                        userMemory
-                    )
-                    val setupAction = scenario.getSetupAction(
-                        webJira,
-                        actionMeter
-                    )
-                    val actions = scenario.getActions(
-                        webJira,
-                        SeededRandom(123),
-                        actionMeter
-                    )
-
-                    logInAction.run()
-                    createCustomDashboard(driver)
-                    logInAction.run()
-                    setupAction.run()
-                    actions.forEach { action ->
-                        action.run()
-                    }
-
-                    goToServices(driver, jira)
-                    addBackupService(driver)
-                    webJira.configureBackupPolicy().delete()
-                    goToServices(driver, jira)
-
-                    val firstBackupId = "del_10001"
-                    val secondBackupId = "del_10200"
-                    firstBackupElement = driver.isElementPresent(By.id(firstBackupId))
-                    secondBackupElement = driver.isElementPresent(By.id(secondBackupId))
+                    test(browser.driver, jira, actionMeter, userMemory)
                 }
             }
 
-        val results = metrics.map { metric ->
-            metric.result
+        val results = metrics.map { it.result }
+        assertThat(results).containsOnly(ActionResult.OK)
+        val viewIssueMetrics = metrics.filter { VIEW_ISSUE.label == it.label }
+        assertThat(viewIssueMetrics).allMatch { m -> m.observation != null }
+        assertThat(testOutput.firstBackupPresent).isFalse()
+        assertThat(testOutput.secondBackupPresent).isFalse()
+    }
+
+    private fun test(
+        driver: RemoteWebDriver,
+        jira: Jira,
+        actionMeter: ActionMeter,
+        userMemory: UserMemory
+    ): TestOutput {
+        val scenario = JiraCoreScenario()
+        val webJira = WebJira(
+            driver,
+            jira.getUri(),
+            userMemory.recall()!!.password
+        )
+        val logInAction = scenario.getLogInAction(
+            webJira,
+            actionMeter,
+            userMemory
+        )
+        val setupAction = scenario.getSetupAction(
+            webJira,
+            actionMeter
+        )
+        val actions = scenario.getActions(
+            webJira,
+            SeededRandom(123),
+            actionMeter
+        )
+        logInAction.run()
+        createCustomDashboard(driver)
+        logInAction.run()
+        setupAction.run()
+        actions.forEach { action ->
+            action.run()
         }
-        Assertions.assertThat(results).containsOnly(ActionResult.OK)
-        val viewIssueMetrics = metrics.filter {
-            VIEW_ISSUE.label.equals(it.label)
-        }
-        Assertions.assertThat(viewIssueMetrics).allMatch { m -> m.observation != null }
-        Assertions.assertThat(firstBackupElement).isFalse()
-        Assertions.assertThat(secondBackupElement).isFalse()
+        goToServices(driver, jira)
+        addBackupService(driver)
+        webJira.configureBackupPolicy().delete()
+        goToServices(driver, jira)
+        return TestOutput(
+            firstBackupPresent = driver.isElementPresent(By.id("del_10001")),
+            secondBackupPresent = driver.isElementPresent(By.id("del_10200"))
+        )
     }
 
     private fun createCustomDashboard(
@@ -145,3 +139,8 @@ class JiraCoreScenarioIT {
         driver.findElementById("update_submit").click()
     }
 }
+
+private class TestOutput(
+    val firstBackupPresent: Boolean,
+    val secondBackupPresent: Boolean
+)
