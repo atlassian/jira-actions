@@ -20,6 +20,7 @@ class DashboardPage(
         driver.findElements(By.cssSelector(".jira-help-tip .cancel")).filter { it.isEnabled && it.isDisplayed }.forEach { it.click() }
         driver.findElements(By.className("postsetup-close-link")).filter { it.isEnabled && it.isDisplayed }.forEach { it.click() }
         driver.findElements(By.className("helptip-close")).filter { it.isEnabled && it.isDisplayed }.forEach { it.click() }
+        Thread.sleep(4000)
     }
 
     fun waitForDashboard(): DashboardPage {
