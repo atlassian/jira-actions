@@ -56,10 +56,6 @@ dependencies {
     testCompile("junit:junit:4.12")
 }
 
-tasks.test {
-    testLogging.showStandardStreams = true
-}
-
 tasks
     .withType(KotlinCompile::class.java)
     .forEach { compileTask ->
