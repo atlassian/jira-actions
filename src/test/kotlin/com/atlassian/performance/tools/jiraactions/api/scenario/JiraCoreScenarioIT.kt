@@ -53,8 +53,14 @@ class JiraCoreScenarioIT {
             .build()
             .provision()
             .use { jira ->
-                DockerisedChrome().start().use { browser ->
-                    test(browser.driver, jira, actionMeter, userMemory)
+                DockerisedChrome().start().use useBrowser@{ browser ->
+                    val driver = browser.driver
+                    return@useBrowser try {
+                        test(driver, jira, actionMeter, userMemory)
+                    } catch (e: Exception) {
+                        WebDriverDiagnostics(driver).diagnose(e)
+                        throw Exception("Testing with WebDriver failed, look for diagnoses", e)
+                    }
                 }
             }
 
