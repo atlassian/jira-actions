@@ -3,10 +3,10 @@ language: java
 script: travis_wait 30 ./gradlew build
 
 env:
-  - JIRA_SOFTWARE_VERSION=8.0.0
-  - JIRA_SOFTWARE_VERSION=7.13.0
-  - JIRA_SOFTWARE_VERSION=7.3.0
-  - JIRA_SOFTWARE_VERSION=7.2.0
+  - JIRA_CORE_VERSION=8.0.0
+  - JIRA_CORE_VERSION=7.13.0
+  - JIRA_CORE_VERSION=7.3.0
+  - JIRA_CORE_VERSION=7.2.0
 stages:
   - test
   - name: release
@@ -15,7 +15,7 @@ stages:
 jobs:
   include:
     - stage: release
-      env: JIRA_SOFTWARE_VERSION=none
+      env: JIRA_CORE_VERSION=none
       script: ./scripts/travis-release.sh
 
 before_cache:
