@@ -119,7 +119,11 @@ class JiraCoreScenarioIT {
         driver: WebDriver
     ) {
         DashboardPage(driver).dismissAllPopups()
-        driver.findElement(By.cssSelector("[aria-controls=tools-dropdown-items]")).click()
+        val toolsCog = driver
+            .findElements(By.cssSelector("#dashboard-tools-dropdown.icon-tools"))
+            .singleOrNull()
+            ?: driver.findElement(By.cssSelector("[aria-controls=tools-dropdown-items]"))
+        toolsCog.click()
         driver.findElement(By.id("create_dashboard")).click()
         driver.findElement(By.cssSelector("[name=portalPageName]")).sendKeys("custom dashboard ${UUID.randomUUID()}")
         driver.findElement(By.id("edit-entity-submit")).click()
