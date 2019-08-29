@@ -34,7 +34,7 @@ class JiraCoreScenarioIT {
      */
     @Test
     fun shouldRunScenarioWithoutErrors() {
-        val version = System.getenv("JIRA_SOFTWARE_VERSION") ?: "7.3.0"
+        val version = System.getenv("JIRA_SOFTWARE_VERSION") ?: "7.2.0"
         logger.info("Testing Jira $version")
         val metrics = mutableListOf<ActionMetric>()
         val actionMeter = ActionMeter(
@@ -126,7 +126,11 @@ class JiraCoreScenarioIT {
         toolsCog.click()
         driver.findElement(By.id("create_dashboard")).click()
         driver.findElement(By.cssSelector("[name=portalPageName]")).sendKeys("custom dashboard ${UUID.randomUUID()}")
-        driver.findElement(By.id("edit-entity-submit")).click()
+        val addDashboardButton = driver
+            .findElements(By.id("edit-entity-submit"))
+            .singleOrNull()
+            ?: driver.findElement(By.id("add-dashboard-submit"))
+        addDashboardButton.click()
     }
 
     private fun goToServices(driver: RemoteWebDriver, jira: Jira) {
