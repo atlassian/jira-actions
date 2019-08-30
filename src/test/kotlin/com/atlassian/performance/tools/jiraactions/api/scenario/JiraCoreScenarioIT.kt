@@ -19,6 +19,7 @@ import org.junit.Test
 import org.openqa.selenium.By
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.remote.RemoteWebDriver
+import java.nio.file.Paths
 import java.time.Clock
 import java.util.*
 
@@ -50,6 +51,7 @@ class JiraCoreScenarioIT {
 
         val testOutput = JiraCoreFormula.Builder()
             .version(version)
+            .diagnoses(Paths.get("diagnoses"))
             .build()
             .provision()
             .use { jira ->
