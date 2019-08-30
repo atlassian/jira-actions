@@ -15,6 +15,7 @@ import com.atlassian.performance.tools.jiraactions.lib.WebDriverDiagnostics
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 import org.assertj.core.api.Assertions.assertThat
+import org.junit.After
 import org.junit.Test
 import org.openqa.selenium.By
 import org.openqa.selenium.WebDriver
@@ -25,6 +26,11 @@ import java.util.*
 
 class JiraCoreScenarioIT {
     private val logger: Logger = LogManager.getLogger(this::class.java)
+
+    @After
+    fun waitForCleanups() {
+        Thread.sleep(10000)
+    }
 
     /**
      * During the test, you can connect to WebDriver by the VNC viewer.

@@ -19,6 +19,7 @@ import com.atlassian.performance.tools.jiraactions.api.w3c.DisabledW3cPerformanc
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 import org.assertj.core.api.Assertions
+import org.junit.After
 import org.junit.Test
 import java.nio.file.Paths
 import java.time.Clock
@@ -32,6 +33,11 @@ import java.util.*
  */
 class RichTextEditorIT {
     private val logger: Logger = LogManager.getLogger(this::class.java)
+
+    @After
+    fun waitForCleanups() {
+        Thread.sleep(10000)
+    }
 
     @Test
     fun shouldRunScenarioWithoutErrors() {
