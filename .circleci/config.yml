@@ -18,7 +18,7 @@ build_template: &build_template
         key: v1-dependencies-{{ checksum "build.gradle.kts" }}
     - run:
         command: ./gradlew build
-        no_output_timeout: 25m
+        no_output_timeout: 30m
     - store_artifacts:
         path: ./build/reports/tests
         destination: test-reports

@@ -55,21 +55,24 @@ class JiraCoreScenarioIT {
             override fun remember(memories: Collection<User>) = throw Exception("not implemented")
         }
 
+        val diagnoses = Paths.get("diagnoses")
         val testOutput = JiraCoreFormula.Builder()
             .version(version)
-            .diagnoses(Paths.get("diagnoses"))
+            .diagnoses(diagnoses)
             .build()
             .provision()
             .use { jira ->
-                DockerisedChrome().start().use useBrowser@{ browser ->
-                    val driver = browser.driver
-                    return@useBrowser try {
-                        test(driver, jira, actionMeter, userMemory)
-                    } catch (e: Exception) {
-                        WebDriverDiagnostics(driver).diagnose(e)
-                        throw Exception("Testing with WebDriver failed, look for diagnoses", e)
+                DockerisedChrome(diagnoses.resolve("recordings"))
+                    .start()
+                    .use useBrowser@{ browser ->
+                        val driver = browser.driver
+                        return@useBrowser try {
+                            test(driver, jira, actionMeter, userMemory)
+                        } catch (e: Exception) {
+                            WebDriverDiagnostics(driver).diagnose(e)
+                            throw Exception("Testing with WebDriver failed, look for diagnoses", e)
+                        }
                     }
-                }
             }
 
         val results = metrics.map { it.result }

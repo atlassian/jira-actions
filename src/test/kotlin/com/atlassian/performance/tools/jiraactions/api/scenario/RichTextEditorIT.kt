@@ -62,41 +62,42 @@ class RichTextEditorIT {
             }
         }
 
+        val diagnoses = Paths.get("diagnoses")
         JiraCoreFormula.Builder()
             .version(version)
-            .diagnoses(Paths.get("diagnoses"))
+            .diagnoses(diagnoses)
             .build()
             .provision()
             .use { jira ->
-                DockerisedChrome().start().use { browser ->
-                    val webJira = WebJira(
-                        browser.driver,
-                        jira.getUri(),
-                        user.password
-                    )
-                    val logInAction = scenario.getLogInAction(
-                        webJira,
-                        actionMeter,
-                        userMemory
-                    )
-                    val actions = scenario.getActions(
-                        webJira,
-                        SeededRandom(123),
-                        actionMeter
-                    )
-
-                    logInAction.run()
-                    actions.forEach { action ->
-                        action.run()
+                DockerisedChrome(diagnoses.resolve("recordings"))
+                    .start()
+                    .use { browser ->
+                        val webJira = WebJira(
+                            browser.driver,
+                            jira.getUri(),
+                            user.password
+                        )
+                        val logInAction = scenario.getLogInAction(
+                            webJira,
+                            actionMeter,
+                            userMemory
+                        )
+                        val actions = scenario.getActions(
+                            webJira,
+                            SeededRandom(123),
+                            actionMeter
+                        )
+                        logInAction.run()
+                        actions.forEach { action ->
+                            action.run()
+                        }
                     }
-                }
             }
 
         val results = metrics.map { metric ->
             metric.result
         }
         Assertions.assertThat(results).containsOnly(ActionResult.OK)
-
     }
 }
 
