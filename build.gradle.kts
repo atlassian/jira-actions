@@ -76,6 +76,7 @@ tasks.getByName("test", Test::class).apply {
 }
 
 val testIntegration = task<Test>("testIntegration") {
+    maxHeapSize = "2G"
     include("**/*IT.class")
 }
 

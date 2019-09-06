@@ -1,19 +1,19 @@
-package com.atlassian.performance.tools.jiraactions
+package com.atlassian.performance.tools.jiraactions.api.format
 
 import com.atlassian.performance.tools.jiraactions.api.ActionMetric
 import com.atlassian.performance.tools.jiraactions.api.ActionResult
-import com.atlassian.performance.tools.jiraactions.w3c.VerboseJsonFormat
 import java.time.Duration
 import java.time.Instant
 import java.util.*
 import javax.json.Json
 import javax.json.JsonObject
 
-internal class MetricVerboseJsonFormat {
+/**
+ * Format ignoring drilldown parameter
+ */
+class MetricCompactJsonFormat: MetricJsonFormat {
 
-    private val drilldownFormat = VerboseJsonFormat()
-
-    fun serialize(
+    override fun serialize(
         actionMetric: ActionMetric
     ): JsonObject = actionMetric.run {
         Json.createObjectBuilder()
@@ -23,11 +23,10 @@ internal class MetricVerboseJsonFormat {
             .add("start", start.toString())
             .add("virtualUser", virtualUser.toString())
             .also { json -> observation?.let { json.add("observation", it) } }
-            .also { json -> drilldown?.let { json.add("drilldown", drilldownFormat.serializeRecordedEntries(it)) } }
             .build()
     }
 
-    fun deserialize(
+    override fun deserialize(
         json: JsonObject
     ): ActionMetric = json.run {
         ActionMetric.Builder(
@@ -38,7 +37,7 @@ internal class MetricVerboseJsonFormat {
         )
             .virtualUser(getString("virtualUser").let { UUID.fromString(it) })
             .observation(getJsonObject("observation"))
-            .drilldown(getJsonObject("drilldown")?.let { drilldownFormat.deserializeRecordedEntries(it) })
             .build()
     }
+
 }

@@ -26,6 +26,12 @@ Dropping a requirement of a major version of a dependency is a new contract.
 ## [Unreleased]
 [Unreleased]: https://github.com/atlassian/jira-actions/compare/release-3.9.0...master
 
+### Added
+- Add the API to set the format in action metrics parser. Workaround for [JPERF-395].
+
+[JPERF-395]: https://ecosystem.atlassian.net/browse/JPERF-395
+
+
 ## [3.9.0] - 2019-08-13
 [3.9.0]: https://github.com/atlassian/jira-actions/compare/release-3.8.0...release-3.9.0
 

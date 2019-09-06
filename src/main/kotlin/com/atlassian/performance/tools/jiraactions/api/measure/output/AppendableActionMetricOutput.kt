@@ -1,7 +1,7 @@
 package com.atlassian.performance.tools.jiraactions.api.measure.output
 
 import com.atlassian.performance.tools.jiraactions.api.ActionMetric
-import com.atlassian.performance.tools.jiraactions.MetricVerboseJsonFormat
+import com.atlassian.performance.tools.jiraactions.api.format.MetricVerboseJsonFormat
 import net.jcip.annotations.NotThreadSafe
 
 @NotThreadSafe

@@ -2,6 +2,7 @@ package com.atlassian.performance.tools.jiraactions.api.parser
 
 import com.atlassian.performance.tools.io.api.directories
 import com.atlassian.performance.tools.io.api.ensureDirectory
+import com.atlassian.performance.tools.jiraactions.api.format.MetricVerboseJsonFormat
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 import java.io.File
@@ -22,7 +23,7 @@ class MergingActionMetricsParserTest {
             .flatMap { it.directories() }
             .map { it.resolve("action-metrics.jpt") }
 
-        val metricsCount = MergingActionMetricsParser().stream(metricsFiles).count()
+        val metricsCount = MergingActionMetricsParser(MetricVerboseJsonFormat()).stream(metricsFiles).count()
 
         assertThat(metricsCount).isEqualTo(20099)
     }
