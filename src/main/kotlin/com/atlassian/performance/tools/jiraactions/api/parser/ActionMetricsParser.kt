@@ -1,7 +1,8 @@
 package com.atlassian.performance.tools.jiraactions.api.parser
 
-import com.atlassian.performance.tools.jiraactions.MetricVerboseJsonFormat
 import com.atlassian.performance.tools.jiraactions.api.ActionMetric
+import com.atlassian.performance.tools.jiraactions.api.format.MetricJsonFormat
+import com.atlassian.performance.tools.jiraactions.api.format.MetricVerboseJsonFormat
 import org.apache.logging.log4j.LogManager
 import java.io.InputStream
 import java.io.StringReader
@@ -11,10 +12,11 @@ import javax.json.JsonStructure
 import kotlin.streams.asStream
 import kotlin.streams.toList
 
-class ActionMetricsParser {
+class ActionMetricsParser(private val format: MetricJsonFormat) {
 
     private val logger = LogManager.getLogger(this::class.java)
-    private val format = MetricVerboseJsonFormat()
+
+    constructor(): this(MetricVerboseJsonFormat())
 
     @Deprecated("Accumulating results in lists leads to memory leaks", ReplaceWith("stream(metricsStream)"))
     fun parse(
