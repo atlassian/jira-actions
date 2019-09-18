@@ -6,6 +6,13 @@ plugins {
     kotlin("jvm").version("1.2.70")
     `java-library`
     id("com.atlassian.performance.tools.gradle-release").version("0.5.0")
+    id("com.gradle.build-scan").version("2.4.2")
+}
+
+buildScan {
+    termsOfServiceUrl = "https://gradle.com/terms-of-service"
+    termsOfServiceAgree = "yes"
+    publishAlways()
 }
 
 configurations.all {
