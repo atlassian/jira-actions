@@ -57,6 +57,7 @@ class JiraCoreScenarioIT {
 
         val diagnoses = Paths.get("diagnoses")
         val testOutput = JiraCoreFormula.Builder()
+            .port(8081)
             .version(version)
             .diagnoses(diagnoses)
             .build()

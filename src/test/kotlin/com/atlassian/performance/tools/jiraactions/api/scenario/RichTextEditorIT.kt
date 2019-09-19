@@ -64,6 +64,7 @@ class RichTextEditorIT {
 
         val diagnoses = Paths.get("diagnoses")
         JiraCoreFormula.Builder()
+            .port(8082)
             .version(version)
             .diagnoses(diagnoses)
             .build()
