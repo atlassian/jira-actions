@@ -1,6 +1,6 @@
 language: java
 
-script: travis_wait 21 ./gradlew build
+script: travis_wait 30 ./gradlew build
 
 env:
   - JIRA_SOFTWARE_VERSION=8.0.0
