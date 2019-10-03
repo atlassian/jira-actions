@@ -10,12 +10,12 @@
 >
     <Appenders>
         <Appender name="Console" type="Console">
-            <Layout type="PatternLayout" pattern="%d{ISO8601}{UTC}Z %-5level %t %x [%logger] %msg%n"/>
+            <Layout type="PatternLayout" pattern="%d{ISO8601}{UTC}Z %-5level %x [%c{1.}] %msg%n"/>
         </Appender>
         <Appender type="Null" name="Nothingness"/>
     </Appenders>
     <Loggers>
-        <Logger name="com.atlassian.performance.tools.jiraactions" level="info">
+        <Logger name="com.atlassian.performance.tools" level="info">
             <AppenderRef ref="Console"/>
         </Logger>
         <Root>
