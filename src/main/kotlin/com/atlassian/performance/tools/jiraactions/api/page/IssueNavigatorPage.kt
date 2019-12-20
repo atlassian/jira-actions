@@ -1,5 +1,6 @@
 package com.atlassian.performance.tools.jiraactions.api.page
 
+import com.atlassian.performance.tools.jiraactions.api.webdriver.JavaScriptUtils
 import org.openqa.selenium.By
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.support.ui.ExpectedConditions.*
@@ -36,11 +37,11 @@ class IssueNavigatorPage(
     }
 
     fun getIssueKeys(): Set<String> {
-        return driver
-            .findElements(By.className("issue-link-key"))
-            .map { it.text }
-            .map { it.trim() }
-            .toSet()
+        val issueKeys: List<String> = JavaScriptUtils.executeScript(driver,
+            "return Array.from(document.getElementsByClassName('issue-link-key'), i => i.innerText.trim())"
+        )
+
+        return HashSet(issueKeys)
     }
 
     fun issueView(): IssuePage {
