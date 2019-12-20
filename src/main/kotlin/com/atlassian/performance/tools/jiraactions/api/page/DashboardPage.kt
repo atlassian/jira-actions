@@ -46,6 +46,9 @@ class DashboardPage(
             //we currently support only single iframe on dashboard in this check
             return input.executeScript(
                 """
+                if (typeof $ === 'undefined') { //wait for jquery
+                    return false;
+                }
                 iframes = $('#dashboard').find('iframe');
                 return iframes.length === 1 && iframes.contents().find('body').children().length > 0
                 """
