@@ -21,8 +21,7 @@ class AdaptiveJqlMemory(
     }
 
     private val jqls = mutableListOf(
-        TaggedBakedJql(BakedJql({ _ -> ""}, "resolved is not empty order by description"), BuiltInJQL.RESOLVED.name),
-        TaggedBakedJql(BakedJql({ _ -> ""}, "text ~ \"a*\" order by summary"), BuiltInJQL.GENERIC_WIDE.name)
+        TaggedBakedJql(BakedJql({ _ -> ""}, "resolved is not empty order by description"), BuiltInJQL.RESOLVED.name)
     )
 
     private val jqlPrescriptions = mutableMapOf(
