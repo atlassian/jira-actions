@@ -22,9 +22,12 @@ internal class SingleSelect(
             condition = elementToBeClickable(input)
         )
         inputElement.click()
+        // this is a workaround for the fact that clear() can be processed asynchronously and can remove
+        // some of the keys sent to the browser. We have tested that under stress load, sending one backspace
+        // before the value fixes this issue.
+        // Whether we lose the backspace or not, it doesn't matter for the overall result.
         inputElement.clear()
-        inputElement.sendKeys(value)
-        inputElement.sendKeys(Keys.ENTER)
+        inputElement.sendKeys(Keys.BACK_SPACE, value, Keys.ENTER)
     }
 
     fun getSuggestions(): List<String> {
