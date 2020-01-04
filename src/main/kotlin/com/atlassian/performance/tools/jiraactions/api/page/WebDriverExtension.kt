@@ -5,6 +5,7 @@ package com.atlassian.performance.tools.jiraactions.api.page
 import org.openqa.selenium.By
 import org.openqa.selenium.JavascriptExecutor
 import org.openqa.selenium.WebDriver
+import org.openqa.selenium.WebElement
 import org.openqa.selenium.support.ui.ExpectedCondition
 import org.openqa.selenium.support.ui.WebDriverWait
 import java.time.Duration
@@ -16,7 +17,7 @@ import java.time.Duration
 fun <T> WebDriver.wait(
     timeout: Duration,
     condition: ExpectedCondition<T>,
-    precision: Duration = Duration.ofMillis(50)
+    precision: Duration = Duration.ofMillis(100)
 ): T {
     return WebDriverWait(
         this,
@@ -38,6 +39,12 @@ internal fun WebDriver.isElementPresent(
     locator: By
 ): Boolean {
     return this.findElements(locator).isNotEmpty()
+}
+
+internal fun WebDriver.maybeFindElement(
+    locator: By
+): WebElement? {
+    return this.findElements(locator).singleOrNull()
 }
 
 /**
