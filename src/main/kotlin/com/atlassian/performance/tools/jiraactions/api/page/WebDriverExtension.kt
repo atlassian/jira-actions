@@ -17,7 +17,7 @@ import java.time.Duration
 fun <T> WebDriver.wait(
     timeout: Duration,
     condition: ExpectedCondition<T>,
-    precision: Duration = Duration.ofMillis(100)
+    precision: Duration = Duration.ofMillis(50)
 ): T {
     return WebDriverWait(
         this,
