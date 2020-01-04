@@ -1,5 +1,6 @@
 package com.atlassian.performance.tools.jiraactions.webdriver
 
+import com.atlassian.performance.tools.jiraactions.api.webdriver.JavaScriptUtils
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.support.ui.ExpectedCondition
 
@@ -52,7 +53,7 @@ class NativeExpectedConditions {
         fun runOr(vararg conditions: NativeExpectedCondition): ExpectedCondition<Boolean> {
             return object : ExpectedCondition<Boolean> {
                 override fun apply(driver: WebDriver?): Boolean {
-                    return WebDriverUtils.executeScript(driver!!, "return !!(${renderJs()})")
+                    return JavaScriptUtils.executeScript(driver!!, "return !!(${renderJs()})")
                 }
 
                 private fun renderJs() = or(*conditions).render()
