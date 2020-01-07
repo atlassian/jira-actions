@@ -1,37 +1,18 @@
 package com.atlassian.performance.tools.jiraactions.webdriver
 
 import com.atlassian.performance.tools.jiraactions.api.webdriver.JavaScriptUtils
+import org.openqa.selenium.By
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.support.ui.ExpectedCondition
 
 class NativeExpectedConditions {
     companion object {
-        fun presenceOfElementLocated(locator: NativeBy): NativeExpectedCondition {
-            return object : NativeExpectedCondition() {
-                override fun render(): String {
-                    return locator.render()
-                }
-
-                override fun toString(): String {
-                    return "presence of element located by: ${render()}"
-                }
-            }
+        fun presenceOfElementLocated(locator: By): NativeExpectedCondition {
+            return presenceOfElementLocated(LocatorConverters.toNativeBy(locator))
         }
 
-        fun visibilityOfElementLocated(locator: NativeBy): NativeExpectedCondition {
-            return object : NativeExpectedCondition() {
-                override fun render(): String {
-                    return "${getComputedStyle()}.display !== 'none' && " +
-                        "parseFloat(${getComputedStyle()}.width)>0 && " +
-                        "parseFloat(${getComputedStyle()}.height)>0"
-                }
-
-                private fun getComputedStyle() = "window.getComputedStyle(${locator.render()})"
-
-                override fun toString(): String {
-                    return "visibility of element located by: ${render()}"
-                }
-            }
+        fun visibilityOfElementLocated(locator: By): NativeExpectedCondition {
+            return visibilityOfElementLocated(LocatorConverters.toNativeBy(locator))
         }
 
         fun and(vararg conditions: NativeExpectedCondition): NativeExpectedCondition {
@@ -51,15 +32,49 @@ class NativeExpectedConditions {
         }
 
         fun runOr(vararg conditions: NativeExpectedCondition): ExpectedCondition<Boolean> {
+            return conditionRunner(or(*conditions))
+        }
+
+        fun runAnd(vararg conditions: NativeExpectedCondition): ExpectedCondition<Boolean> {
+            return conditionRunner(and(*conditions))
+        }
+
+        private fun conditionRunner(condition: NativeExpectedCondition): ExpectedCondition<Boolean> {
             return object : ExpectedCondition<Boolean> {
                 override fun apply(driver: WebDriver?): Boolean {
-                    return JavaScriptUtils.executeScript(driver!!, "return !!(${renderJs()})")
+                    return JavaScriptUtils.executeScript(driver!!, "return !!(${condition.render()})")
                 }
 
-                private fun renderJs() = or(*conditions).render()
+                override fun toString(): String {
+                    return condition.toString()
+                }
+            }
+        }
+
+        private fun presenceOfElementLocated(locator: NativeBy): NativeExpectedCondition {
+            return object : NativeExpectedCondition() {
+                override fun render(): String {
+                    return locator.render()
+                }
 
                 override fun toString(): String {
-                    return "at least one condition to be valid: " + renderJs()
+                    return "presence of element located by: ${render()}"
+                }
+            }
+        }
+
+        private fun visibilityOfElementLocated(locator: NativeBy): NativeExpectedCondition {
+            return object : NativeExpectedCondition() {
+                override fun render(): String {
+                    return "${getComputedStyle()}.display !== 'none' && " +
+                        "parseFloat(${getComputedStyle()}.width)>0 && " +
+                        "parseFloat(${getComputedStyle()}.height)>0"
+                }
+
+                private fun getComputedStyle() = "window.getComputedStyle(${locator.render()})"
+
+                override fun toString(): String {
+                    return "visibility of element located by: ${render()}"
                 }
             }
         }
