@@ -1,10 +1,11 @@
 package com.atlassian.performance.tools.jiraactions.api.page
 
+import com.atlassian.performance.seleniumjs.NativeExpectedConditions
+import com.atlassian.performance.seleniumjs.NativeExpectedConditions.Companion.or
 import com.atlassian.performance.tools.jiraactions.api.memories.Project
 import com.atlassian.performance.tools.jiraactions.page.UserProfilePage
 import org.openqa.selenium.By
 import org.openqa.selenium.WebDriver
-import org.openqa.selenium.support.ui.ExpectedConditions.or
 import org.openqa.selenium.support.ui.ExpectedConditions.visibilityOfElementLocated
 import java.time.Duration
 
@@ -17,12 +18,15 @@ class IssuePage(
     private val summaryField = By.id("summary-val")
 
     fun waitForSummary(): IssuePage {
+        //needed to ensure ChromeDriver actually transitioned the page
+        //this is a workaround. Remove the line to find out if the bug has been fixed
+        driver.findElements(By.id("summary-val")).stream().findFirst()
         val jiraErrors = JiraErrors(driver)
         driver.wait(
             timeout = Duration.ofSeconds(10),
             condition = or(
-                visibilityOfElementLocated(summaryField),
-                jiraErrors.anyCommonError()
+                NativeExpectedConditions.visibilityOfElementLocated(summaryField),
+                jiraErrors.anyCommonErrorNative()
             )
         )
         jiraErrors.assertNoErrors()

@@ -1,9 +1,11 @@
 package com.atlassian.performance.tools.jiraactions.api.page
 
+import com.atlassian.performance.seleniumjs.NativeExpectedConditions.Companion.and
+import com.atlassian.performance.seleniumjs.NativeExpectedConditions.Companion.or
+import com.atlassian.performance.seleniumjs.NativeExpectedConditions.Companion.presenceOfElementLocated
 import com.atlassian.performance.tools.jiraactions.api.webdriver.JavaScriptUtils
 import org.openqa.selenium.By
 import org.openqa.selenium.WebDriver
-import org.openqa.selenium.support.ui.ExpectedConditions.*
 import java.time.Duration
 
 class IssueNavigatorPage(
@@ -30,7 +32,7 @@ class IssueNavigatorPage(
                     presenceOfElementLocated(By.className("issue-body-content"))
                 ),
                 presenceOfElementLocated(By.className("no-results-hint")),
-                jiraErrors.anyCommonError()
+                jiraErrors.anyCommonErrorNative()
             )
         )
         return this

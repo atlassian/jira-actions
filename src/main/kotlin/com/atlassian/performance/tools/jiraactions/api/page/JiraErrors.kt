@@ -1,5 +1,8 @@
 package com.atlassian.performance.tools.jiraactions.api.page
 
+import com.atlassian.performance.seleniumjs.NativeExpectedCondition
+import com.atlassian.performance.seleniumjs.NativeExpectedConditions
+import com.atlassian.performance.tools.jiraactions.api.webdriver.ExtraExpectedConditions
 import org.openqa.selenium.By
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.WebElement
@@ -19,18 +22,31 @@ class JiraErrors(
 
     fun anyCommonError(): ExpectedCondition<Boolean> {
         val conditions = errorLocators.map { presenceOfElementLocated(it) }.toTypedArray()
-        return or(*conditions)
+        return ExtraExpectedConditions.sometimesApply(or(*conditions))
+    }
+
+    fun anyCommonErrorNative(): NativeExpectedCondition {
+        val conditions = errorLocators.map { NativeExpectedConditions.presenceOfElementLocated(it) }.toTypedArray()
+        return NativeExpectedConditions.or(*conditions)
     }
 
     fun anyCommonWarning(): ExpectedCondition<WebElement> {
-        return presenceOfElementLocated(warningMessageLocator)
+        return ExtraExpectedConditions.sometimesLocate(presenceOfElementLocated(warningMessageLocator))
     }
 
     fun assertNoErrors() {
-        errorLocators.forEach {
-            if (driver.isElementPresent(it)) {
-                val errorMessage = driver.findElement(it).text
-                throw Exception("Error at $it reads: $errorMessage")
+        val detectErrors = NativeExpectedConditions.or(
+            *errorLocators
+                .map { NativeExpectedConditions.presenceOfElementLocated(it) }
+                .toTypedArray()
+        )
+        if (!detectErrors.apply(driver)) {
+            return
+        }
+        errorLocators.forEach { locator ->
+            driver.findElements(locator).firstOrNull()?.let {  el ->
+                val errorMessage = el.text
+                throw Exception("Error at $el reads: $errorMessage")
             }
         }
     }

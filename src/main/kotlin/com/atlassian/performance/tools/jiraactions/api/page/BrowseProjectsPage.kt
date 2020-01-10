@@ -1,10 +1,11 @@
 package com.atlassian.performance.tools.jiraactions.api.page
 
+import com.atlassian.performance.seleniumjs.NativeExpectedConditions.Companion.or
+import com.atlassian.performance.seleniumjs.NativeExpectedConditions.Companion.presenceOfElementLocated
 import com.atlassian.performance.tools.jiraactions.api.memories.Project
 import org.openqa.selenium.By
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.WebElement
-import org.openqa.selenium.support.ui.ExpectedConditions
 import java.time.Duration
 
 class BrowseProjectsPage(
@@ -16,10 +17,10 @@ class BrowseProjectsPage(
         val jiraErrors = JiraErrors(driver)
         driver.wait(
             Duration.ofSeconds(6),
-            ExpectedConditions.or(
-                ExpectedConditions.presenceOfElementLocated(By.cssSelector("tbody.projects-list")),
-                ExpectedConditions.presenceOfElementLocated(By.className("none-panel")),
-                jiraErrors.anyCommonError()
+            or(
+                presenceOfElementLocated(By.cssSelector("tbody.projects-list")),
+                presenceOfElementLocated(By.className("none-panel")),
+                jiraErrors.anyCommonErrorNative()
             )
         )
         jiraErrors.assertNoErrors()
