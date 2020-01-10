@@ -5,6 +5,7 @@ com.atlassian.performance.tools:concurrency:1.0.0
 com.atlassian.performance.tools:docker-infrastructure:0.1.2
 com.atlassian.performance.tools:io:1.2.0
 com.atlassian.performance.tools:jvm-tasks:1.0.0
+com.atlassian.performance:selenium-js:1.0.0
 com.github.stephenc.jcip:jcip-annotations:1.0-1
 com.google.code.findbugs:jsr305:1.3.9
 com.google.code.gson:gson:2.8.2

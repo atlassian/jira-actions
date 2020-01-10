@@ -2,6 +2,8 @@
 
 package com.atlassian.performance.tools.jiraactions.api.page
 
+import com.atlassian.performance.seleniumjs.NativeExpectedCondition
+import com.atlassian.performance.seleniumjs.NativeExpectedConditions
 import org.openqa.selenium.By
 import org.openqa.selenium.JavascriptExecutor
 import org.openqa.selenium.WebDriver
@@ -16,13 +18,26 @@ import java.time.Duration
 fun <T> WebDriver.wait(
     timeout: Duration,
     condition: ExpectedCondition<T>,
-    precision: Duration = Duration.ofMillis(50)
+    precision: Duration = Duration.ofMillis(100)
 ): T {
     return WebDriverWait(
         this,
         timeout.seconds,
         precision.toMillis()
     ).until(condition)
+}
+
+@JvmOverloads
+fun WebDriver.wait(
+    timeout: Duration,
+    condition: NativeExpectedCondition,
+    precision: Duration = Duration.ofMillis(100)
+) {
+    WebDriverWait(
+        this,
+        timeout.seconds,
+        precision.toMillis()
+    ).until(NativeExpectedConditions.toSeleniumCondition(condition))
 }
 
 /**
