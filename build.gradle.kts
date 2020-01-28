@@ -45,6 +45,9 @@ dependencies {
     implementation("org.apache.commons:commons-math3:3.6.1")
     implementation("com.atlassian.performance.tools:concurrency:[1.0.0,2.0.0)")
     implementation("com.atlassian.performance:selenium-js:[1.0.0,2.0.0)")
+
+    runtimeOnly("org.jetbrains.kotlin:kotlin-reflect:${kotlinVersion}")
+    
     listOf(
         "api",
         "core",
