@@ -28,6 +28,7 @@ Dropping a requirement of a major version of a dependency is a new contract.
 
 ### Fixed
 - `CreateIssueAction` should now properly fill in issue data [JPERF-298].
+- Upgraded Selenium to 3.141.59
 
 [JPERF-298]: https://ecosystem.atlassian.net/browse/JPERF-298
 

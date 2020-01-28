@@ -21,12 +21,12 @@ internal class SingleSelect(
             timeout = Duration.ofSeconds(8),
             condition = elementToBeClickable(input)
         )
-        inputElement.click()
+        inputElement.clear()
         // this is a workaround for the fact that clear() can be processed asynchronously and can remove
         // some of the keys sent to the browser. We have tested that under stress load, sending one backspace
         // before the value fixes this issue.
         // Whether we lose the backspace or not, it doesn't matter for the overall result.
-        inputElement.clear()
+        inputElement.click()
         inputElement.sendKeys(Keys.BACK_SPACE, value, Keys.ENTER)
     }
 

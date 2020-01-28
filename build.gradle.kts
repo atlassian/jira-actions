@@ -1,6 +1,7 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 val kotlinVersion = "1.2.70"
+val seleniumVersion = "3.141.59"
 
 plugins {
     kotlin("jvm").version("1.2.70")
@@ -27,6 +28,7 @@ configurations.all {
             }
             when (requested.group) {
                 "org.jetbrains.kotlin" -> useVersion(kotlinVersion)
+                "org.seleniumhq.selenium" -> useVersion(seleniumVersion)
             }
         }
     }
@@ -72,7 +74,7 @@ tasks
         }
     }
 
-fun webdriver(module: String): String = "org.seleniumhq.selenium:$module:3.11.0"
+fun webdriver(module: String): String = "org.seleniumhq.selenium:$module:$seleniumVersion"
 
 tasks.wrapper {
     gradleVersion = "5.1.1"
