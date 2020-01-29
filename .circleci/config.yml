@@ -1,10 +1,8 @@
 version: 2.1
 
 build_template: &build_template
-  environment:
-    TERM: dumb
-  machine: true
-  working_directory: ~/repo
+  machine:
+    enabled: true
   steps:
     - checkout
     - restore_cache:
