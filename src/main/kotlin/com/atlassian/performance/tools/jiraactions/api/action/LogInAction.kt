@@ -14,7 +14,13 @@ class LogInAction(
         val user = userMemory.recall()!!
         meter.measure(LOG_IN) {
             val dashboardPage = jira.goToLogin().logIn(user)
-            dashboardPage.waitForDashboard()
+            val dashboard = dashboardPage.waitForDashboard()
+            dashboard.getPopUps()
+                .dismissHealthCheckNotifications()
+                .dismissAuiFlags()
+                .disableNpsFeedback()
+                .dismissFindYourWorkFaster()
+            dashboard
         }
     }
 }

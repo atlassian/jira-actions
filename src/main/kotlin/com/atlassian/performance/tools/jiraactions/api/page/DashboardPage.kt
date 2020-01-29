@@ -1,6 +1,7 @@
 package com.atlassian.performance.tools.jiraactions.api.page
 
 import com.atlassian.performance.tools.jiraactions.page.IssueCreateDialog
+import com.atlassian.performance.tools.jiraactions.page.NotificationPopUps
 import org.openqa.selenium.By
 import org.openqa.selenium.JavascriptExecutor
 import org.openqa.selenium.WebDriver
@@ -12,12 +13,13 @@ class DashboardPage(
     private val driver: WebDriver
 ) {
     private val jiraErrors = JiraErrors(driver)
+    private val popUps = NotificationPopUps(driver)
 
     fun dismissAllPopups() {
-        driver.findElements(By.cssSelector(".aui-flag .icon-close")).filter { it.isEnabled && it.isDisplayed }.forEach { it.click() }
-        driver.findElements(By.id("nps-acknowledgement-accept-button")).filter { it.isEnabled && it.isDisplayed }.forEach { it.click() }
-        driver.findElements(By.cssSelector(".jira-help-tip .cancel")).filter { it.isEnabled && it.isDisplayed }.forEach { it.click() }
-        driver.findElements(By.className("postsetup-close-link")).filter { it.isEnabled && it.isDisplayed }.forEach { it.click() }
+        popUps
+            .disableNpsFeedback()
+            .dismissJiraHelpTips()
+            .dismissPostSetup()
     }
 
     fun waitForDashboard(): DashboardPage {
@@ -38,6 +40,10 @@ class DashboardPage(
     internal fun openIssueCreateDialog(): IssueCreateDialog {
         driver.findElement(By.id("create_link")).click()
         return IssueCreateDialog(driver)
+    }
+
+    internal fun getPopUps(): NotificationPopUps {
+        return popUps
     }
 
     private class CheckIFrame : ExpectedCondition<Boolean> {

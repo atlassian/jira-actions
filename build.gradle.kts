@@ -84,6 +84,11 @@ tasks.getByName("test", Test::class).apply {
 }
 
 val testIntegration = task<Test>("testIntegration") {
+    testLogging.exceptionFormat =  org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
+    testLogging.showStackTraces = true
+    testLogging.showExceptions = true
+    testLogging.showCauses = true
+    testLogging.showStandardStreams = true
     maxHeapSize = "2G"
     include("**/*IT.class")
 }
