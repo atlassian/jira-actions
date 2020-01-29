@@ -16,6 +16,7 @@ import org.assertj.core.api.Assertions
 import org.junit.Test
 import org.openqa.selenium.By
 import org.openqa.selenium.remote.RemoteWebDriver
+import java.nio.file.Paths
 import java.time.Clock
 import java.util.*
 
@@ -59,7 +60,8 @@ class JiraCoreScenarioIT {
             .build()
             .provision()
             .use { jira ->
-                DockerisedChrome().start().use { browser ->
+                val recordings = Paths.get("build/diagnoses/recordings/" + this::class.java.simpleName)
+                DockerisedChrome(recordings).start().use { browser ->
                     val driver = browser.driver
                     val webJira = WebJira(
                         driver,
