@@ -83,7 +83,7 @@ class ActionMeterTest {
         )
 
         try {
-            actionMeter.measure(CREATE_ISSUE) { throw Exception("oops") }
+            actionMeter.measure(CREATE_ISSUE) { throw Exception("Ignore this exception, it's test-only") }
         } catch (e: Exception) {
             logger.info("Ignoring exception", e)
         }
