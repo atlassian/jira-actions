@@ -6,6 +6,7 @@ import com.atlassian.performance.tools.jiraactions.api.page.isElementPresent
 import com.atlassian.performance.tools.jiraactions.api.page.tolerateDirtyFormsOnCurrentPage
 import com.atlassian.performance.tools.jiraactions.api.page.wait
 import org.openqa.selenium.By
+import org.openqa.selenium.ElementClickInterceptedException
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.support.ui.ExpectedConditions.*
 import java.time.Duration
@@ -14,6 +15,8 @@ import java.util.function.Supplier
 internal class IssueCreateDialog(
     private val driver: WebDriver
 ) {
+    private val popUps = NotificationPopUps(driver)
+
     private val form = IssueForm(By.cssSelector("form[name=jiraform]"), driver)
     private val projectField = SingleSelect(driver, By.id("project-field"))
     private val issueTypeField = SingleSelect(driver, By.id("issuetype-field"))
@@ -57,7 +60,7 @@ internal class IssueCreateDialog(
      *
      */
     fun showAllFields(): IssueCreateDialog {
-        driver.wait(elementToBeClickable(configColumnField)).click()
+        openConfigureFieldsDialog()
         val configureFieldsDialogId = "inline-dialog-field_picker_popup"
         driver.wait(visibilityOfElementLocated(By.id(configureFieldsDialogId)))
         val locator = By.xpath("//div[@id='$configureFieldsDialogId']//dd[1]//a")
@@ -68,6 +71,16 @@ internal class IssueCreateDialog(
         }
         dismissConfigureFieldsDialog()
         return this
+    }
+
+    private fun openConfigureFieldsDialog() {
+        val configureFields = driver.wait(elementToBeClickable(configColumnField))
+        try {
+            configureFields.click()
+        } catch (e: ElementClickInterceptedException) {
+            popUps.dismissHealthCheckNotifications() // nobody expects Spanish healthchecks!
+            configureFields.click()
+        }
     }
 
     private fun dismissConfigureFieldsDialog(){
