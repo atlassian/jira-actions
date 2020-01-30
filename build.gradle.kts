@@ -90,7 +90,7 @@ val testIntegration = task<Test>("testIntegration") {
     testLogging.showStackTraces = true
     testLogging.showExceptions = true
     testLogging.showCauses = true
-    testLogging.showStandardStreams = true
+    testLogging.showStandardStreams = true //this is really only needed for Travis
     maxHeapSize = "2G"
     include("**/*IT.class")
 }
