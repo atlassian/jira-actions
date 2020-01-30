@@ -1,7 +1,9 @@
 package com.atlassian.performance.tools.jiraactions.page
 
+import com.atlassian.performance.tools.jiraactions.api.webdriver.JavaScriptUtils
 import org.openqa.selenium.By
 import org.openqa.selenium.WebDriver
+
 
 internal class NotificationPopUps(private val driver: WebDriver) {
     fun dismissHealthCheckNotifications() : NotificationPopUps {
@@ -36,7 +38,11 @@ internal class NotificationPopUps(private val driver: WebDriver) {
     private fun clickAll(locator: By): NotificationPopUps {
         driver.findElements(locator)
             .filter { it.isEnabled && it.isDisplayed }
-            .forEach { it.click() }
+            .forEach {
+                //this lets us click flags that are hidden behind other flags
+                //otherwise we would have to wait for each flag
+                JavaScriptUtils.executeScript<Any>(driver, "arguments[0].click()", it)
+            }
         return this
     }
 }
