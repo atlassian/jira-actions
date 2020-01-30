@@ -17,8 +17,8 @@ class LogInAction(
             val dashboard = dashboardPage.waitForDashboard()
             dashboard.getPopUps()
                 .dismissHealthCheckNotifications()
-                .dismissAuiFlags()
                 .disableNpsFeedback()
+                .dismissAuiFlags()
                 .dismissFindYourWorkFaster()
             dashboard
         }

@@ -5,6 +5,7 @@ import org.openqa.selenium.WebDriver
 
 internal class NotificationPopUps(private val driver: WebDriver) {
     fun dismissHealthCheckNotifications() : NotificationPopUps {
+        // NPS is an AUI flag
         // e.g. healthcheck notifications: "Don't remind me again"
         return clickAll(By.cssSelector(".dismiss-notification"))
     }
@@ -20,6 +21,7 @@ internal class NotificationPopUps(private val driver: WebDriver) {
     }
 
     fun disableNpsFeedback() : NotificationPopUps {
+        //NPS is an AUI flag
         return clickAll(By.id("nps-acknowledgement-accept-button"))
     }
 
