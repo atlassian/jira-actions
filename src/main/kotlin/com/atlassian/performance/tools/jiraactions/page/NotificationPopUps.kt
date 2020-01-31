@@ -7,6 +7,7 @@ import org.openqa.selenium.OutputType
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.remote.RemoteWebDriver
 import org.openqa.selenium.support.ui.ExpectedConditions.*
+import java.time.Duration
 
 
 internal class NotificationPopUps(private val driver: WebDriver) {
@@ -21,6 +22,7 @@ internal class NotificationPopUps(private val driver: WebDriver) {
     fun waitUntilAuiFlagsAreGone(): NotificationPopUps {
         try {
             driver.wait(
+                Duration.ofSeconds(10),
                 not(visibilityOfElementLocated(auiFlagCloseLocator))
             )
         } catch (e: Exception) {
