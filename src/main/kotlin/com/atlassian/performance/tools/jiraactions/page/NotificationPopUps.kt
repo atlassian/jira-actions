@@ -3,7 +3,9 @@ package com.atlassian.performance.tools.jiraactions.page
 import com.atlassian.performance.tools.jiraactions.api.page.wait
 import com.atlassian.performance.tools.jiraactions.api.webdriver.JavaScriptUtils
 import org.openqa.selenium.By
+import org.openqa.selenium.OutputType
 import org.openqa.selenium.WebDriver
+import org.openqa.selenium.remote.RemoteWebDriver
 import org.openqa.selenium.support.ui.ExpectedConditions.not
 import org.openqa.selenium.support.ui.ExpectedConditions.presenceOfElementLocated
 
@@ -18,9 +20,14 @@ internal class NotificationPopUps(private val driver: WebDriver) {
     }
     
     fun waitUntilAuiFlagsAreGone(): NotificationPopUps {
-        driver.wait(
-            not(presenceOfElementLocated(auiFlagCloseLocator))
-        )
+        try {
+            driver.wait(
+                not(presenceOfElementLocated(auiFlagCloseLocator))
+            )
+        } catch (e: Exception) {
+            println((driver as RemoteWebDriver).getScreenshotAs(OutputType.BASE64))
+            throw e
+        }
         return this
     }
 
