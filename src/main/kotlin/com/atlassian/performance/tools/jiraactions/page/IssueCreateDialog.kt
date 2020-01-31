@@ -42,8 +42,6 @@ internal class IssueCreateDialog(
     })
 
     fun selectIssueType(issueType: String) = form.waitForRefresh(Supplier {
-        val throbber = driver.findElement(By.cssSelector("#create-issue-dialog .throbber"))
-        driver.wait(invisibilityOf(throbber))
         issueTypeField.select(issueType)
         return@Supplier this
     })
