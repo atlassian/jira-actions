@@ -9,14 +9,17 @@ import com.atlassian.performance.tools.jiraactions.api.measure.output.Collection
 import com.atlassian.performance.tools.jiraactions.api.memories.User
 import com.atlassian.performance.tools.jiraactions.api.memories.UserMemory
 import com.atlassian.performance.tools.jiraactions.api.page.isElementPresent
+import com.atlassian.performance.tools.jiraactions.api.page.wait
 import com.atlassian.performance.tools.jiraactions.api.w3c.DisabledW3cPerformanceTimeline
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 import org.assertj.core.api.Assertions
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 import org.openqa.selenium.By
 import org.openqa.selenium.OutputType
 import org.openqa.selenium.remote.RemoteWebDriver
+import org.openqa.selenium.support.ui.ExpectedConditions
 import java.nio.file.Paths
 import java.time.Clock
 import java.util.*
@@ -128,8 +131,16 @@ class JiraCoreScenarioIT {
     }
 
     private fun addBackupService(driver: RemoteWebDriver) {
-        driver.findElementById("serviceName").sendKeys("another backup")
-        driver.findElementById("serviceClass").sendKeys("com.atlassian.jira.service.services.export.ExportService")
+        val serviceNameInput = 
+            driver.wait(ExpectedConditions.elementToBeClickable(driver.findElementById("serviceName")))
+        serviceNameInput.click()
+        val serviceName = "another backup"
+        serviceNameInput.sendKeys(serviceName)
+        
+        val serviceClass = driver.findElementById("serviceClass")
+        serviceClass.click()
+        serviceClass.sendKeys("com.atlassian.jira.service.services.export.ExportService")
+        
         driver.findElementById("addservice_submit").click()
         try {
             driver.findElementById("update_submit").click()

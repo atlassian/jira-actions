@@ -24,14 +24,17 @@ internal class NotificationPopUps(private val driver: WebDriver) {
             waitUntilAuiFlagsAreGone(Duration.ofSeconds(5))
             return this
         } catch (e: Exception) {
-            dismissAuiFlags() //in case new flags appeared (yes, it does happen)
+            println("waitUntilAuiFlagsAreGone initial failure")
+            e.printStackTrace()
             println((driver as RemoteWebDriver).getScreenshotAs(OutputType.BASE64))
         }
 
         try {
+            dismissAuiFlags()
             waitUntilAuiFlagsAreGone(Duration.ofSeconds(30))
             return this
         } catch (e: Exception) {
+            println("waitUntilAuiFlagsAreGone second failure")
             println((driver as RemoteWebDriver).getScreenshotAs(OutputType.BASE64))
             throw e
         }
@@ -40,7 +43,7 @@ internal class NotificationPopUps(private val driver: WebDriver) {
     private fun waitUntilAuiFlagsAreGone(duration: Duration) {
         driver.wait(
             duration, //this is animated and can take a looong time
-            invisibilityOfElementLocated(auiFlagCloseLocator)
+            invisibilityOfElementLocated(By.id("aui-flag-container"))
         )
     }
 
@@ -56,7 +59,10 @@ internal class NotificationPopUps(private val driver: WebDriver) {
 
     fun disableNpsFeedback() : NotificationPopUps {
         //NPS is an AUI flag
-        return clickAll(By.id("nps-acknowledgement-accept-button"))
+        println("disableNpsFeedback()")
+        val clickAll = clickAll(By.id("nps-acknowledgement-accept-button"))
+        println("/disableNpsFeedback()")
+        return clickAll
     }
 
     fun dismissJiraHelpTips() : NotificationPopUps {
@@ -69,10 +75,11 @@ internal class NotificationPopUps(private val driver: WebDriver) {
 
     private fun clickAll(locator: By): NotificationPopUps {
         driver.findElements(locator)
-            .filter { it.isEnabled && it.isDisplayed }
+//            .filter { it.isEnabled }
             .forEach {
-                //this lets us click flags that are hidden behind other flags
-                //otherwise we would have to wait for each flag
+                println("Clicking on: " + it.text)
+                // this lets us click flags that are hidden behind other flags
+                // otherwise we would have to wait for each flag to slide away
                 JavaScriptUtils.executeScript<Any>(driver, "arguments[0].click()", it)
             }
         return this
