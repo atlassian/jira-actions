@@ -30,6 +30,7 @@ internal class NotificationPopUps(private val driver: WebDriver) {
 
         try {
             waitUntilAuiFlagsAreGone(Duration.ofSeconds(30))
+            return this
         } catch (e: Exception) {
             println((driver as RemoteWebDriver).getScreenshotAs(OutputType.BASE64))
             throw e
