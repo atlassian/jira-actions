@@ -15,6 +15,7 @@ import org.apache.logging.log4j.Logger
 import org.assertj.core.api.Assertions
 import org.junit.Test
 import org.openqa.selenium.By
+import org.openqa.selenium.OutputType
 import org.openqa.selenium.remote.RemoteWebDriver
 import java.nio.file.Paths
 import java.time.Clock
@@ -130,6 +131,11 @@ class JiraCoreScenarioIT {
         driver.findElementById("serviceName").sendKeys("another backup")
         driver.findElementById("serviceClass").sendKeys("com.atlassian.jira.service.services.export.ExportService")
         driver.findElementById("addservice_submit").click()
-        driver.findElementById("update_submit").click()
+        try {
+            driver.findElementById("update_submit").click()
+        } catch (e: Exception) {
+            println((driver as RemoteWebDriver).getScreenshotAs(OutputType.BASE64))
+            throw e
+        }
     }
 }
