@@ -78,7 +78,9 @@ internal class IssueCreateDialog(
         try {
             configureFields.click()
         } catch (e: ElementClickInterceptedException) {
-            popUps.dismissHealthCheckNotifications() // nobody expects Spanish healthchecks!
+            popUps
+                .dismissHealthCheckNotifications() // nobody expects Spanish healthchecks!
+                .waitUntilAuiFlagsAreGone()
             configureFields.click()
         }
     }
