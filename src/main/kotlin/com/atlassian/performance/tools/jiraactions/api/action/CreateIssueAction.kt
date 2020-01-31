@@ -5,6 +5,8 @@ import com.atlassian.performance.tools.jiraactions.api.measure.ActionMeter
 import com.atlassian.performance.tools.jiraactions.api.memories.ProjectMemory
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
+import org.openqa.selenium.OutputType
+import org.openqa.selenium.remote.RemoteWebDriver
 
 class CreateIssueAction(
     private val jira: WebJira,
@@ -27,18 +29,23 @@ class CreateIssueAction(
                 dismissAllPopups()
             }
             val issueCreateDialog = dashboardPage.openIssueCreateDialog()
-            val filledForm = issueCreateDialog
-                .waitForDialog()
-                .showAllFields()
-                .selectProject(project.name)
-                .selectIssueType(
-                    seededRandom.pick(
-                        issueCreateDialog.getIssueTypes().filter { it != "Epic" }
-                    )!!
-                )
-                .fill("summary", "This is a simple summary")
-            issueCreateDialog.fillRequiredFields()
-            meter.measure(CREATE_ISSUE_SUBMIT) { filledForm.submit() }
+            try {
+                val filledForm = issueCreateDialog
+                    .waitForDialog()
+                    .showAllFields()
+                    .selectProject(project.name)
+                    .selectIssueType(
+                        seededRandom.pick(
+                            issueCreateDialog.getIssueTypes().filter { it != "Epic" }
+                        )!!
+                    )
+                    .fill("summary", "This is a simple summary")
+                issueCreateDialog.fillRequiredFields()
+                meter.measure(CREATE_ISSUE_SUBMIT) { filledForm.submit() }
+            } catch (e: Exception) {
+                println((jira.driver as RemoteWebDriver).getScreenshotAs(OutputType.BASE64))
+                throw e
+            }
         }
     }
 }
