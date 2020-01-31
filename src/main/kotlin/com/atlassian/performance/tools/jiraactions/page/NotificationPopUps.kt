@@ -6,8 +6,7 @@ import org.openqa.selenium.By
 import org.openqa.selenium.OutputType
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.remote.RemoteWebDriver
-import org.openqa.selenium.support.ui.ExpectedConditions.not
-import org.openqa.selenium.support.ui.ExpectedConditions.presenceOfElementLocated
+import org.openqa.selenium.support.ui.ExpectedConditions.*
 
 
 internal class NotificationPopUps(private val driver: WebDriver) {
@@ -22,7 +21,7 @@ internal class NotificationPopUps(private val driver: WebDriver) {
     fun waitUntilAuiFlagsAreGone(): NotificationPopUps {
         try {
             driver.wait(
-                not(presenceOfElementLocated(auiFlagCloseLocator))
+                not(visibilityOfElementLocated(auiFlagCloseLocator))
             )
         } catch (e: Exception) {
             println((driver as RemoteWebDriver).getScreenshotAs(OutputType.BASE64))
