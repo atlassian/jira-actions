@@ -6,23 +6,24 @@ import org.openqa.selenium.By
 import org.openqa.selenium.OutputType
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.remote.RemoteWebDriver
-import org.openqa.selenium.support.ui.ExpectedConditions.*
+import org.openqa.selenium.support.ui.ExpectedConditions.not
+import org.openqa.selenium.support.ui.ExpectedConditions.visibilityOfElementLocated
 import java.time.Duration
 
 
 internal class NotificationPopUps(private val driver: WebDriver) {
     private val auiFlagCloseLocator = By.cssSelector(".aui-flag .icon-close")
-    
+
     fun dismissHealthCheckNotifications() : NotificationPopUps {
         // NPS is an AUI flag
         // e.g. healthcheck notifications: "Don't remind me again"
         return clickAll(By.cssSelector(".dismiss-notification"))
     }
-    
+
     fun waitUntilAuiFlagsAreGone(): NotificationPopUps {
         try {
             driver.wait(
-                Duration.ofSeconds(10),
+                Duration.ofSeconds(30), //this is animated and can take a looong time
                 not(visibilityOfElementLocated(auiFlagCloseLocator))
             )
         } catch (e: Exception) {
