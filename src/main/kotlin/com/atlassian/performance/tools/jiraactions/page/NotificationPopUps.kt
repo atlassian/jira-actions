@@ -1,20 +1,31 @@
 package com.atlassian.performance.tools.jiraactions.page
 
+import com.atlassian.performance.tools.jiraactions.api.page.wait
 import com.atlassian.performance.tools.jiraactions.api.webdriver.JavaScriptUtils
 import org.openqa.selenium.By
 import org.openqa.selenium.WebDriver
+import org.openqa.selenium.support.ui.ExpectedConditions
 
 
 internal class NotificationPopUps(private val driver: WebDriver) {
+    private val auiFlagCloseLocator = By.cssSelector(".aui-flag .icon-close")
+    
     fun dismissHealthCheckNotifications() : NotificationPopUps {
         // NPS is an AUI flag
         // e.g. healthcheck notifications: "Don't remind me again"
         return clickAll(By.cssSelector(".dismiss-notification"))
     }
+    
+    fun waitUntilAuiFlagsAreGone(): NotificationPopUps {
+        driver.wait(
+            ExpectedConditions.presenceOfElementLocated(auiFlagCloseLocator)
+        )
+        return this
+    }
 
     fun dismissAuiFlags() : NotificationPopUps {
         // X mark on AUI flag
-        return clickAll(By.cssSelector(".aui-flag .icon-close"))
+        return clickAll(auiFlagCloseLocator)
     }
 
     fun dismissFindYourWorkFaster() : NotificationPopUps {

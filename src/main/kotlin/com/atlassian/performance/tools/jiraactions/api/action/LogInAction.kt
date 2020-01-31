@@ -20,6 +20,7 @@ class LogInAction(
                 .disableNpsFeedback()
                 .dismissAuiFlags()
                 .dismissFindYourWorkFaster()
+                .waitUntilAuiFlagsAreGone()
             dashboard
         }
     }
