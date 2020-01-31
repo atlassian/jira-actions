@@ -6,8 +6,7 @@ import org.openqa.selenium.By
 import org.openqa.selenium.OutputType
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.remote.RemoteWebDriver
-import org.openqa.selenium.support.ui.ExpectedConditions.not
-import org.openqa.selenium.support.ui.ExpectedConditions.visibilityOfElementLocated
+import org.openqa.selenium.support.ui.ExpectedConditions.invisibilityOfElementLocated
 import java.time.Duration
 
 
@@ -24,7 +23,7 @@ internal class NotificationPopUps(private val driver: WebDriver) {
         try {
             driver.wait(
                 Duration.ofSeconds(30), //this is animated and can take a looong time
-                not(visibilityOfElementLocated(auiFlagCloseLocator))
+                invisibilityOfElementLocated(auiFlagCloseLocator)
             )
         } catch (e: Exception) {
             println((driver as RemoteWebDriver).getScreenshotAs(OutputType.BASE64))
