@@ -21,15 +21,26 @@ internal class NotificationPopUps(private val driver: WebDriver) {
 
     fun waitUntilAuiFlagsAreGone(): NotificationPopUps {
         try {
-            driver.wait(
-                Duration.ofSeconds(30), //this is animated and can take a looong time
-                invisibilityOfElementLocated(auiFlagCloseLocator)
-            )
+            waitUntilAuiFlagsAreGone(Duration.ofSeconds(5))
+            return this
+        } catch (e: Exception) {
+            dismissAuiFlags() //in case new flags appeared (yes, it does happen)
+            println((driver as RemoteWebDriver).getScreenshotAs(OutputType.BASE64))
+        }
+
+        try {
+            waitUntilAuiFlagsAreGone(Duration.ofSeconds(30))
         } catch (e: Exception) {
             println((driver as RemoteWebDriver).getScreenshotAs(OutputType.BASE64))
             throw e
         }
-        return this
+    }
+
+    private fun waitUntilAuiFlagsAreGone(duration: Duration) {
+        driver.wait(
+            duration, //this is animated and can take a looong time
+            invisibilityOfElementLocated(auiFlagCloseLocator)
+        )
     }
 
     fun dismissAuiFlags() : NotificationPopUps {
