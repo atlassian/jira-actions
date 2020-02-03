@@ -6,7 +6,10 @@ import com.atlassian.performance.tools.jiraactions.api.page.isElementPresent
 import com.atlassian.performance.tools.jiraactions.api.page.tolerateDirtyFormsOnCurrentPage
 import com.atlassian.performance.tools.jiraactions.api.page.wait
 import org.openqa.selenium.By
+import org.openqa.selenium.ElementClickInterceptedException
 import org.openqa.selenium.WebDriver
+import org.openqa.selenium.WebElement
+import org.openqa.selenium.support.ui.ExpectedCondition
 import org.openqa.selenium.support.ui.ExpectedConditions.*
 import java.time.Duration
 import java.util.function.Supplier
@@ -14,6 +17,8 @@ import java.util.function.Supplier
 internal class IssueCreateDialog(
     private val driver: WebDriver
 ) {
+    private val popUps = NotificationPopUps(driver)
+
     private val form = IssueForm(By.cssSelector("form[name=jiraform]"), driver)
     private val projectField = SingleSelect(driver, By.id("project-field"))
     private val issueTypeField = SingleSelect(driver, By.id("issuetype-field"))
@@ -35,6 +40,7 @@ internal class IssueCreateDialog(
 
     fun selectProject(projectName: String) = form.waitForRefresh(Supplier {
         projectField.select(projectName)
+        waitUntilSummaryIsFocused()
         return@Supplier this
     })
 
@@ -57,7 +63,7 @@ internal class IssueCreateDialog(
      *
      */
     fun showAllFields(): IssueCreateDialog {
-        driver.wait(elementToBeClickable(configColumnField)).click()
+        openConfigureFieldsDialog()
         val configureFieldsDialogId = "inline-dialog-field_picker_popup"
         driver.wait(visibilityOfElementLocated(By.id(configureFieldsDialogId)))
         val locator = By.xpath("//div[@id='$configureFieldsDialogId']//dd[1]//a")
@@ -68,6 +74,18 @@ internal class IssueCreateDialog(
         }
         dismissConfigureFieldsDialog()
         return this
+    }
+
+    private fun openConfigureFieldsDialog() {
+        val configureFields = driver.wait(elementToBeClickable(configColumnField))
+        try {
+            configureFields.click()
+        } catch (e: ElementClickInterceptedException) {
+            popUps
+                .dismissHealthCheckNotifications() // nobody expects Spanish healthchecks!
+                .waitUntilAuiFlagsAreGone()
+            configureFields.click()
+        }
     }
 
     private fun dismissConfigureFieldsDialog(){
@@ -82,6 +100,24 @@ internal class IssueCreateDialog(
     fun submit() {
         driver.wait(elementToBeClickable(By.id("create-issue-submit"))).click()
         driver.wait(Duration.ofSeconds(30), invisibilityOfElementLocated(By.className("aui-blanket")))
+    }
+
+    private fun waitUntilSummaryIsFocused() {
+        driver.wait(Duration.ofSeconds(5), elementIsFocused(By.id("summary")))
+    }
+
+    private fun elementIsFocused(locator: By): ExpectedCondition<WebElement?> {
+        return object : ExpectedCondition<WebElement?> {
+            override fun apply(driver: WebDriver?): WebElement? {
+                val summary = driver!!.findElement(locator)
+
+                return if (summary == driver.switchTo().activeElement()) summary else null
+            }
+
+            override fun toString(): String {
+                return "element to be focused: $locator"
+            }
+        }
     }
 
 }
