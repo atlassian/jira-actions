@@ -11,7 +11,7 @@ class AdminAccess(
     private val jira: WebJira,
     private val password: String
 ) {
-    private val dropLocator = By.cssSelector(
+    private val dropAdminRightsLocator = By.cssSelector(
         "#websudo-drop-from-protected-page, #websudo-drop-from-normal-page"
     )
     private val passwordLocator = By.id(
@@ -19,12 +19,18 @@ class AdminAccess(
     )
 
     fun isPrompted(): Boolean {
+        if (isDropNotificationPresent()) {
+            return false
+        }
         return Patience().test {
             driver.isElementPresent(passwordLocator)
         }
     }
 
     fun isGranted(): Boolean {
+        if (isDropNotificationPresent()) {
+            return true
+        }
         jira.goToSystemInfo()
         val granted = isPrompted().not()
         driver.navigate().back()
@@ -49,9 +55,14 @@ class AdminAccess(
     }
 
     fun drop() {
-        jira.goToDashboard().waitForDashboard()
-        if (isGranted()) {
-            driver.wait(elementToBeClickable(dropLocator)).click()
+        if (!isDropNotificationPresent()) {
+            jira.goToDashboard().waitForDashboard()
+            if (!isGranted()) {
+                return
+            }
         }
+        driver.wait(elementToBeClickable(dropAdminRightsLocator)).click()
     }
+
+    private fun isDropNotificationPresent() = driver.findElements(dropAdminRightsLocator).isNotEmpty()
 }
