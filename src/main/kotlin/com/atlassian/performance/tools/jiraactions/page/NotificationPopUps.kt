@@ -21,7 +21,7 @@ internal class NotificationPopUps(private val driver: WebDriver) {
 
     fun waitUntilAuiFlagsAreGone(): NotificationPopUps {
         try {
-            waitUntilAuiFlagsAreGone(Duration.ofSeconds(5))
+            waitUntilAuiFlagsAreGone(Duration.ofSeconds(10))
             return this
         } catch (e: Exception) {
             println("waitUntilAuiFlagsAreGone initial failure")
