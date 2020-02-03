@@ -1,7 +1,6 @@
 package com.atlassian.performance.tools.jiraactions.api
 
 import com.atlassian.performance.tools.jiraactions.api.page.*
-import com.atlassian.performance.tools.jiraactions.api.page.BackupConfiguration
 import org.openqa.selenium.By
 import org.openqa.selenium.WebDriver
 import java.net.URI

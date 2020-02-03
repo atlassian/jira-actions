@@ -25,7 +25,6 @@ class CreateIssueAction(
                 jira.goToDashboard().waitForDashboard()
             }.apply {
                 dismissAllPopups()
-                getPopUps().dismissHealthCheckNotifications() //health checks can pop up unexpectedly
             }
             val issueCreateDialog = dashboardPage.openIssueCreateDialog()
             val filledForm = issueCreateDialog

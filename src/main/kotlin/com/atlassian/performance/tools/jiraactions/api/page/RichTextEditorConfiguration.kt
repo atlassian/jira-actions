@@ -5,6 +5,7 @@ import org.apache.logging.log4j.LogManager
 import org.openqa.selenium.By
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.support.ui.ExpectedConditions.*
+import java.time.Duration
 
 /**
  * Configures Rich Text Editor feature. Should work in any Jira version.
@@ -53,7 +54,7 @@ class RichTextEditorConfiguration(
                 logger.info("Admin access already granted, clicking the RTE switch...")
                 driver.wait(elementToBeClickable(switchLocator)).click()
                 driver.wait(not(attributeToBe(getSwitchInput(), "aria-busy", "true")))
-                driver.wait(not(elementToBeSelected(getSwitchInput())))
+                driver.wait(Duration.ofSeconds(15), not(elementToBeSelected(getSwitchInput())))
                 logger.info("RTE should be disabled now")
             } else {
                 logger.info("Admin access not granted yet, gaining access proactively and retrying...")

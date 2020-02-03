@@ -9,11 +9,12 @@ internal class FormFieldFactory(
     private val fieldDescriptors: List<FromFieldType>
 ) {
     fun getFormField(fieldGroup: WebElement): FormField {
+        val input = getInput(fieldGroup)
         val matchedDescriptors = fieldDescriptors
-            .filter { it.isTypeOf(getInput(fieldGroup)) }
+            .filter { it.isTypeOf(input) }
             .toList()
         return when (matchedDescriptors.size) {
-            1 -> matchedDescriptors[0].create(driver, fieldGroup, getInput(fieldGroup)!!)
+            1 -> matchedDescriptors[0].create(driver, fieldGroup, input!!)
             0 -> UnknownFormField(fieldGroup)
             else -> throw Exception("Field group '${fieldGroup.getAttribute("innerHTML")}' matches more than one form field" +
                 "'$matchedDescriptors'")
