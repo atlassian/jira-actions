@@ -31,6 +31,7 @@ internal class NotificationPopUps(private val driver: WebDriver) {
 
         try {
             dismissAuiFlags()
+            println("waitUntilAuiFlagsAreGone issued the second round of clicks")
             waitUntilAuiFlagsAreGone(Duration.ofSeconds(30))
             return this
         } catch (e: Exception) {
