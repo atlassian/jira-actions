@@ -1,6 +1,7 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 val kotlinVersion = "1.2.70"
+val seleniumVersion = "3.141.59"
 
 plugins {
     kotlin("jvm").version("1.2.70")
@@ -27,6 +28,7 @@ configurations.all {
             }
             when (requested.group) {
                 "org.jetbrains.kotlin" -> useVersion(kotlinVersion)
+                "org.seleniumhq.selenium" -> useVersion(seleniumVersion)
             }
         }
     }
@@ -53,7 +55,7 @@ dependencies {
     }.forEach { implementation(it) }
     testCompile("org.assertj:assertj-core:3.11.0")
     testCompile("com.atlassian.performance.tools:io:[1.0.0,2.0.0)")
-    testCompile("com.atlassian.performance.tools:docker-infrastructure:0.3.0")
+    testCompile("com.atlassian.performance.tools:docker-infrastructure:0.3.1")
     testCompile("junit:junit:4.12")
 }
 
@@ -72,7 +74,7 @@ tasks
         }
     }
 
-fun webdriver(module: String): String = "org.seleniumhq.selenium:$module:3.11.0"
+fun webdriver(module: String): String = "org.seleniumhq.selenium:$module:$seleniumVersion"
 
 tasks.wrapper {
     gradleVersion = "5.1.1"
@@ -88,7 +90,7 @@ val testIntegration = task<Test>("testIntegration") {
     testLogging.showStackTraces = true
     testLogging.showExceptions = true
     testLogging.showCauses = true
-    testLogging.showStandardStreams = true
+    testLogging.showStandardStreams = true //this is really only needed for Travis
     maxHeapSize = "2G"
     include("**/*IT.class")
 }

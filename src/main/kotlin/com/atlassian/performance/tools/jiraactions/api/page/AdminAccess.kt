@@ -36,7 +36,7 @@ class AdminAccess(
         driver.navigate().back()
         return granted
     }
-    
+
     /**
      * Navigates to a known admin page in order to gain admin access.
      * Useful as a workaround for dysfunctional admin pages, which don't enforce the admin access on their own.

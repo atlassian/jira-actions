@@ -9,13 +9,16 @@ import com.atlassian.performance.tools.jiraactions.api.measure.output.Collection
 import com.atlassian.performance.tools.jiraactions.api.memories.User
 import com.atlassian.performance.tools.jiraactions.api.memories.UserMemory
 import com.atlassian.performance.tools.jiraactions.api.page.isElementPresent
+import com.atlassian.performance.tools.jiraactions.api.page.wait
 import com.atlassian.performance.tools.jiraactions.api.w3c.DisabledW3cPerformanceTimeline
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 import org.assertj.core.api.Assertions
 import org.junit.Test
 import org.openqa.selenium.By
+import org.openqa.selenium.OutputType
 import org.openqa.selenium.remote.RemoteWebDriver
+import org.openqa.selenium.support.ui.ExpectedConditions
 import java.nio.file.Paths
 import java.time.Clock
 import java.util.*
@@ -127,9 +130,33 @@ class JiraCoreScenarioIT {
     }
 
     private fun addBackupService(driver: RemoteWebDriver) {
-        driver.findElementById("serviceName").sendKeys("another backup")
-        driver.findElementById("serviceClass").sendKeys("com.atlassian.jira.service.services.export.ExportService")
+        sendKeys(driver, By.id("serviceName"), "another backup")
+        sendKeys(driver, By.id("serviceClass"), "com.atlassian.jira.service.services.export.ExportService")
+
         driver.findElementById("addservice_submit").click()
-        driver.findElementById("update_submit").click()
+
+        try {
+            driver.findElementById("update_submit").click()
+        } catch (e: Exception) {
+            // this action was still flaky in CI before the introduction of sendKeys,
+            // we can remove this try/catch once we are sure it's stable
+            println(driver.getScreenshotAs(OutputType.BASE64))
+            throw e
+        }
+    }
+
+    private fun sendKeys(driver: RemoteWebDriver, locator: By, text: String) {
+        val element = driver.wait(ExpectedConditions.elementToBeClickable(locator))
+        element.click()
+
+        // It's hard to say when the keys can be sent. They seem to randomly get lost.
+        for (i in 0..10) {
+            element.sendKeys(text)
+            val currentValue = element.getAttribute("value")
+            if (currentValue == text) {
+                break
+            }
+            Thread.sleep(500)
+        }
     }
 }

@@ -20,6 +20,7 @@ class DashboardPage(
             .disableNpsFeedback()
             .dismissJiraHelpTips()
             .dismissPostSetup()
+            .waitUntilAuiFlagsAreGone()
     }
 
     fun waitForDashboard(): DashboardPage {
