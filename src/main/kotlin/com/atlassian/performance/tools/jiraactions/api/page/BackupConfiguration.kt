@@ -3,6 +3,8 @@ package com.atlassian.performance.tools.jiraactions.api.page
 import org.apache.logging.log4j.LogManager
 import org.openqa.selenium.By
 import org.openqa.selenium.WebDriver
+import org.openqa.selenium.support.ui.ExpectedConditions
+import java.time.Duration
 
 class BackupConfiguration(
     private val driver: WebDriver,
@@ -33,7 +35,8 @@ class BackupConfiguration(
     }
 
     private fun deleteBackupService() {
-        driver.findElement(deleteBackupLocator).click()
+        driver.wait(ExpectedConditions.elementToBeClickable(deleteBackupLocator)).click()
+        driver.wait(ExpectedConditions.alertIsPresent())
         driver.switchTo().alert().accept()
         if (access.isPrompted()) {
             access.gain()

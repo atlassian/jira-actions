@@ -3,6 +3,7 @@ package com.atlassian.performance.tools.jiraactions.api
 import com.atlassian.performance.tools.jiraactions.api.page.*
 import com.atlassian.performance.tools.jiraactions.api.page.BackupConfiguration
 import org.openqa.selenium.By
+import org.openqa.selenium.JavascriptExecutor
 import org.openqa.selenium.WebDriver
 import java.net.URI
 import java.net.URLEncoder
@@ -92,6 +93,9 @@ data class WebJira(
     }
 
     fun navigateTo(path: String) {
+        val executeScript = (driver as JavascriptExecutor).executeScript("return document.readyState")
+        println("Going to $path, state: $executeScript")
         driver.navigate().to(base.resolve(path).toURL())
+        println("Current URL: " + driver.currentUrl)
     }
 }

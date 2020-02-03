@@ -5,10 +5,7 @@ import com.atlassian.performance.tools.jiraactions.api.page.form.IssueForm
 import com.atlassian.performance.tools.jiraactions.api.page.isElementPresent
 import com.atlassian.performance.tools.jiraactions.api.page.tolerateDirtyFormsOnCurrentPage
 import com.atlassian.performance.tools.jiraactions.api.page.wait
-import org.openqa.selenium.By
-import org.openqa.selenium.ElementClickInterceptedException
-import org.openqa.selenium.WebDriver
-import org.openqa.selenium.WebElement
+import org.openqa.selenium.*
 import org.openqa.selenium.support.ui.ExpectedCondition
 import org.openqa.selenium.support.ui.ExpectedConditions.*
 import java.time.Duration
@@ -63,20 +60,25 @@ internal class IssueCreateDialog(
      *
      */
     fun showAllFields(): IssueCreateDialog {
-        openConfigureFieldsDialog()
         val configureFieldsDialogId = "inline-dialog-field_picker_popup"
-        driver.wait(visibilityOfElementLocated(By.id(configureFieldsDialogId)))
+        val dialogLocator = By.id(configureFieldsDialogId)
+        try {
+            openConfigureFieldsDialog(dialogLocator)
+        } catch (e: TimeoutException) {
+            //we probably sometimes click too fast, but no idea what we should wait for
+            openConfigureFieldsDialog(dialogLocator)
+        }
         val locator = By.xpath("//div[@id='$configureFieldsDialogId']//dd[1]//a")
         if (driver.isElementPresent(locator)) {
             driver.wait(elementToBeClickable(locator)).click()
-            driver.wait(invisibilityOfElementLocated(By.id(configureFieldsDialogId)))
-            driver.wait(visibilityOfElementLocated(By.id(configureFieldsDialogId)))
+            driver.wait(invisibilityOfElementLocated(dialogLocator))
+            driver.wait(visibilityOfElementLocated(dialogLocator))
         }
         dismissConfigureFieldsDialog()
         return this
     }
 
-    private fun openConfigureFieldsDialog() {
+    private fun openConfigureFieldsDialog(popupLocator: By) {
         val configureFields = driver.wait(elementToBeClickable(configColumnField))
         try {
             configureFields.click()
@@ -86,6 +88,7 @@ internal class IssueCreateDialog(
                 .waitUntilAuiFlagsAreGone()
             configureFields.click()
         }
+        driver.wait(visibilityOfElementLocated(popupLocator))
     }
 
     private fun dismissConfigureFieldsDialog(){

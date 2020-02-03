@@ -14,10 +14,8 @@ import com.atlassian.performance.tools.jiraactions.api.w3c.DisabledW3cPerformanc
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 import org.assertj.core.api.Assertions
-import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 import org.openqa.selenium.By
-import org.openqa.selenium.OutputType
 import org.openqa.selenium.remote.RemoteWebDriver
 import org.openqa.selenium.support.ui.ExpectedConditions
 import java.nio.file.Paths
@@ -131,27 +129,25 @@ class JiraCoreScenarioIT {
     }
 
     private fun addBackupService(driver: RemoteWebDriver) {
-        val serviceNameInput = 
-            driver.wait(ExpectedConditions.elementToBeClickable(driver.findElementById("serviceName")))
-        serviceNameInput.click()
-        
-        val serviceName = "another backup"
-        serviceNameInput.sendKeys(serviceName)
-        if (serviceNameInput.text!=serviceName) {
-            Thread.sleep(3000)
-            serviceNameInput.sendKeys(serviceName)
-        }
-        
-        val serviceClass = driver.findElementById("serviceClass")
-        serviceClass.click()
-        serviceClass.sendKeys("com.atlassian.jira.service.services.export.ExportService")
+        sendKeys(driver, By.id("serviceName"), "another backup")
+        sendKeys(driver, By.id("serviceClass"), "com.atlassian.jira.service.services.export.ExportService")
         
         driver.findElementById("addservice_submit").click()
-        try {
-            driver.findElementById("update_submit").click()
-        } catch (e: Exception) {
-            println((driver as RemoteWebDriver).getScreenshotAs(OutputType.BASE64))
-            throw e
+        driver.findElementById("update_submit").click()
+    }
+
+    private fun sendKeys(driver: RemoteWebDriver, locator: By, text: String) {
+        val element = driver.wait(ExpectedConditions.elementToBeClickable(locator))
+        element.click()
+
+        // It's hard to say when the keys can be sent. They seem to randomly get lost.
+        for (i in 0..10) {
+            element.sendKeys(text)
+            val currentValue = element.getAttribute("value")
+            if (currentValue == text) {
+                break
+            }
+            Thread.sleep(500)
         }
     }
 }
