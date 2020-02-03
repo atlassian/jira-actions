@@ -4,6 +4,7 @@ import com.atlassian.performance.tools.jiraactions.api.page.wait
 import com.atlassian.performance.tools.jiraactions.api.webdriver.JavaScriptUtils
 import org.openqa.selenium.By
 import org.openqa.selenium.OutputType
+import org.openqa.selenium.TimeoutException
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.remote.RemoteWebDriver
 import org.openqa.selenium.support.ui.ExpectedConditions.invisibilityOfElementLocated
@@ -21,12 +22,9 @@ internal class NotificationPopUps(private val driver: WebDriver) {
 
     fun waitUntilAuiFlagsAreGone(): NotificationPopUps {
         try {
-            waitUntilAuiFlagsAreGone(Duration.ofSeconds(10))
+            waitUntilAuiFlagsAreGone(Duration.ofSeconds(5))
             return this
-        } catch (e: Exception) {
-            println("waitUntilAuiFlagsAreGone initial failure")
-            e.printStackTrace()
-            println((driver as RemoteWebDriver).getScreenshotAs(OutputType.BASE64))
+        } catch (e: TimeoutException) {
         }
 
         try {
@@ -60,10 +58,7 @@ internal class NotificationPopUps(private val driver: WebDriver) {
 
     fun disableNpsFeedback() : NotificationPopUps {
         //NPS is an AUI flag
-        println("disableNpsFeedback()")
-        val clickAll = clickAll(By.id("nps-acknowledgement-accept-button"))
-        println("/disableNpsFeedback()")
-        return clickAll
+        return clickAll(By.id("nps-acknowledgement-accept-button"))
     }
 
     fun dismissJiraHelpTips() : NotificationPopUps {
@@ -76,9 +71,8 @@ internal class NotificationPopUps(private val driver: WebDriver) {
 
     private fun clickAll(locator: By): NotificationPopUps {
         driver.findElements(locator)
-//            .filter { it.isEnabled }
             .forEach {
-                println("Clicking on: " + it.text)
+                println("Dismissing notification using [" + it.text + "]")
                 // this lets us click flags that are hidden behind other flags
                 // otherwise we would have to wait for each flag to slide away
                 JavaScriptUtils.executeScript<Any>(driver, "arguments[0].click()", it)

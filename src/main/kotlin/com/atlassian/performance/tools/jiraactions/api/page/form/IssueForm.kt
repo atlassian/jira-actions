@@ -25,22 +25,32 @@ class IssueForm(
     }
 
     fun fillRequiredFields(): IssueForm {
-        val form = getForm()
-        val formFieldFactory = FormFieldFactory(
-            driver,
-            listOf(
-                TextInput.Descriptor(),
-                ComboBox.Descriptor(),
-                TextSelectField.Descriptor(),
-                Select.Descriptor(),
-                TextArea.Descriptor()
+        val start = System.currentTimeMillis()
+        try {
+            val form = getForm()
+            println("fill req fields0: " + Duration.ofMillis(System.currentTimeMillis()-start))
+            val formFieldFactory = FormFieldFactory(
+                driver,
+                listOf(
+                    TextInput.Descriptor(),
+                    ComboBox.Descriptor(),
+                    TextSelectField.Descriptor(),
+                    Select.Descriptor(),
+                    TextArea.Descriptor()
+                )
             )
-        )
-        form.findElements(requiredFieldGroupsLocator)
-            .filter { it.isDisplayed }
-            .map { formFieldFactory.getFormField(it) }
-            .filter { !it.hasValue() }
-            .forEach { it.fillWithAnyValue() }
+            println("fill req fields1: " + Duration.ofMillis(System.currentTimeMillis()-start))
+            val map = form.findElements(requiredFieldGroupsLocator)
+                .filter { it.isDisplayed }
+                .map { formFieldFactory.getFormField(it) }
+            println("fill req fields20: " + Duration.ofMillis(System.currentTimeMillis()-start))
+            map
+                .filter { !it.hasValue() }
+                .forEach { it.fillWithAnyValue() }
+        } finally {
+            println("fill req fields=: " + Duration.ofMillis(System.currentTimeMillis()-start))
+        }
+
         return this
     }
 

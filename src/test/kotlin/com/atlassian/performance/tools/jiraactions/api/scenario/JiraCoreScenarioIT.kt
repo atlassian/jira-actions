@@ -134,8 +134,13 @@ class JiraCoreScenarioIT {
         val serviceNameInput = 
             driver.wait(ExpectedConditions.elementToBeClickable(driver.findElementById("serviceName")))
         serviceNameInput.click()
+        
         val serviceName = "another backup"
         serviceNameInput.sendKeys(serviceName)
+        if (serviceNameInput.text!=serviceName) {
+            Thread.sleep(3000)
+            serviceNameInput.sendKeys(serviceName)
+        }
         
         val serviceClass = driver.findElementById("serviceClass")
         serviceClass.click()
