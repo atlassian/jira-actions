@@ -2,9 +2,9 @@ package com.atlassian.performance.tools.jiraactions.api.page
 
 import org.apache.logging.log4j.LogManager
 import org.openqa.selenium.By
+import org.openqa.selenium.TimeoutException
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.support.ui.ExpectedConditions
-import java.time.Duration
 
 class BackupConfiguration(
     private val driver: WebDriver,
@@ -36,8 +36,12 @@ class BackupConfiguration(
 
     private fun deleteBackupService() {
         driver.wait(ExpectedConditions.elementToBeClickable(deleteBackupLocator)).click()
-        driver.wait(ExpectedConditions.alertIsPresent())
-        driver.switchTo().alert().accept()
+        try {
+            driver.wait(ExpectedConditions.alertIsPresent())
+            driver.switchTo().alert().accept()
+        } catch (e: TimeoutException) {
+            //this alert sometimes doesn't show...
+        }
         if (access.isPrompted()) {
             access.gain()
         }
