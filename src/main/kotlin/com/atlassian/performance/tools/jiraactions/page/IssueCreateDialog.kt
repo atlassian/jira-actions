@@ -46,6 +46,11 @@ internal class IssueCreateDialog(
         return@Supplier this
     })
 
+    fun selectIssueType(picker: (Collection<String>) -> String) = form.waitForRefresh(Supplier {
+        issueTypeField.select(picker)
+        return@Supplier this
+    })
+
     fun getIssueTypes() = issueTypeField.getSuggestions()
         .plus(issueTypeField.getCurrentValue())
 

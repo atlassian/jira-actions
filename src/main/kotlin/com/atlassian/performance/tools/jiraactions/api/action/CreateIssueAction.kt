@@ -34,11 +34,11 @@ class CreateIssueAction(
                     .waitForDialog()
                     .showAllFields()
                     .selectProject(project.name)
-                    .selectIssueType(
+                    .selectIssueType { issueTypes ->
                         seededRandom.pick(
-                            issueCreateDialog.getIssueTypes().filter { it != "Epic" }
+                            issueTypes.filter { it != "Epic" }
                         )!!
-                    )
+                    }
                     .fill("summary", "This is a simple summary")
                 issueCreateDialog.fillRequiredFields()
                 meter.measure(CREATE_ISSUE_SUBMIT) { filledForm.submit() }
