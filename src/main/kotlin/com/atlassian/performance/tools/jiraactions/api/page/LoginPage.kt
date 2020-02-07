@@ -1,6 +1,7 @@
 package com.atlassian.performance.tools.jiraactions.api.page
 
 import com.atlassian.performance.tools.jiraactions.api.memories.User
+import com.atlassian.performance.tools.jiraactions.api.webdriver.sendKeysAndValidate
 import org.openqa.selenium.By
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.support.ui.ExpectedConditions
@@ -19,8 +20,8 @@ class LoginPage(
             ExpectedConditions.presenceOfElementLocated(loginFormLocator)
         )
         val loginForm = driver.findElement(loginFormLocator)
-        loginForm.findElement(By.name("os_username")).sendKeys(user.name)
-        loginForm.findElement(By.name("os_password")).sendKeys(user.password)
+        loginForm.findElement(By.name("os_username")).sendKeysAndValidate(driver, user.name)
+        loginForm.findElement(By.name("os_password")).sendKeysAndValidate(driver, user.password)
         loginForm.findElement(By.id("login-form-submit")).click()
         return DashboardPage(driver)
     }

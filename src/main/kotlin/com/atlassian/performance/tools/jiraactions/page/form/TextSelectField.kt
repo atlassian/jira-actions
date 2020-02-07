@@ -24,8 +24,7 @@ internal class TextSelectField(
 
     override fun fillWithAnyValue() {
         val component = random.pick(select.options)!!.getAttribute("innerHTML").trim()
-        input.sendKeys(component)
-        input.sendKeys(Keys.RETURN)
+        input.sendKeys(component, Keys.RETURN)
     }
 
     override fun hasValue(): Boolean {

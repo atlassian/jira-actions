@@ -2,6 +2,7 @@ package com.atlassian.performance.tools.jiraactions.api.page
 
 import com.atlassian.performance.tools.jiraactions.Patience
 import com.atlassian.performance.tools.jiraactions.api.WebJira
+import com.atlassian.performance.tools.jiraactions.api.webdriver.sendKeysWhenClickable
 import org.openqa.selenium.By
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.support.ui.ExpectedConditions.elementToBeClickable
@@ -50,7 +51,7 @@ class AdminAccess(
     }
 
     fun gain() {
-        driver.wait(elementToBeClickable(passwordLocator)).sendKeys(password)
+        driver.findElement(passwordLocator).sendKeysWhenClickable(driver, password)
         driver.findElement(By.id("login-form-submit")).click()
     }
 

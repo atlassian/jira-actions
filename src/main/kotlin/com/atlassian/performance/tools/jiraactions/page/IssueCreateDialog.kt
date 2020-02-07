@@ -5,6 +5,7 @@ import com.atlassian.performance.tools.jiraactions.api.page.form.IssueForm
 import com.atlassian.performance.tools.jiraactions.api.page.isElementPresent
 import com.atlassian.performance.tools.jiraactions.api.page.tolerateDirtyFormsOnCurrentPage
 import com.atlassian.performance.tools.jiraactions.api.page.wait
+import com.atlassian.performance.tools.jiraactions.api.webdriver.sendKeysWhenClickable
 import org.openqa.selenium.*
 import org.openqa.selenium.support.ui.ExpectedCondition
 import org.openqa.selenium.support.ui.ExpectedConditions.*
@@ -55,7 +56,7 @@ internal class IssueCreateDialog(
         .plus(issueTypeField.getCurrentValue())
 
     fun fill(fieldId: String, value: String): IssueCreateDialog {
-        driver.wait(elementToBeClickable(By.id(fieldId))).sendKeys(value)
+        driver.findElement(By.id(fieldId)).sendKeysWhenClickable(driver, value)
         return this
     }
 
