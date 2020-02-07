@@ -1,9 +1,8 @@
 package com.atlassian.performance.tools.jiraactions.page.form
 
-import com.atlassian.performance.tools.jiraactions.api.page.wait
+import com.atlassian.performance.tools.jiraactions.api.webdriver.sendKeysWhenClickable
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.WebElement
-import org.openqa.selenium.support.ui.ExpectedConditions.elementToBeClickable
 
 internal class TextInput(
     private val driver: WebDriver,
@@ -11,15 +10,11 @@ internal class TextInput(
 ) : FormField {
 
     override fun fillWithAnyValue() {
-        driver.wait(
-            elementToBeClickable(input)
-        ).click()
-        input.sendKeys("Lorem ipsum")
+        input.sendKeysWhenClickable(driver, "Lorem ipsum")
     }
 
     override fun hasValue(): Boolean {
-        return input
-            .getAttribute("value")
+        return input.getAttribute("value")
             .isNullOrBlank()
             .not()
     }

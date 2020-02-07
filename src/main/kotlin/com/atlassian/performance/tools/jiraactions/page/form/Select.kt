@@ -32,8 +32,7 @@ internal class Select(
 
     private fun isValidOption(
         option: WebElement
-    ): Boolean = option
-        .getAttribute("value")
+    ): Boolean = option.getAttribute("value")
         ?.toLongOrNull()
         ?.let { it > 0 }
         ?: false
