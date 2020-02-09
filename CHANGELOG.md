@@ -25,6 +25,8 @@ Dropping a requirement of a major version of a dependency is a new contract.
 
 ## [Unreleased]
 [Unreleased]: https://github.com/atlassian/jira-actions/compare/release-3.10.1...master
+### Fixed
+- Avoid using `Epic` issue type, it causes problems with our datasset
 
 ## [3.10.1] - 2020-02-07
 [3.10.1]: https://github.com/atlassian/jira-actions/compare/release-3.10.0...release-3.10.1
