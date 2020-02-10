@@ -24,9 +24,12 @@ Adding a requirement of a major version of a dependency is breaking a contract.
 Dropping a requirement of a major version of a dependency is a new contract.
 
 ## [Unreleased]
-[Unreleased]: https://github.com/atlassian/jira-actions/compare/release-3.10.1...master
+[Unreleased]: https://github.com/atlassian/jira-actions/compare/release-3.10.2...master
+
+## [3.10.2] - 2020-02-11
+[3.10.2]: https://github.com/atlassian/jira-actions/compare/release-3.10.1...release-3.10.2
 ### Fixed
-- Avoid using `Epic` issue type, it causes problems with our datasset
+- Avoid using `Epic` issue type, it causes problems with some datasets
 
 ## [3.10.1] - 2020-02-07
 [3.10.1]: https://github.com/atlassian/jira-actions/compare/release-3.10.0...release-3.10.1
