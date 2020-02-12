@@ -1,8 +1,7 @@
-version: 2.1
+version: 2
+executorType: machine
 
 build_template: &build_template
-  machine:
-    enabled: true
   steps:
     - checkout
     - restore_cache:
