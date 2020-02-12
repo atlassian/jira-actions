@@ -60,6 +60,7 @@ class JiraCoreScenarioIT {
             .port(8081)
             .version(version)
             .diagnoses(diagnoses)
+            .inDockerNetwork(false)
             .build()
             .provision()
             .use { jira ->
