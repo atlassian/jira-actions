@@ -27,8 +27,6 @@ class JiraCoreScenario constructor() : Scenario {
         val jqlMemory = AdaptiveJqlMemory(seededRandom)
         val issueMemory = AdaptiveIssueMemory(issueKeyMemory, seededRandom)
 
-        val scenario: MutableList<Action> = mutableListOf()
-
         val createIssue = CreateIssueAction(
             jira = jira,
             meter = meter,
@@ -41,6 +39,9 @@ class JiraCoreScenario constructor() : Scenario {
             jqlMemory = jqlMemory,
             issueKeyMemory = issueKeyMemory
         )
+
+        val findInitialIssues = ActionShuffler.findIssueKeysWithJql(jira, meter, issueKeyMemory)
+
         val viewIssue = ViewIssueAction(
             jira = jira,
             meter = meter,
@@ -75,7 +76,7 @@ class JiraCoreScenario constructor() : Scenario {
 
         val actionProportions = mapOf(
             createIssue to 5,
-            searchWithJql to 20,
+            searchWithJql to 19,
             viewIssue to 55,
             projectSummary to 5,
             viewDashboard to 10,
@@ -84,9 +85,7 @@ class JiraCoreScenario constructor() : Scenario {
             browseProjects to 5
         )
 
-        actionProportions.entries.forEach { scenario.addMultiple(element = it.key, repeats = it.value) }
-        scenario.shuffle(seededRandom.random)
-        return scenario
+        return ActionShuffler.createRandomisedScenario(seededRandom, actionProportions, findInitialIssues)
     }
 
     private fun initializeIssueKeyMemory(seededRandom: SeededRandom) {
