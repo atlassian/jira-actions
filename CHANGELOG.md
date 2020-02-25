@@ -25,8 +25,6 @@ Dropping a requirement of a major version of a dependency is a new contract.
 
 ## [Unreleased]
 [Unreleased]: https://github.com/atlassian/jira-actions/compare/release-3.10.2...master
-### Changed
-- updated docker-infrastructure to get the latest test-containers 
 
 ## [3.10.2] - 2020-02-11
 [3.10.2]: https://github.com/atlassian/jira-actions/compare/release-3.10.1...release-3.10.2
