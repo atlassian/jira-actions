@@ -24,14 +24,19 @@ Adding a requirement of a major version of a dependency is breaking a contract.
 Dropping a requirement of a major version of a dependency is a new contract.
 
 ## [Unreleased]
-[Unreleased]: https://github.com/atlassian/jira-actions/compare/release-3.10.2...master
+[Unreleased]: https://github.com/atlassian/jira-actions/compare/release-3.10.3...master
+
+## [3.10.3] - 2020-03-03
+[3.10.3]: https://github.com/atlassian/jira-actions/compare/release-3.10.2...release-3.10.3
+
 ### Fixed
-- Moved Selenium-JS to API scope [JPERF-607].
+- Move Selenium-JS to API scope [JPERF-607].
 
 ## [3.10.2] - 2020-02-11
 [3.10.2]: https://github.com/atlassian/jira-actions/compare/release-3.10.1...release-3.10.2
+
 ### Fixed
-- Avoid using `Epic` issue type, it causes problems with some datasets
+- Avoid using `Epic` issue type, it causes problems with some datasets.
 
 ## [3.10.1] - 2020-02-07
 [3.10.1]: https://github.com/atlassian/jira-actions/compare/release-3.10.0...release-3.10.1
