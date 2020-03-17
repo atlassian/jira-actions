@@ -1,10 +1,14 @@
 package com.atlassian.performance.tools.jiraactions.api.measure
 
-import com.atlassian.performance.tools.jiraactions.api.*
+import com.atlassian.performance.tools.jiraactions.api.ActionMetric
+import com.atlassian.performance.tools.jiraactions.api.ActionResult
 import com.atlassian.performance.tools.jiraactions.api.ActionResult.ERROR
 import com.atlassian.performance.tools.jiraactions.api.ActionResult.OK
+import com.atlassian.performance.tools.jiraactions.api.ActionType
+import com.atlassian.performance.tools.jiraactions.api.CREATE_ISSUE
+import com.atlassian.performance.tools.jiraactions.api.EDIT_ISSUE
+import com.atlassian.performance.tools.jiraactions.api.VIEW_BOARD
 import com.atlassian.performance.tools.jiraactions.api.measure.output.CollectionActionMetricOutput
-import com.atlassian.performance.tools.jiraactions.api.w3c.DisabledW3cPerformanceTimeline
 import com.atlassian.performance.tools.jiraactions.api.w3c.RecordedPerformanceEntries
 import com.atlassian.performance.tools.jiraactions.api.w3c.W3cPerformanceTimeline
 import org.apache.logging.log4j.LogManager
@@ -19,6 +23,7 @@ import java.time.Instant
 import java.time.Instant.parse
 import java.time.ZoneId
 import java.util.*
+import java.util.function.Predicate
 
 class ActionMeterTest {
     private val logger: Logger = LogManager.getLogger(this::class.java)
@@ -31,12 +36,12 @@ class ActionMeterTest {
         val tick = ofSeconds(1)
         val clock = TickingClock(start, tick)
         val output = CollectionActionMetricOutput(mutableListOf())
-        val actionMeter = ActionMeter(
-            virtualUser = vu,
-            output = output,
-            clock = clock,
-            w3cPerformanceTimeline = DisabledW3cPerformanceTimeline()
+        val actionMeter = ActionMeter.Builder(
+            output = output
         )
+            .virtualUser(vu)
+            .clock(clock)
+            .build()
 
         actionMeter.measure(CREATE_ISSUE, clock::tick)
         actionMeter.measure(VIEW_BOARD) {}
@@ -75,12 +80,13 @@ class ActionMeterTest {
     fun shouldMeasureErrors() {
         val output = CollectionActionMetricOutput(mutableListOf())
         val entries = RecordedPerformanceEntries(emptyList(), emptyList())
-        val actionMeter = ActionMeter(
-            output = output,
-            virtualUser = vu,
-            clock = Clock.fixed(start, ZoneId.of("UTC")),
-            w3cPerformanceTimeline = HardcodedTimeline(entries)
+        val actionMeter = ActionMeter.Builder(
+            output = output
         )
+            .virtualUser(vu)
+            .clock(Clock.fixed(start, ZoneId.of("UTC")))
+            .performanceTimeline(HardcodedTimeline(entries))
+            .build()
 
         try {
             actionMeter.measure(CREATE_ISSUE) { throw Exception("Ignore this exception, it's test-only") }
@@ -96,6 +102,60 @@ class ActionMeterTest {
         assertThat(output.metrics.first().drilldown)
             .`as`("drilldown for errored metric")
             .isNotNull
+    }
+
+    @Test
+    fun shouldRespectDrilldownCondition() {
+        val tick = ofSeconds(1)
+        val clock = TickingClock(start, tick)
+        val output = CollectionActionMetricOutput(mutableListOf())
+        val w3cPerformanceTimelineMock = HardcodedTimeline(RecordedPerformanceEntries(emptyList(), emptyList()))
+        val actionMeter = ActionMeter.Builder(
+            output = output
+        )
+            .drilldownCondition(Predicate { actionMetric -> CREATE_ISSUE.label == actionMetric.label })
+            .performanceTimeline(w3cPerformanceTimeline = w3cPerformanceTimelineMock)
+            .virtualUser(vu)
+            .clock(clock)
+            .build()
+
+        actionMeter.measure(CREATE_ISSUE, {})
+        actionMeter.measure(VIEW_BOARD) {}
+        actionMeter.measure(EDIT_ISSUE, {})
+        actionMeter.measure(CREATE_ISSUE) {}
+        actionMeter.measure(VIEW_BOARD, {})
+        actionMeter.measure(EDIT_ISSUE) {}
+
+        val actionsWithDrilldown = output.metrics.filter { it.drilldown != null }.map { it.label }.toSet()
+        assertThat(actionsWithDrilldown).containsOnly(
+            CREATE_ISSUE.label
+        )
+    }
+
+    @Test
+    fun shouldNotMeasureObservation() {
+        val tick = ofSeconds(1)
+        val clock = TickingClock(start, tick)
+        val output = CollectionActionMetricOutput(mutableListOf())
+        val actionMeter = ActionMeter.Builder(
+            output = output
+        )
+            .virtualUser(vu)
+            .clock(clock)
+            .build()
+
+        actionMeter.measure(
+            key = EDIT_ISSUE,
+            action = {},
+            observation = {
+                clock.tick()
+                null
+            }
+        )
+
+        assertThat(output.metrics).containsExactlyInAnyOrder(
+            expectedActionMetric(EDIT_ISSUE, OK, ZERO, start)
+        )
     }
 
     class TickingClock(
