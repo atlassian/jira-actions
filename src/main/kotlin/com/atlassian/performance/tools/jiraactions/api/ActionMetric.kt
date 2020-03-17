@@ -85,6 +85,18 @@ data class ActionMetric @Deprecated("Use ActionMetric.Builder instead.") constru
         private var drilldown: RecordedPerformanceEntries? = null
         private var virtualUser: UUID = UUID.randomUUID()
 
+
+        constructor(actionMetric: ActionMetric) : this(
+            actionMetric.label,
+            actionMetric.result,
+            actionMetric.duration,
+            actionMetric.start
+        ){
+            observation = actionMetric.observation
+            drilldown = actionMetric.drilldown
+            virtualUser = actionMetric.virtualUser
+        }
+
         fun observation(observation: JsonObject?) = apply { this.observation = observation }
         fun drilldown(drilldown: RecordedPerformanceEntries?) = apply { this.drilldown = drilldown }
         fun virtualUser(virtualUser: UUID) = apply { this.virtualUser = virtualUser }
