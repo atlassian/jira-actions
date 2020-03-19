@@ -15,13 +15,11 @@ import com.atlassian.performance.tools.jiraactions.api.memories.adaptive.Adaptiv
 import com.atlassian.performance.tools.jiraactions.api.memories.adaptive.AdaptiveIssueMemory
 import com.atlassian.performance.tools.jiraactions.api.memories.adaptive.AdaptiveJqlMemory
 import com.atlassian.performance.tools.jiraactions.api.memories.adaptive.AdaptiveProjectMemory
-import com.atlassian.performance.tools.jiraactions.api.w3c.DisabledW3cPerformanceTimeline
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 import org.assertj.core.api.Assertions
 import org.junit.Test
 import java.nio.file.Paths
-import java.time.Clock
 import java.util.*
 
 /**
@@ -39,12 +37,11 @@ class RichTextEditorIT {
         logger.info("Testing Jira $version")
         val scenario = JiraEditScenario()
         val metrics = mutableListOf<ActionMetric>()
-        val actionMeter = ActionMeter(
+        val actionMeter = ActionMeter.Builder(
             virtualUser = UUID.randomUUID(),
-            output = CollectionActionMetricOutput(metrics),
-            clock = Clock.systemUTC(),
-            w3cPerformanceTimeline = DisabledW3cPerformanceTimeline()
-        )
+            output = CollectionActionMetricOutput(metrics)
+        ).build()
+
         val user = User("admin", "admin")
         val userMemory = object : UserMemory {
             override fun recall(): User {

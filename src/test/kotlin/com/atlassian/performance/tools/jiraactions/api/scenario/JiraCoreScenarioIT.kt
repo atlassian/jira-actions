@@ -9,7 +9,6 @@ import com.atlassian.performance.tools.jiraactions.api.measure.output.Collection
 import com.atlassian.performance.tools.jiraactions.api.memories.User
 import com.atlassian.performance.tools.jiraactions.api.memories.UserMemory
 import com.atlassian.performance.tools.jiraactions.api.page.isElementPresent
-import com.atlassian.performance.tools.jiraactions.api.w3c.DisabledW3cPerformanceTimeline
 import com.atlassian.performance.tools.jiraactions.api.webdriver.sendKeysAndValidate
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
@@ -19,7 +18,6 @@ import org.openqa.selenium.By
 import org.openqa.selenium.OutputType
 import org.openqa.selenium.remote.RemoteWebDriver
 import java.nio.file.Paths
-import java.time.Clock
 import java.util.*
 
 class JiraCoreScenarioIT {
@@ -38,12 +36,11 @@ class JiraCoreScenarioIT {
         logger.info("Testing Jira $version")
         val scenario = JiraCoreScenario()
         val metrics = mutableListOf<ActionMetric>()
-        val actionMeter = ActionMeter(
+        val actionMeter = ActionMeter.Builder(
             virtualUser = UUID.randomUUID(),
-            output = CollectionActionMetricOutput(metrics),
-            clock = Clock.systemUTC(),
-            w3cPerformanceTimeline = DisabledW3cPerformanceTimeline()
-        )
+            output = CollectionActionMetricOutput(metrics)
+        ).build()
+
         val user = User("admin", "admin")
         val userMemory = object : UserMemory {
             override fun recall(): User {

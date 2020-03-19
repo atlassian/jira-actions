@@ -31,12 +31,12 @@ class ActionMeterTest {
         val tick = ofSeconds(1)
         val clock = TickingClock(start, tick)
         val output = CollectionActionMetricOutput(mutableListOf())
-        val actionMeter = ActionMeter(
+        val actionMeter = ActionMeter.Builder(
             virtualUser = vu,
-            output = output,
-            clock = clock,
-            w3cPerformanceTimeline = DisabledW3cPerformanceTimeline()
+            output = output
         )
+            .clock(clock)
+            .build()
 
         actionMeter.measure(CREATE_ISSUE, clock::tick)
         actionMeter.measure(VIEW_BOARD) {}
@@ -75,12 +75,13 @@ class ActionMeterTest {
     fun shouldMeasureErrors() {
         val output = CollectionActionMetricOutput(mutableListOf())
         val entries = RecordedPerformanceEntries(emptyList(), emptyList())
-        val actionMeter = ActionMeter(
+        val actionMeter = ActionMeter.Builder(
             output = output,
-            virtualUser = vu,
-            clock = Clock.fixed(start, ZoneId.of("UTC")),
-            w3cPerformanceTimeline = HardcodedTimeline(entries)
+            virtualUser = vu
         )
+            .clock(Clock.fixed(start, ZoneId.of("UTC")))
+            .performanceTimeline(HardcodedTimeline(entries))
+            .build()
 
         try {
             actionMeter.measure(CREATE_ISSUE) { throw Exception("Ignore this exception, it's test-only") }

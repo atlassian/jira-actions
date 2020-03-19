@@ -30,18 +30,24 @@ class ActionMeter private constructor(
     private val clock: Clock,
     private val w3cPerformanceTimeline: W3cPerformanceTimeline,
     private val drilldownCondition: Predicate<ActionMetric>
-)
-{
+) {
 
     @Deprecated(
-        message = "Use ActionMeter.Builder instead"
+        message = "Use ActionMeter.Builder instead",
+        replaceWith = ReplaceWith("ActionMeter.Builder(" +
+            "\nvirtualUser = virtualUser," +
+            "\noutput = output" +
+            "\n)" +
+            "\n.clock(clock)" +
+            "\n.performanceTimeline(w3cPerformanceTimeline)" +
+            "\n.build()")
     )
     constructor(
         virtualUser: UUID,
         output: ActionMetricOutput,
         clock: Clock,
         w3cPerformanceTimeline: W3cPerformanceTimeline
-    ) : this (
+    ) : this(
         virtualUser = virtualUser,
         output = output,
         clock = clock,
@@ -50,7 +56,13 @@ class ActionMeter private constructor(
     )
 
     @Deprecated(
-        message = "Use ActionMeter.builder instead"
+        message = "Use ActionMeter.Builder instead",
+        replaceWith = ReplaceWith("ActionMeter.Builder(" +
+            "\nvirtualUser = virtualUser," +
+            "\noutput = output" +
+            "\n)" +
+            "\n.clock(clock)" +
+            "\n.build()")
     )
     constructor(
         virtualUser: UUID,
@@ -61,7 +73,7 @@ class ActionMeter private constructor(
         output = output,
         clock = clock,
         w3cPerformanceTimeline = DisabledW3cPerformanceTimeline(),
-        drilldownCondition = Predicate { false }
+        drilldownCondition = Predicate { true }
     )
 
     /**
@@ -97,42 +109,43 @@ class ActionMeter private constructor(
         observation: (T) -> JsonObject?
     ): T {
         val start = clock.instant()
-        var actionResult: ActionResult = ActionResult.OK
-        var result: T? = null
+        val actionMetricBuilder = ActionMetric.Builder(
+            label = key.label,
+            virtualUser = virtualUser,
+            start = start
+        )
 
         try {
-            result = action()
+            val result = action()
+            result?.let { actionMetricBuilder.observation(observation(result)) }
+            actionMetricBuilder.result(ActionResult.OK)
             return result
         } catch (e: Exception) {
-            actionResult = if (e.representsInterrupt()) {
+            val actionResult = if (e.representsInterrupt()) {
                 ActionResult.INTERRUPTED
             } else {
                 ActionResult.ERROR
             }
+            actionMetricBuilder.result(actionResult)
             throw Exception("Action '${key.label}' $actionResult", e)
         } finally {
-            val metricBuilder = ActionMetric.Builder(
-                label = key.label,
-                result = actionResult,
-                start = start,
-                duration = Duration.between(start, clock.instant())
+            actionMetricBuilder.duration(Duration.between(start, clock.instant()))
+
+            output.write(
+                actionMetricBuilder.build().let {
+                    if (drilldownCondition.test(it)) {
+                        actionMetricBuilder
+                            .drilldown(w3cPerformanceTimeline.record())
+                            .build()
+                    } else {
+                        it
+                    }
+                }
             )
-                .virtualUser(virtualUser)
-
-            result?.let { metricBuilder.observation(observation(result)) }
-
-            var metric = metricBuilder.build()
-
-            if (drilldownCondition.test(metric)) {
-                metric = ActionMetric.Builder(metric)
-                    .drilldown(w3cPerformanceTimeline.record())
-                    .build()
-            }
-            output.write(metric)
         }
     }
 
-    @Deprecated( message = "Use builder instead")
+    @Deprecated(message = "Use ActionMeter.Builder instead")
     fun withW3cPerformanceTimeline(
         w3cPerformanceTimeline: W3cPerformanceTimeline
     ): ActionMeter = ActionMeter(
@@ -145,25 +158,26 @@ class ActionMeter private constructor(
 
     class Builder(
         private val virtualUser: UUID,
-        private val output: ActionMetricOutput,
-        private val clock: Clock
-    ){
+        private val output: ActionMetricOutput
+    ) {
         private var w3cPerformanceTimeline: W3cPerformanceTimeline = DisabledW3cPerformanceTimeline()
         private var drilldownCondition: Predicate<ActionMetric> = Predicate { true }
+        private var clock = Clock.systemUTC()
 
-        constructor(meter: ActionMeter): this(
+        constructor(meter: ActionMeter) : this(
             meter.virtualUser,
-            meter.output,
-            meter.clock
-        ){
+            meter.output
+        ) {
+            clock = meter.clock
             w3cPerformanceTimeline = meter.w3cPerformanceTimeline
             drilldownCondition = meter.drilldownCondition
         }
 
         fun performanceTimeline(w3cPerformanceTimeline: W3cPerformanceTimeline) = apply { this.w3cPerformanceTimeline = w3cPerformanceTimeline }
         fun drilldownCondition(drilldownCondition: Predicate<ActionMetric>) = apply { this.drilldownCondition = drilldownCondition }
+        fun clock(clock: Clock) = apply { this.clock = clock }
 
-        fun build() : ActionMeter = ActionMeter(
+        fun build(): ActionMeter = ActionMeter(
             virtualUser = virtualUser,
             output = output,
             clock = clock,

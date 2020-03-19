@@ -27,7 +27,6 @@ Dropping a requirement of a major version of a dependency is a new contract.
 [Unreleased]: https://github.com/atlassian/jira-actions/compare/release-3.10.3...master
 
 ### Added
-- Copy constructor to `ActionMetric.Builder`
 - `ActionMeter.Builder`
 - Drilldown condition fo `ActionMeter`
 
