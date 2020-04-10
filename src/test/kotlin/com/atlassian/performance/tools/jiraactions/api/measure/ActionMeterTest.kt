@@ -23,6 +23,7 @@ import java.time.Instant
 import java.time.Instant.parse
 import java.time.ZoneId
 import java.util.*
+import java.util.concurrent.atomic.AtomicInteger
 import java.util.function.Predicate
 
 class ActionMeterTest {
@@ -156,6 +157,39 @@ class ActionMeterTest {
         assertThat(output.metrics).containsExactlyInAnyOrder(
             expectedActionMetric(EDIT_ISSUE, OK, ZERO, start)
         )
+    }
+
+    @Test
+    fun shouldHookAction() {
+        val output = CollectionActionMetricOutput(mutableListOf())
+        val hook = CountingHook()
+        val tick = ofSeconds(1)
+        val clock = TickingClock(start, tick)
+        val actionMeter = ActionMeter.Builder(
+            output = output
+        )
+            .virtualUser(vu)
+            .clock(clock)
+            .postMetricHook(hook)
+            .build()
+
+        actionMeter.measure(CREATE_ISSUE, clock::tick)
+        actionMeter.measure(VIEW_BOARD, clock::tick)
+
+        assertThat(hook.getCount()).isEqualTo(2)
+        assertThat(output.metrics.map { it.duration }.toSet()).containsOnly(ofSeconds(1))
+    }
+
+    private class CountingHook : PostMetricHook {
+        private val counter = AtomicInteger()
+        override fun run(actionMetricBuilder : ActionMetric.Builder) {
+            counter.incrementAndGet()
+        }
+
+        fun getCount(): Int {
+            return counter.get()
+        }
+
     }
 
     class TickingClock(
