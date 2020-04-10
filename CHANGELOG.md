@@ -28,7 +28,7 @@ Dropping a requirement of a major version of a dependency is a new contract.
 
 ### Added
 - `ActionMeter.Builder`
-- Drilldown condition fo `ActionMeter`
+- Add `DrillDownHook`
 - Add a post metric hook to `ActionMeter` 
 
 ## [3.10.3] - 2020-03-03

@@ -86,7 +86,7 @@ class ActionMeterTest {
         )
             .virtualUser(vu)
             .clock(Clock.fixed(start, ZoneId.of("UTC")))
-            .performanceTimeline(HardcodedTimeline(entries))
+            .postMetricHook(DrillDownHook(HardcodedTimeline(entries)))
             .build()
 
         try {
@@ -114,8 +114,10 @@ class ActionMeterTest {
         val actionMeter = ActionMeter.Builder(
             output = output
         )
-            .drilldownCondition(Predicate { actionMetric -> CREATE_ISSUE.label == actionMetric.label })
-            .performanceTimeline(w3cPerformanceTimeline = w3cPerformanceTimelineMock)
+            .postMetricHook(ConditionalHook(
+                Predicate { actionMetric -> CREATE_ISSUE.label == actionMetric.label },
+                DrillDownHook(w3cPerformanceTimelineMock)
+            ))
             .virtualUser(vu)
             .clock(clock)
             .build()
@@ -131,6 +133,17 @@ class ActionMeterTest {
         assertThat(actionsWithDrilldown).containsOnly(
             CREATE_ISSUE.label
         )
+    }
+
+    private class ConditionalHook(
+        private val predicate: Predicate<ActionMetric>,
+        private val hook : PostMetricHook
+    ) : PostMetricHook {
+        override fun run(actionMetricBuilder: ActionMetric.Builder) {
+            if (predicate.test(actionMetricBuilder.build())) {
+                hook.run(actionMetricBuilder)
+            }
+        }
     }
 
     @Test
@@ -182,7 +195,7 @@ class ActionMeterTest {
 
     private class CountingHook : PostMetricHook {
         private val counter = AtomicInteger()
-        override fun run(actionMetricBuilder : ActionMetric.Builder) {
+        override fun run(actionMetricBuilder: ActionMetric.Builder) {
             counter.incrementAndGet()
         }
 
