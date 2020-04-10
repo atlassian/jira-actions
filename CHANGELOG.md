@@ -29,6 +29,7 @@ Dropping a requirement of a major version of a dependency is a new contract.
 ### Added
 - `ActionMeter.Builder`
 - Drilldown condition fo `ActionMeter`
+- Add a post metric hook to `ActionMeter` 
 
 ## [3.10.3] - 2020-03-03
 [3.10.3]: https://github.com/atlassian/jira-actions/compare/release-3.10.2...release-3.10.3

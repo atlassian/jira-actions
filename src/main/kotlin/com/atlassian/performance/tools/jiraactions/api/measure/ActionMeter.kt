@@ -29,7 +29,8 @@ class ActionMeter private constructor(
     private val output: ActionMetricOutput,
     private val clock: Clock,
     private val w3cPerformanceTimeline: W3cPerformanceTimeline,
-    private val drilldownCondition: Predicate<ActionMetric>
+    private val drilldownCondition: Predicate<ActionMetric>,
+    private val postMetricHook: PostMetricHook
 ) {
 
     @Deprecated(
@@ -52,7 +53,8 @@ class ActionMeter private constructor(
         output = output,
         clock = clock,
         w3cPerformanceTimeline = w3cPerformanceTimeline,
-        drilldownCondition = Predicate { true }
+        drilldownCondition = Predicate { true },
+        postMetricHook = NoopPostMetricHook()
     )
 
     @Deprecated(
@@ -73,7 +75,8 @@ class ActionMeter private constructor(
         output = output,
         clock = clock,
         w3cPerformanceTimeline = DisabledW3cPerformanceTimeline(),
-        drilldownCondition = Predicate { true }
+        drilldownCondition = Predicate { true },
+        postMetricHook = NoopPostMetricHook()
     )
 
     /**
@@ -118,6 +121,7 @@ class ActionMeter private constructor(
                 duration = duration,
                 result = ActionResult.OK
             ).virtualUser(virtualUser)
+            postMetricHook.run(actionMetricBuilder)
             result?.let { actionMetricBuilder.observation(observation(result)) }
             conditionallyAddDrilldown(actionMetricBuilder)
             output.write(actionMetricBuilder.build())
@@ -135,6 +139,7 @@ class ActionMeter private constructor(
                 duration = duration,
                 result = actionResult
             ).virtualUser(virtualUser)
+            postMetricHook.run(actionMetricBuilder)
             conditionallyAddDrilldown(actionMetricBuilder)
             output.write(actionMetricBuilder.build())
             throw Exception("Action '${key.label}' $actionResult", e)
@@ -161,7 +166,8 @@ class ActionMeter private constructor(
         output = output,
         clock = clock,
         w3cPerformanceTimeline = w3cPerformanceTimeline,
-        drilldownCondition = Predicate { true }
+        drilldownCondition = Predicate { true },
+        postMetricHook = NoopPostMetricHook()
     )
 
     class Builder(
@@ -171,6 +177,7 @@ class ActionMeter private constructor(
         private var w3cPerformanceTimeline: W3cPerformanceTimeline = DisabledW3cPerformanceTimeline()
         private var drilldownCondition: Predicate<ActionMetric> = Predicate { true }
         private var clock = Clock.systemUTC()
+        private var postMetricHook: PostMetricHook = NoopPostMetricHook()
 
         constructor(meter: ActionMeter) : this(
             meter.output
@@ -184,6 +191,8 @@ class ActionMeter private constructor(
         fun performanceTimeline(w3cPerformanceTimeline: W3cPerformanceTimeline) = apply { this.w3cPerformanceTimeline = w3cPerformanceTimeline }
         fun drilldownCondition(drilldownCondition: Predicate<ActionMetric>) = apply { this.drilldownCondition = drilldownCondition }
         fun clock(clock: Clock) = apply { this.clock = clock }
+        fun postMetricHook(postMetricHook: PostMetricHook) = apply { this.postMetricHook = postMetricHook }
+
         fun virtualUser(virtualUser: UUID) = apply { this.virtualUser = virtualUser }
 
         fun build(): ActionMeter = ActionMeter(
@@ -191,8 +200,14 @@ class ActionMeter private constructor(
             output = output,
             clock = clock,
             w3cPerformanceTimeline = w3cPerformanceTimeline,
-            drilldownCondition = drilldownCondition
+            drilldownCondition = drilldownCondition,
+            postMetricHook = postMetricHook
         )
+    }
+
+    private class NoopPostMetricHook : PostMetricHook {
+        override fun run(actionMetricBuilder: ActionMetric.Builder) {
+        }
     }
 }
 
