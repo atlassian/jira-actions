@@ -24,18 +24,19 @@ class ActionMeter private constructor(
     private val virtualUser: UUID,
     private val output: ActionMetricOutput,
     private val clock: Clock,
-    private val postMetricHook: PostMetricHook
+    private val postMetricHooks: List<PostMetricHook>
 ) {
 
     @Deprecated(
         message = "Use ActionMeter.Builder instead",
         replaceWith = ReplaceWith("ActionMeter.Builder(" +
-            "\nvirtualUser = virtualUser," +
             "\noutput = output" +
             "\n)" +
             "\n.clock(clock)" +
-            "\n.postMetricHook(DrillDownHook(w3cPerformanceTimeline))" +
-            "\n.build()")
+            "\n.virtualUser(virtualUser)" +
+            "\n.build()",
+            "com.atlassian.performance.tools.jiraactions.api.measure.DrillDownHook"
+        )
     )
     constructor(
         virtualUser: UUID,
@@ -46,16 +47,16 @@ class ActionMeter private constructor(
         virtualUser = virtualUser,
         output = output,
         clock = clock,
-        postMetricHook = DrillDownHook(w3cPerformanceTimeline)
+        postMetricHooks = listOf(DrillDownHook(w3cPerformanceTimeline))
     )
 
     @Deprecated(
         message = "Use ActionMeter.Builder instead",
         replaceWith = ReplaceWith("ActionMeter.Builder(" +
-            "\nvirtualUser = virtualUser," +
             "\noutput = output" +
             "\n)" +
             "\n.clock(clock)" +
+            "\n.virtualUser(virtualUser)" +
             "\n.build()")
     )
     constructor(
@@ -66,7 +67,7 @@ class ActionMeter private constructor(
         virtualUser = virtualUser,
         output = output,
         clock = clock,
-        postMetricHook = NoopPostMetricHook()
+        postMetricHooks = emptyList()
     )
 
     /**
@@ -111,7 +112,7 @@ class ActionMeter private constructor(
                 duration = duration,
                 result = ActionResult.OK
             ).virtualUser(virtualUser)
-            postMetricHook.run(actionMetricBuilder)
+            postMetricHooks.forEach { it.run(actionMetricBuilder) }
             result?.let { actionMetricBuilder.observation(observation(result)) }
             output.write(actionMetricBuilder.build())
             return result
@@ -128,7 +129,7 @@ class ActionMeter private constructor(
                 duration = duration,
                 result = actionResult
             ).virtualUser(virtualUser)
-            postMetricHook.run(actionMetricBuilder)
+            postMetricHooks.forEach { it.run(actionMetricBuilder) }
             output.write(actionMetricBuilder.build())
             throw Exception("Action '${key.label}' $actionResult", e)
         }
@@ -141,7 +142,7 @@ class ActionMeter private constructor(
         virtualUser = virtualUser,
         output = output,
         clock = clock,
-        postMetricHook = NoopPostMetricHook()
+        postMetricHooks = emptyList()
     )
 
     class Builder(
@@ -149,7 +150,7 @@ class ActionMeter private constructor(
     ) {
         private var virtualUser: UUID = UUID.randomUUID()
         private var clock = Clock.systemUTC()
-        private var postMetricHook: PostMetricHook = NoopPostMetricHook()
+        private var postMetricHooks: MutableList<PostMetricHook> = mutableListOf()
 
         constructor(meter: ActionMeter) : this(
             meter.output
@@ -159,21 +160,17 @@ class ActionMeter private constructor(
         }
 
         fun clock(clock: Clock) = apply { this.clock = clock }
-        fun postMetricHook(postMetricHook: PostMetricHook) = apply { this.postMetricHook = postMetricHook }
+        fun appendPostMetricHook(postMetricHook: PostMetricHook) = apply { this.postMetricHooks.add(postMetricHook) }
         fun virtualUser(virtualUser: UUID) = apply { this.virtualUser = virtualUser }
 
         fun build(): ActionMeter = ActionMeter(
             virtualUser = virtualUser,
             output = output,
             clock = clock,
-            postMetricHook = postMetricHook
+            postMetricHooks = postMetricHooks
         )
     }
 
-    private class NoopPostMetricHook : PostMetricHook {
-        override fun run(actionMetricBuilder: ActionMetric.Builder) {
-        }
-    }
 }
 
 @Deprecated("This is an internal data structure used by ActionMeter. Use ActionMeter public methods instead.")
