@@ -86,7 +86,7 @@ class ActionMeterTest {
         )
             .virtualUser(vu)
             .clock(Clock.fixed(start, ZoneId.of("UTC")))
-            .postMetricHook(DrillDownHook(HardcodedTimeline(entries)))
+            .appendPostMetricHook(DrillDownHook(HardcodedTimeline(entries)))
             .build()
 
         try {
@@ -114,7 +114,7 @@ class ActionMeterTest {
         val actionMeter = ActionMeter.Builder(
             output = output
         )
-            .postMetricHook(ConditionalHook(
+            .appendPostMetricHook(ConditionalHook(
                 Predicate { actionMetric -> CREATE_ISSUE.label == actionMetric.label },
                 DrillDownHook(w3cPerformanceTimelineMock)
             ))
@@ -175,7 +175,9 @@ class ActionMeterTest {
     @Test
     fun shouldHookAction() {
         val output = CollectionActionMetricOutput(mutableListOf())
-        val hook = CountingHook()
+        val hook1 = CountingHook()
+        val hook2 = CountingHook()
+        val hook3 = CountingHook()
         val tick = ofSeconds(1)
         val clock = TickingClock(start, tick)
         val actionMeter = ActionMeter.Builder(
@@ -183,13 +185,17 @@ class ActionMeterTest {
         )
             .virtualUser(vu)
             .clock(clock)
-            .postMetricHook(hook)
+            .appendPostMetricHook(hook1)
+            .appendPostMetricHook(hook2)
+            .appendPostMetricHook(hook3)
             .build()
 
         actionMeter.measure(CREATE_ISSUE, clock::tick)
         actionMeter.measure(VIEW_BOARD, clock::tick)
 
-        assertThat(hook.getCount()).isEqualTo(2)
+        assertThat(hook1.getCount()).isEqualTo(2)
+        assertThat(hook2.getCount()).isEqualTo(2)
+        assertThat(hook3.getCount()).isEqualTo(2)
         assertThat(output.metrics.map { it.duration }.toSet()).containsOnly(ofSeconds(1))
     }
 
