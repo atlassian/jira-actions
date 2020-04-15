@@ -8,7 +8,9 @@ import com.atlassian.performance.tools.jiraactions.api.ActionType
 import com.atlassian.performance.tools.jiraactions.api.CREATE_ISSUE
 import com.atlassian.performance.tools.jiraactions.api.EDIT_ISSUE
 import com.atlassian.performance.tools.jiraactions.api.VIEW_BOARD
+import com.atlassian.performance.tools.jiraactions.api.measure.output.ActionMetricOutput
 import com.atlassian.performance.tools.jiraactions.api.measure.output.CollectionActionMetricOutput
+import com.atlassian.performance.tools.jiraactions.api.measure.output.ThrowawayActionMetricOutput
 import com.atlassian.performance.tools.jiraactions.api.w3c.RecordedPerformanceEntries
 import com.atlassian.performance.tools.jiraactions.api.w3c.W3cPerformanceTimeline
 import org.apache.logging.log4j.LogManager
@@ -197,6 +199,58 @@ class ActionMeterTest {
         assertThat(hook2.getCount()).isEqualTo(2)
         assertThat(hook3.getCount()).isEqualTo(2)
         assertThat(output.metrics.map { it.duration }.toSet()).containsOnly(ofSeconds(1))
+    }
+
+    @Test
+    fun shouldOverrideOutput() {
+        val output = CollectionActionMetricOutput(mutableListOf())
+        val actionMeter = ActionMeter.Builder(
+            ActionMeter.Builder(
+                output = ThrowingActionMetricOutput()
+            )
+                .virtualUser(vu)
+                .build()
+        )
+            .overrideOutput { output }
+            .build()
+
+        actionMeter.measure(CREATE_ISSUE){}
+        actionMeter.measure(VIEW_BOARD){}
+
+        assertThat(output.metrics).hasSize(2)
+    }
+
+    private class ThrowingActionMetricOutput : ActionMetricOutput {
+        override fun write(metric: ActionMetric) {
+            throw Exception()
+        }
+    }
+
+    @Test
+    fun shouldDelegateOutput() {
+        val output = CollectionActionMetricOutput(mutableListOf())
+        val actionMeter = ActionMeter.Builder(
+            ActionMeter.Builder(
+                output = output
+            )
+                .virtualUser(vu)
+                .build()
+        )
+            .overrideOutput { DelegatingOutput(it) }
+            .build()
+
+        actionMeter.measure(CREATE_ISSUE){}
+        actionMeter.measure(VIEW_BOARD){}
+
+        assertThat(output.metrics).hasSize(2)
+    }
+
+    private class DelegatingOutput(
+        private val delegate: ActionMetricOutput
+    ) : ActionMetricOutput {
+        override fun write(metric: ActionMetric) {
+            delegate.write(metric)
+        }
     }
 
     private class CountingHook : PostMetricHook {

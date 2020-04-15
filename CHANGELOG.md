@@ -26,6 +26,9 @@ Dropping a requirement of a major version of a dependency is a new contract.
 ## [Unreleased]
 [Unreleased]: https://github.com/atlassian/jira-actions/compare/release-3.11.0...master
 
+### Added
+- Allow overrides of output in `ActionMeter.Builder`
+
 ## [3.11.0] - 2020-04-15
 [3.11.0]: https://github.com/atlassian/jira-actions/compare/release-3.10.3...release-3.11.0
 
