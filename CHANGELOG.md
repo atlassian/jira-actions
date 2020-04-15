@@ -24,12 +24,15 @@ Adding a requirement of a major version of a dependency is breaking a contract.
 Dropping a requirement of a major version of a dependency is a new contract.
 
 ## [Unreleased]
-[Unreleased]: https://github.com/atlassian/jira-actions/compare/release-3.11.0...master
+[Unreleased]: https://github.com/atlassian/jira-actions/compare/release-3.12.0...master
+
+## [3.12.0] - 2020-04-15
+[3.12.0]: https://github.com/atlassian/jira-actions/compare/release-3.11.0...release-3.12.0
 
 ### Added
-- Allow overrides of output in `ActionMeter.Builder`
+- Allow overrides of output in `ActionMeter.Builder`.
 
-## [3.11.0] - 2020-04-15
+## [3.11.0] - 2020-04-14
 [3.11.0]: https://github.com/atlassian/jira-actions/compare/release-3.10.3...release-3.11.0
 
 ### Added
