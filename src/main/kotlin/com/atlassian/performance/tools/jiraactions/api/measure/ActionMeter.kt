@@ -146,7 +146,7 @@ class ActionMeter private constructor(
     )
 
     class Builder(
-        private val output: ActionMetricOutput
+        private var output: ActionMetricOutput
     ) {
         private var virtualUser: UUID = UUID.randomUUID()
         private var clock = Clock.systemUTC()
@@ -162,6 +162,7 @@ class ActionMeter private constructor(
         fun clock(clock: Clock) = apply { this.clock = clock }
         fun appendPostMetricHook(postMetricHook: PostMetricHook) = apply { this.postMetricHooks.add(postMetricHook) }
         fun virtualUser(virtualUser: UUID) = apply { this.virtualUser = virtualUser }
+        fun overrideOutput(outputProvider: (ActionMetricOutput) -> ActionMetricOutput) = apply { this.output = outputProvider.invoke(output) }
 
         fun build(): ActionMeter = ActionMeter(
             virtualUser = virtualUser,
