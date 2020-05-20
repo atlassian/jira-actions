@@ -20,13 +20,18 @@ class CreateIssueAction(
             logger.debug("Skipping Create issue action. I have no knowledge of projects.")
             return
         }
-        meter.measure(CREATE_ISSUE) {
-            val dashboardPage = meter.measure(VIEW_DASHBOARD) {
+
+        val topNav = jira.getTopNav()
+        if (!topNav.isPresent()) {
+            meter.measure(VIEW_DASHBOARD) {
                 jira.goToDashboard().waitForDashboard()
             }.apply {
                 dismissAllPopups()
             }
-            val issueCreateDialog = dashboardPage.openIssueCreateDialog()
+        }
+
+        meter.measure(CREATE_ISSUE) {
+            val issueCreateDialog = topNav.openIssueCreateDialog()
             val filledForm = issueCreateDialog
                 .waitForDialog()
                 .showAllFields()

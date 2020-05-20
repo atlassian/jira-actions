@@ -1,6 +1,5 @@
 package com.atlassian.performance.tools.jiraactions.api.page
 
-import com.atlassian.performance.tools.jiraactions.page.IssueCreateDialog
 import com.atlassian.performance.tools.jiraactions.page.NotificationPopUps
 import org.openqa.selenium.By
 import org.openqa.selenium.JavascriptExecutor
@@ -36,11 +35,6 @@ class DashboardPage(
         )
         jiraErrors.assertNoErrors()
         return this
-    }
-
-    internal fun openIssueCreateDialog(): IssueCreateDialog {
-        driver.findElement(By.id("create_link")).click()
-        return IssueCreateDialog(driver)
     }
 
     internal fun getPopUps(): NotificationPopUps {
