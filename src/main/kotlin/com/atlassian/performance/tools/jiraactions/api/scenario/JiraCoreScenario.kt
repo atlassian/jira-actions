@@ -78,7 +78,7 @@ class JiraCoreScenario constructor() : Scenario {
             searchWithJql to 20,
             viewIssue to 55,
             projectSummary to 5,
-            viewDashboard to 10,
+            viewDashboard to 15, // note that we may end up generating more views if we need to display top nav
             editIssue to 5,
             addComment to 2,
             browseProjects to 5

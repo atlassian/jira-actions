@@ -47,6 +47,10 @@ data class WebJira(
         return IssuePage(driver)
     }
 
+    fun getTopNav(): TopNav {
+        return TopNav(driver)
+    }
+
     fun goToDashboard(): DashboardPage {
         navigateTo("secure/Dashboard.jspa")
         return DashboardPage(driver)
