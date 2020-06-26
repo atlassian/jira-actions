@@ -8,6 +8,8 @@ import com.atlassian.performance.tools.jiraactions.api.observation.SearchJqlObse
 import com.atlassian.performance.tools.jiraactions.api.page.IssueNavigatorPage
 import com.atlassian.performance.tools.jiraactions.jql.BuiltInJQL
 import com.atlassian.performance.tools.jiraactions.api.SEARCH_JQL_CHANGELOG
+import org.apache.logging.log4j.LogManager
+import org.apache.logging.log4j.Logger
 import java.util.function.Predicate
 import javax.json.JsonObject
 
@@ -17,9 +19,15 @@ class SearchJqlChangelogAction(
     private val jqlMemory: JqlMemory,
     private val issueKeyMemory: IssueKeyMemory
 ) : Action {
+    private val logger: Logger = LogManager.getLogger(this::class.java)
 
     override fun run() {
-        val jqlQuery = jqlMemory.recallByTag(Predicate { it == BuiltInJQL.REPORTERS.name })!!
+        val jqlQuery = jqlMemory.recallByTag(Predicate { it == BuiltInJQL.REPORTERS.name })
+        if (jqlQuery == null) {
+            logger.debug("Skipping ${SEARCH_JQL_CHANGELOG.label} action. I have no knowledge of changelog-specific JQL queries.")
+            return
+        }
+
         val issueNavigatorPage = meter.measure(
             key = SEARCH_JQL_CHANGELOG,
             action = { jira.goToIssueNavigator(jqlQuery).waitForIssueNavigator() },
