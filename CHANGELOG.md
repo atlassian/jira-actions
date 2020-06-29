@@ -26,6 +26,11 @@ Dropping a requirement of a major version of a dependency is a new contract.
 ## [Unreleased]
 [Unreleased]: https://github.com/atlassian/jira-actions/compare/release-3.13.0...master
 
+### Fixed
+- Make JQL search actions gracefully handle empty JQL queries memory condition. Fix [JPERF-652].
+
+[JPERF-652]: https://ecosystem.atlassian.net/browse/JPERF-652
+
 ## [3.13.0] - 2020-05-26
 [3.13.0]: https://github.com/atlassian/jira-actions/compare/release-3.12.0...release-3.13.0
 
