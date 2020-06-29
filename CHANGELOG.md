@@ -26,7 +26,7 @@ Dropping a requirement of a major version of a dependency is a new contract.
 ## [Unreleased]
 [Unreleased]: https://github.com/atlassian/jira-actions/compare/release-3.13.1...master
 
-## [3.13.1]
+## [3.13.1] - 2020-06-29
 [3.13.1]: https://github.com/atlassian/jira-actions/compare/release-3.13.0...release-3.13.1
 
 ### Fixed
