@@ -24,7 +24,10 @@ Adding a requirement of a major version of a dependency is breaking a contract.
 Dropping a requirement of a major version of a dependency is a new contract.
 
 ## [Unreleased]
-[Unreleased]: https://github.com/atlassian/jira-actions/compare/release-3.13.0...master
+[Unreleased]: https://github.com/atlassian/jira-actions/compare/release-3.13.1...master
+
+## [3.13.1]
+[3.13.1]: https://github.com/atlassian/jira-actions/compare/release-3.13.0...release-3.13.1
 
 ### Fixed
 - Make JQL search actions gracefully handle empty JQL queries memory condition. Fix [JPERF-652].
