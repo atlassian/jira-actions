@@ -10,6 +10,8 @@ import com.atlassian.performance.tools.jiraactions.api.memories.UserMemory;
 
 import java.util.List;
 
+// This is just a test change
+
 public interface Scenario {
     /**
      * Actions performed when applying load. If some actions need to be more frequent than others,
