@@ -26,6 +26,11 @@ Dropping a requirement of a major version of a dependency is a new contract.
 ## [Unreleased]
 [Unreleased]: https://github.com/atlassian/jira-actions/compare/release-3.13.1...master
 
+### Fixed
+- Fix LogIn Action not being able to close flags on AUI 9. Fix [JPERF-654].
+
+[JPERF-654]: https://ecosystem.atlassian.net/browse/JPERF-654 
+
 ## [3.13.1] - 2020-06-29
 [3.13.1]: https://github.com/atlassian/jira-actions/compare/release-3.13.0...release-3.13.1
 
