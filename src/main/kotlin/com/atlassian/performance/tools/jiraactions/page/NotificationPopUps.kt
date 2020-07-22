@@ -10,7 +10,7 @@ import java.time.Duration
 
 
 internal class NotificationPopUps(private val driver: WebDriver) {
-    private val auiFlagCloseLocator = By.cssSelector(".aui-flag .icon-close")
+    private val auiFlagCloseLocator = By.cssSelector(".aui-flag .icon-close, .aui-flag .aui-close-button")
 
     fun dismissHealthCheckNotifications() : NotificationPopUps {
         // NPS is an AUI flag
