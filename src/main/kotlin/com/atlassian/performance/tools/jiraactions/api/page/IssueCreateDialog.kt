@@ -19,19 +19,27 @@ class IssueCreateDialog(
     private val projectField = SingleSelect(driver, By.id("project-field"))
     private val issueTypeField = SingleSelect(driver, By.id("issuetype-field"))
     private val configColumnField = By.id("qf-field-picker-trigger")
+    private val dialog = By.id("create-issue-dialog")
 
     fun waitForDialog(): IssueCreateDialog {
         val jiraErrors = JiraErrors(driver)
         driver.wait(
             timeout = Duration.ofSeconds(30),
             condition = or(
-                visibilityOfElementLocated(By.id("create-issue-dialog")),
+                visibilityOfElementLocated(dialog),
                 jiraErrors.anyCommonError()
             )
         )
         jiraErrors.assertNoErrors()
         driver.tolerateDirtyFormsOnCurrentPage()
         return this
+    }
+
+    private fun waitForDialogToHide() {
+        driver.wait(
+            timeout = Duration.ofSeconds(30),
+            condition = invisibilityOfElementLocated(dialog)
+        )
     }
 
     fun selectProject(projectName: String) = form.waitForRefresh(Supplier {
@@ -106,7 +114,7 @@ class IssueCreateDialog(
 
     fun submit() {
         driver.wait(elementToBeClickable(By.id("create-issue-submit"))).click()
-        driver.wait(Duration.ofSeconds(30), invisibilityOfElementLocated(By.className("aui-blanket")))
+        waitForDialogToHide()
     }
 
     private fun waitUntilSummaryIsFocused() {
