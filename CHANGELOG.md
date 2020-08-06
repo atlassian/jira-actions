@@ -24,7 +24,15 @@ Adding a requirement of a major version of a dependency is breaking a contract.
 Dropping a requirement of a major version of a dependency is a new contract.
 
 ## [Unreleased]
-[Unreleased]: https://github.com/atlassian/jira-actions/compare/release-3.13.2...master
+[Unreleased]: https://github.com/atlassian/jira-actions/compare/release-3.13.3...master
+
+## [3.13.3] - 2020-08-06
+[3.13.3]: https://github.com/atlassian/jira-actions/compare/release-3.13.2...release-3.13.3
+
+### Fixed
+- Make Create Issue action compatible with AUI 9. Fix [JPERF-657].
+
+[JPERF-657]: https://ecosystem.atlassian.net/browse/JPERF-657
 
 ## [3.13.2] - 2020-07-22
 [3.13.2]: https://github.com/atlassian/jira-actions/compare/release-3.13.1...release-3.13.2
