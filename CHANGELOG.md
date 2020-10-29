@@ -26,6 +26,11 @@ Dropping a requirement of a major version of a dependency is a new contract.
 ## [Unreleased]
 [Unreleased]: https://github.com/atlassian/jira-actions/compare/release-3.13.3...master
 
+### Fixed
+- Make Create Issue action compatible with Jira 8.14 changes. Fix [JPERF-681].
+
+[JPERF-681]: https://ecosystem.atlassian.net/browse/JPERF-681
+
 ## [3.13.3] - 2020-08-06
 [3.13.3]: https://github.com/atlassian/jira-actions/compare/release-3.13.2...release-3.13.3
 
