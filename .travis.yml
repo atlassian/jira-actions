@@ -3,9 +3,10 @@ language: java
 script: travis_wait 30 ./gradlew build
 
 env:
+  - JIRA_SOFTWARE_VERSION=8.13.0
+  - JIRA_SOFTWARE_VERSION=8.5.0
   - JIRA_SOFTWARE_VERSION=8.0.0
   - JIRA_SOFTWARE_VERSION=7.13.0
-  - JIRA_SOFTWARE_VERSION=7.3.0
   - JIRA_SOFTWARE_VERSION=7.2.0
 stages:
   - test
