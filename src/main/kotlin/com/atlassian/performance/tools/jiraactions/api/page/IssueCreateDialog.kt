@@ -72,22 +72,30 @@ class IssueCreateDialog(
      *
      */
     fun showAllFields(): IssueCreateDialog {
-        val configureFieldsDialogId = "inline-dialog-field_picker_popup"
-        val dialogLocator = By.id(configureFieldsDialogId)
+        val configureFieldsDialogClass = "qf-picker"
+        val dialogLocator = By.className(configureFieldsDialogClass)
+
         try {
             openConfigureFieldsDialog(dialogLocator)
         } catch (e: TimeoutException) {
             //we probably sometimes click too fast, but no idea what we should wait for
             openConfigureFieldsDialog(dialogLocator)
         }
-        val locator = By.xpath("//div[@id='$configureFieldsDialogId']//dd[1]//a")
-        if (driver.isElementPresent(locator)) {
-            driver.wait(elementToBeClickable(locator)).click()
-            driver.wait(invisibilityOfElementLocated(dialogLocator))
-            driver.wait(visibilityOfElementLocated(dialogLocator))
+
+        val allFieldsLinkLocator = getVisibleAllFieldsLinkLocator(configureFieldsDialogClass)
+        if (driver.isElementPresent(allFieldsLinkLocator)) {
+            driver.wait(elementToBeClickable(allFieldsLinkLocator)).click()
+            val newAllFieldsLinkLocator = getVisibleAllFieldsLinkLocator(configureFieldsDialogClass)
+            driver.wait(not(elementToBeClickable(newAllFieldsLinkLocator)))
         }
+
         dismissConfigureFieldsDialog()
         return this
+    }
+
+    private fun getVisibleAllFieldsLinkLocator(dialogClass: String) : By {
+        val sectionIndex = if (driver.findElement(By.cssSelector(".$dialogClass dl:nth-of-type(1)")).isDisplayed) 1 else 2
+        return By.xpath("//div[@class='$dialogClass']//dl[$sectionIndex]//dd[1]//a")
     }
 
     private fun openConfigureFieldsDialog(popupLocator: By) {
@@ -104,7 +112,7 @@ class IssueCreateDialog(
     }
 
     private fun dismissConfigureFieldsDialog(){
-        driver.wait(elementToBeClickable(By.xpath("//div[@id='create-issue-dialog']//h2"))).click()
+        driver.wait(elementToBeClickable(By.xpath("//*[@id='create-issue-dialog']//h2"))).click()
     }
 
     fun fillRequiredFields(): IssueCreateDialog {
