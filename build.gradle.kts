@@ -6,7 +6,7 @@ val seleniumVersion = "3.141.59"
 plugins {
     kotlin("jvm").version("1.2.70")
     `java-library`
-    id("com.atlassian.performance.tools.gradle-release").version("0.5.0")
+    id("com.atlassian.performance.tools.gradle-release").version("0.7.1")
     id("com.gradle.build-scan").version("2.4.2")
 }
 
