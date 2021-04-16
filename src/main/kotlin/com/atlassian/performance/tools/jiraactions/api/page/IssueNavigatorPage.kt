@@ -38,12 +38,20 @@ class IssueNavigatorPage(
         return this
     }
 
-    fun getIssueKeys(): Set<String> {
+    private fun getIssueKeys(cssSelector: String): Set<String> {
         val issueKeys: List<String> = JavaScriptUtils.executeScript(driver,
-            "return Array.from(document.getElementsByClassName('issue-link-key'), i => i.innerText.trim())"
+            "return Array.from(document.getElementsByClassName('${cssSelector}'), i => i.innerText.trim())"
         )
 
         return HashSet(issueKeys)
+    }
+
+    fun getIssueKeys(): Set<String> {
+        return getIssueKeys("issue-link-key")
+    }
+
+    fun getIssueKeysCloud(): Set<String> {
+        return getIssueKeys("issue-link")
     }
 
     fun issueView(): IssuePage {
