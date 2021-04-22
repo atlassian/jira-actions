@@ -8,7 +8,7 @@ import org.openqa.selenium.By
 import org.openqa.selenium.WebDriver
 import java.time.Duration
 
-class IssueNavigatorPage(
+open class IssueNavigatorPage(
     private val driver: WebDriver,
     val jql: String
 ) {
