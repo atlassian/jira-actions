@@ -24,7 +24,15 @@ Adding a requirement of a major version of a dependency is breaking a contract.
 Dropping a requirement of a major version of a dependency is a new contract.
 
 ## [Unreleased]
-[Unreleased]: https://github.com/atlassian/jira-actions/compare/release-3.13.4...master
+[Unreleased]: https://github.com/atlassian/jira-actions/compare/release-3.14.0...master
+
+## [3.14.0] - 2021-04-22
+[3.14.0]: https://github.com/atlassian/jira-actions/compare/release-3.13.4...release-3.14.0
+
+### Added
+- Open IssueNavigatorPage class for extension. Resolve [JPERF-742].
+
+[JPERF-742]: https://ecosystem.atlassian.net/browse/JPERF-742
 
 ## [3.13.4] - 2020-11-05
 [3.13.4]: https://github.com/atlassian/jira-actions/compare/release-3.13.3...release-3.13.4
