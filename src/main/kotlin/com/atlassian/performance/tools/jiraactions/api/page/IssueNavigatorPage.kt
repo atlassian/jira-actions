@@ -38,7 +38,7 @@ open class IssueNavigatorPage(
         return this
     }
 
-    fun getIssueKeys(): Set<String> {
+    open fun getIssueKeys(): Set<String> {
         val issueKeys: List<String> = JavaScriptUtils.executeScript(driver,
             "return Array.from(document.getElementsByClassName('issue-link-key'), i => i.innerText.trim())"
         )
@@ -52,6 +52,10 @@ open class IssueNavigatorPage(
 
     fun selectedIssueId(): Long {
         return IssuePage(driver).getIssueId()
+    }
+
+    protected fun getDriver() : WebDriver {
+        return this.driver
     }
 
     fun getTotalResults(): Int = driver
