@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.com/atlassian/jira-actions.svg?branch=master)](https://travis-ci.com/atlassian/jira-actions)
+[![CI status](https://github.com/atlassian/jira-actions/workflows/CI/badge.svg)](https://github.com/atlassian/jira-actions/actions?query=branch%3Amaster+workflow%3ACI)
 
 # Core Jira user actions
 Define user experience with action metrics.
