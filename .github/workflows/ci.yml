@@ -20,6 +20,8 @@ jobs:
     env:
       JIRA_SOFTWARE_VERSION: ${{ matrix.jira-version }}
     steps:
+    - name: Always fail
+      run: exit 1
     - name: Checkout
       uses: actions/checkout@v2
       with:
