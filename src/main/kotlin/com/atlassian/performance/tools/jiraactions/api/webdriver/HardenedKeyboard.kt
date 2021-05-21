@@ -18,13 +18,19 @@ fun WebElement.sendKeysAndValidate(driver: WebDriver, text: String): WebElement 
     sendKeysWhenClickable(driver, text as CharSequence)
 
     // It's hard to say when the keys can be sent. They seem to randomly get lost.
+    var valueMatched = true
+    var actualValue = "not set yet"
     for (i in 0..10) {
-        val actualValue = getAttribute("value") ?: ""
-        if (actualValue == text) {
+        actualValue = getAttribute("value") ?: ""
+        valueMatched = actualValue == text
+        if (valueMatched) {
             break
         }
         Thread.sleep(100)
         sendKeys(Keys.BACK_SPACE.repeat(actualValue.length), text)
+    }
+    if (!valueMatched) {
+        throw IllegalStateException("Unable to set the value of control to [$text], last value: [$actualValue]")
     }
     return this
 }
