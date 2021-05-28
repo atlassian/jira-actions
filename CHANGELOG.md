@@ -24,7 +24,13 @@ Adding a requirement of a major version of a dependency is breaking a contract.
 Dropping a requirement of a major version of a dependency is a new contract.
 
 ## [Unreleased]
-[Unreleased]: https://github.com/atlassian/jira-actions/compare/release-3.15.0...master
+[Unreleased]: https://github.com/atlassian/jira-actions/compare/release-3.15.1...master
+
+## [3.15.1] - 2021-05-28
+[3.15.1]: https://github.com/atlassian/jira-actions/compare/release-3.15.0...release-3.15.1
+
+### Fixed
+- Improve error logging in HardenedKeyboard.
 
 ## [3.15.0] - 2021-04-26
 [3.15.0]: https://github.com/atlassian/jira-actions/compare/release-3.14.0...release-3.15.0
