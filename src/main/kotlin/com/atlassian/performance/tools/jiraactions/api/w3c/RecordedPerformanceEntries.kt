@@ -6,5 +6,6 @@ package com.atlassian.performance.tools.jiraactions.api.w3c
  */
 class RecordedPerformanceEntries internal constructor(
     val navigations: List<PerformanceNavigationTiming>,
-    val resources: List<PerformanceResourceTiming>
+    val resources: List<PerformanceResourceTiming>,
+    val elements: List<PerformanceElementTiming>
 )
