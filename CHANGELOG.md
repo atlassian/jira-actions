@@ -26,6 +26,13 @@ Dropping a requirement of a major version of a dependency is a new contract.
 ## [Unreleased]
 [Unreleased]: https://github.com/atlassian/jira-actions/compare/release-3.15.1...master
 
+### Added
+- Possibility of element rendering time measurement with 
+  [Element Timing API](https://wicg.github.io/element-timing/). 
+  Resolve [JPERF-747].
+  
+[JPERF-747]: https://ecosystem.atlassian.net/browse/JPERF-747
+
 ## [3.15.1] - 2021-05-28
 [3.15.1]: https://github.com/atlassian/jira-actions/compare/release-3.15.0...release-3.15.1
 

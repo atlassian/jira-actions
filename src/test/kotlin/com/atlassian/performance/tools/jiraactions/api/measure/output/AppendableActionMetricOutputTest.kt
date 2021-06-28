@@ -163,6 +163,17 @@ class AppendableActionMetricOutputTest {
                 encodedBodySize = 3032,
                 decodedBodySize = 24340
             )
+        ),
+        elements = listOf(
+            PerformanceElementTiming(
+                renderTime = ofMillis(1147),
+                loadTime = ofMillis(0),
+                identifier = "app-header",
+                naturalWidth = 0,
+                naturalHeight = 0,
+                id = "home_link",
+                url = ""
+            )
         )
     )
 }
