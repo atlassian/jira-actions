@@ -14,6 +14,7 @@ internal class VerboseJsonFormat {
         Json.createObjectBuilder()
             .add("navigations", navigations.map { serializeNavigationTiming(it) }.toJsonArray())
             .add("resources", resources.map { serializeResourceTiming(it) }.toJsonArray())
+            .add("elements", (elements?.map { serializeElementTiming(it) } ?: emptyList()).toJsonArray())
             .build()
     }
 
@@ -26,7 +27,10 @@ internal class VerboseJsonFormat {
                 .map { deserializeNavigationTiming(it) },
             resources = getJsonArray("resources")
                 .map { it.asJsonObject() }
-                .map { deserializeResourceTiming(it) }
+                .map { deserializeResourceTiming(it) },
+            elements = getJsonArray("elements")
+                ?.map { it.asJsonObject() }
+                ?.map { deserializeElementTiming(it) }
         )
     }
 
@@ -148,4 +152,32 @@ internal class VerboseJsonFormat {
     private fun JsonObject.getDuration(
         field: String
     ): Duration = Duration.parse(getString(field))
+
+    private fun serializeElementTiming(
+        elementTiming: PerformanceElementTiming
+    ): JsonObject = elementTiming.run {
+        return Json.createObjectBuilder()
+            .add("renderTime", renderTime.toString())
+            .add("loadTime", loadTime.toString())
+            .add("identifier", identifier)
+            .add("naturalWidth", naturalWidth)
+            .add("naturalHeight", naturalHeight)
+            .add("id", id)
+            .add("url", url)
+            .build()
+    }
+
+    private fun deserializeElementTiming(
+        json: JsonObject
+    ): PerformanceElementTiming = json.run {
+        PerformanceElementTiming(
+            renderTime = getDuration("renderTime"),
+            loadTime = getDuration("loadTime"),
+            identifier = getString("identifier"),
+            naturalWidth = getJsonNumber("naturalWidth").longValue(),
+            naturalHeight = getJsonNumber("naturalHeight").longValue(),
+            id = getString("id"),
+            url = getString("url")
+        )
+    }
 }

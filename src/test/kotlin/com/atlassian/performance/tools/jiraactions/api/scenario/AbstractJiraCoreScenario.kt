@@ -3,15 +3,19 @@ package com.atlassian.performance.tools.jiraactions.api.scenario
 import com.atlassian.performance.tools.dockerinfrastructure.api.jira.Jira
 import com.atlassian.performance.tools.jiraactions.api.*
 import com.atlassian.performance.tools.jiraactions.api.measure.ActionMeter
+import com.atlassian.performance.tools.jiraactions.api.measure.DrillDownHook
 import com.atlassian.performance.tools.jiraactions.api.measure.output.CollectionActionMetricOutput
 import com.atlassian.performance.tools.jiraactions.api.memories.User
 import com.atlassian.performance.tools.jiraactions.api.memories.UserMemory
 import com.atlassian.performance.tools.jiraactions.api.page.isElementPresent
+import com.atlassian.performance.tools.jiraactions.api.w3c.JavascriptW3cPerformanceTimeline
+import com.atlassian.performance.tools.jiraactions.api.w3c.W3cPerformanceTimeline
 import com.atlassian.performance.tools.jiraactions.api.webdriver.sendKeysAndValidate
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 import org.assertj.core.api.Assertions
 import org.openqa.selenium.By
+import org.openqa.selenium.JavascriptExecutor
 import org.openqa.selenium.OutputType
 import org.openqa.selenium.remote.RemoteWebDriver
 
@@ -26,7 +30,8 @@ abstract class AbstractJiraCoreScenario {
         val metrics = mutableListOf<ActionMetric>()
         val actionMeter = ActionMeter.Builder(
             output = CollectionActionMetricOutput(metrics)
-        ).build()
+        ).appendPostMetricHook(DrillDownHook(JavascriptW3cPerformanceTimeline(driver as JavascriptExecutor)))
+            .build()
         val user = User("admin", "admin")
         val userMemory = object : UserMemory {
             override fun recall(): User {
@@ -87,9 +92,11 @@ abstract class AbstractJiraCoreScenario {
     private fun goToServices(driver: RemoteWebDriver, jira: Jira) {
         driver
             .navigate()
-            .to(jira.getUri()
-                .resolve("secure/admin/ViewServices!default.jspa")
-                .toURL())
+            .to(
+                jira.getUri()
+                    .resolve("secure/admin/ViewServices!default.jspa")
+                    .toURL()
+            )
 
         if (driver.isElementPresent(By.id("login-form-authenticatePassword"))) {
             driver.findElementById("login-form-authenticatePassword").sendKeys("admin")
@@ -99,7 +106,8 @@ abstract class AbstractJiraCoreScenario {
 
     private fun addBackupService(driver: RemoteWebDriver) {
         driver.findElement(By.id("serviceName")).sendKeysAndValidate(driver, "another backup")
-        driver.findElement(By.id("serviceClass")).sendKeysAndValidate(driver, "com.atlassian.jira.service.services.export.ExportService")
+        driver.findElement(By.id("serviceClass"))
+            .sendKeysAndValidate(driver, "com.atlassian.jira.service.services.export.ExportService")
 
         driver.findElementById("addservice_submit").click()
 
