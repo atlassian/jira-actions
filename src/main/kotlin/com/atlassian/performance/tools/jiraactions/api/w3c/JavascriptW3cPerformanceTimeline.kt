@@ -8,7 +8,7 @@ import org.openqa.selenium.JavascriptExecutor
 /**
  * Obtains entries from [javascript].
  */
-class JavascriptW3cPerformanceTimeline @Deprecated("Use JavascriptW3cPerformanceTimeline.Builder instead.") constructor(
+class JavascriptW3cPerformanceTimeline private constructor(
     private val javascript: JavascriptExecutor,
     private val withNavigationPerformance: Boolean,
     private val withResourcesPerformance: Boolean,
