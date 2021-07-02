@@ -8,52 +8,48 @@ import org.openqa.selenium.JavascriptExecutor
 /**
  * Obtains entries from [javascript].
  */
-class JavascriptW3cPerformanceTimeline @Deprecated("Use JavascriptW3cPerformanceTimeline.Builder instead.") constructor(
-    javascript: JavascriptExecutor,
-    withNavigationPerformance: Boolean,
-    withResourcesPerformance: Boolean,
-    withElementPerformance: Boolean
+class JavascriptW3cPerformanceTimeline private constructor(
+    private val javascript: JavascriptExecutor,
+    private val recordNavigation: Boolean,
+    private val recordResources: Boolean,
+    private val recordElements: Boolean
 ) : W3cPerformanceTimeline {
 
     @Deprecated("Use JavascriptW3cPerformanceTimeline.Builder instead.")
     constructor(
         javascript: JavascriptExecutor
-    ) : this(javascript, true, true, true)
+    ) : this(javascript, true, true, false)
 
-    private var getNavigationPerformance: () -> List<PerformanceNavigationTiming> =
-        if (withNavigationPerformance) ({ getJsNavigationsPerformance(javascript) }) else ({ emptyList() })
-    private var getResourcesPerformance: () -> List<PerformanceResourceTiming> =
-        if (withResourcesPerformance) ({ getJsResourcesPerformance(javascript) }) else ({ emptyList() })
-    private var getElementPerformance: () -> List<PerformanceElementTiming> =
-        if (withElementPerformance) ({ getJsElementsPerformance(javascript) }) else ({ emptyList() })
-
-    override fun record(): RecordedPerformanceEntries? {
+    override fun record(): RecordedPerformanceEntries {
         return RecordedPerformanceEntries(
-            navigations = getNavigationPerformance(),
-            resources = getResourcesPerformance(),
-            elements = getElementPerformance()
+            navigations = if (recordNavigation) getJsNavigationsPerformance(javascript) else emptyList(),
+            resources = if (recordResources) getJsResourcesPerformance(javascript) else emptyList(),
+            elements = if (recordElements) getJsElementsPerformance(javascript) else emptyList()
         )
     }
 
-    class Builder(private val javascript: JavascriptExecutor) {
-        private var navigationPerformance = false
-        private var resourcesPerformance = false
-        private var elementPerformance = false
+    class Builder(
+        private var javascript: JavascriptExecutor
+    ) {
+        private var recordNavigation = true
+        private var recordResources = true
+        private var recordElements = false
 
-        fun withNavigationPerformance() = apply { navigationPerformance = true }
-        fun withResourcesPerformance() = apply { resourcesPerformance = true }
-        fun withElementPerformance() = apply { elementPerformance = true }
-        fun withAllMetrics() = apply {
-            navigationPerformance = true
-            resourcesPerformance = true
-            elementPerformance = true
+        fun javascript(javascript: JavascriptExecutor) = apply { this.javascript = javascript }
+        fun recordNavigation(recordNavigation: Boolean) = apply { this.recordNavigation = recordNavigation }
+        fun recordResources(recordResources: Boolean) = apply { this.recordResources = recordResources }
+        fun recordElements(recordElements: Boolean) = apply { this.recordElements = recordElements }
+        fun recordAll() = apply {
+            recordNavigation = true
+            recordResources = true
+            recordElements = true
         }
 
-        fun build() = JavascriptW3cPerformanceTimeline(
+        fun build(): W3cPerformanceTimeline = JavascriptW3cPerformanceTimeline(
             javascript = javascript,
-            withNavigationPerformance = navigationPerformance,
-            withResourcesPerformance = resourcesPerformance,
-            withElementPerformance = elementPerformance
+            recordNavigation = recordNavigation,
+            recordResources = recordResources,
+            recordElements = recordElements
         )
     }
 }
