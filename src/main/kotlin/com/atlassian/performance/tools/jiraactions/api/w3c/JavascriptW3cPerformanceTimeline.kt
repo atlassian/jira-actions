@@ -9,10 +9,10 @@ import org.openqa.selenium.JavascriptExecutor
  * Obtains entries from [javascript].
  */
 class JavascriptW3cPerformanceTimeline @Deprecated("Use JavascriptW3cPerformanceTimeline.Builder instead.") constructor(
-    javascript: JavascriptExecutor,
-    withNavigationPerformance: Boolean,
-    withResourcesPerformance: Boolean,
-    withElementPerformance: Boolean
+    private val javascript: JavascriptExecutor,
+    private val withNavigationPerformance: Boolean,
+    private val withResourcesPerformance: Boolean,
+    private val withElementPerformance: Boolean
 ) : W3cPerformanceTimeline {
 
     @Deprecated("Use JavascriptW3cPerformanceTimeline.Builder instead.")
@@ -20,18 +20,11 @@ class JavascriptW3cPerformanceTimeline @Deprecated("Use JavascriptW3cPerformance
         javascript: JavascriptExecutor
     ) : this(javascript, true, true, true)
 
-    private var getNavigationPerformance: () -> List<PerformanceNavigationTiming> =
-        if (withNavigationPerformance) ({ getJsNavigationsPerformance(javascript) }) else ({ emptyList() })
-    private var getResourcesPerformance: () -> List<PerformanceResourceTiming> =
-        if (withResourcesPerformance) ({ getJsResourcesPerformance(javascript) }) else ({ emptyList() })
-    private var getElementPerformance: () -> List<PerformanceElementTiming> =
-        if (withElementPerformance) ({ getJsElementsPerformance(javascript) }) else ({ emptyList() })
-
-    override fun record(): RecordedPerformanceEntries? {
+    override fun record(): RecordedPerformanceEntries {
         return RecordedPerformanceEntries(
-            navigations = getNavigationPerformance(),
-            resources = getResourcesPerformance(),
-            elements = getElementPerformance()
+            navigations = if (withNavigationPerformance) getJsNavigationsPerformance(javascript) else emptyList(),
+            resources = if (withResourcesPerformance) getJsResourcesPerformance(javascript) else emptyList(),
+            elements = if (withElementPerformance) getJsElementsPerformance(javascript) else emptyList()
         )
     }
 
