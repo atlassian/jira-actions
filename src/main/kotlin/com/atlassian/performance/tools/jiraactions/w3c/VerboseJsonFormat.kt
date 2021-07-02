@@ -14,7 +14,7 @@ internal class VerboseJsonFormat {
         Json.createObjectBuilder()
             .add("navigations", navigations.map { serializeNavigationTiming(it) }.toJsonArray())
             .add("resources", resources.map { serializeResourceTiming(it) }.toJsonArray())
-            .add("elements", (elements?.map { serializeElementTiming(it) } ?: emptyList()).toJsonArray())
+            .add("elements", (elements.map { serializeElementTiming(it) }).toJsonArray())
             .build()
     }
 
