@@ -1,4 +1,4 @@
-package com.atlassian.performance.tools.jiraactions.api.w3c.harvesters
+package com.atlassian.performance.tools.jiraactions.w3c.harvesters
 
 import com.atlassian.performance.tools.jiraactions.api.w3c.PerformanceEntry
 import com.atlassian.performance.tools.jiraactions.api.w3c.PerformanceResourceTiming

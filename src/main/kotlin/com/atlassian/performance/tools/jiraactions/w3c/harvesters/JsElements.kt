@@ -1,19 +1,17 @@
-package com.atlassian.performance.tools.jiraactions.api.w3c.harvesters
+package com.atlassian.performance.tools.jiraactions.w3c.harvesters
 
 import com.atlassian.performance.tools.jiraactions.api.w3c.PerformanceElementTiming
 import org.openqa.selenium.JavascriptExecutor
-import org.openqa.selenium.TimeoutException
 
 
 internal fun getJsElementsPerformance(javascript: JavascriptExecutor): List<PerformanceElementTiming> {
-    return try {
-        val jsElements =
-            javascript.executeAsyncScript("new PerformanceObserver(list => arguments[0](list.getEntries())).observe({type: 'element', buffered: true})")
-        parseElements(jsElements)
-    } catch (timeoutEx: TimeoutException) {
-        // No element performance entries on page.
-        emptyList()
-    }
+    val jsElements =
+        javascript.executeScript(
+            "const observer = new PerformanceObserver(() => {});" +
+                "observer.observe({type: 'element', buffered: true});" +
+                "return observer.takeRecords()"
+        )
+    return parseElements(jsElements)
 }
 
 private fun parseElements(

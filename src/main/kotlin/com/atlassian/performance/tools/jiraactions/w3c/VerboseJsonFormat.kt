@@ -31,6 +31,7 @@ internal class VerboseJsonFormat {
             elements = getJsonArray("elements")
                 ?.map { it.asJsonObject() }
                 ?.map { deserializeElementTiming(it) }
+                ?: emptyList()
         )
     }
 
