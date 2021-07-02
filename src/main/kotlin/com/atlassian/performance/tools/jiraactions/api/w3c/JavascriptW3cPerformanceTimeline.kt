@@ -18,7 +18,7 @@ class JavascriptW3cPerformanceTimeline private constructor(
     @Deprecated("Use JavascriptW3cPerformanceTimeline.Builder instead.")
     constructor(
         javascript: JavascriptExecutor
-    ) : this(javascript, true, true, true)
+    ) : this(javascript, true, true, false)
 
     override fun record(): RecordedPerformanceEntries {
         return RecordedPerformanceEntries(
