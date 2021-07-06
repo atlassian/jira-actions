@@ -24,10 +24,14 @@ Adding a requirement of a major version of a dependency is breaking a contract.
 Dropping a requirement of a major version of a dependency is a new contract.
 
 ## [Unreleased]
-[Unreleased]: https://github.com/atlassian/jira-actions/compare/release-3.15.1...master
+[Unreleased]: https://github.com/atlassian/jira-actions/compare/release-3.16.0...master
+
+
+## [3.16.0] - 2021-07-06
+[3.16.0]: https://github.com/atlassian/jira-actions/compare/release-3.15.1...release-3.16.0
 
 ### Added
-- Possibility of element rendering time measurement with 
+- Add the possibility of element rendering time measurement with 
   [Element Timing API](https://wicg.github.io/element-timing/). 
   Resolve [JPERF-747].
   
