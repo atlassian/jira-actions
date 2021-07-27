@@ -7,6 +7,7 @@ import com.atlassian.performance.tools.jiraactions.page.SingleSelect
 import org.openqa.selenium.*
 import org.openqa.selenium.support.ui.ExpectedCondition
 import org.openqa.selenium.support.ui.ExpectedConditions.*
+import org.openqa.selenium.support.ui.Select
 import java.time.Duration
 import java.util.function.Supplier
 
@@ -70,10 +71,13 @@ class IssueCreateDialog(
      * Click 'Configure Fields' to display 'All' to ensure
      * all mandatory fields are displayed in creation dialog.
      *
+     * The view has changed since Jira 8.19 so differentiator is needed
      */
     fun showAllFields(): IssueCreateDialog {
         val configureFieldsDialogClass = "qf-picker"
         val dialogLocator = By.className(configureFieldsDialogClass)
+        val selectLocator = getFieldsSelectLocator(configureFieldsDialogClass);
+        val newConfigureFieldsUi = driver.isElementPresent(selectLocator)
 
         try {
             openConfigureFieldsDialog(dialogLocator)
@@ -82,11 +86,23 @@ class IssueCreateDialog(
             openConfigureFieldsDialog(dialogLocator)
         }
 
-        val allFieldsLinkLocator = getVisibleAllFieldsLinkLocator(configureFieldsDialogClass)
-        if (driver.isElementPresent(allFieldsLinkLocator)) {
-            driver.wait(elementToBeClickable(allFieldsLinkLocator)).click()
-            val newAllFieldsLinkLocator = getVisibleAllFieldsLinkLocator(configureFieldsDialogClass)
-            driver.wait(not(elementToBeClickable(newAllFieldsLinkLocator)))
+        if (newConfigureFieldsUi) {
+            driver
+                .findElements(selectLocator)
+                .singleOrNull()
+                ?.let { Select(it) }
+                ?.takeIf { it.firstSelectedOption.text != "All Fields" }
+                ?.let {
+                    it.selectByVisibleText("All Fields")
+                    driver.wait(elementToBeClickable(selectLocator))
+                }
+        } else {
+            val allFieldsLinkLocator = getVisibleAllFieldsLinkLocator(configureFieldsDialogClass)
+            if (driver.isElementPresent(allFieldsLinkLocator)) {
+                driver.wait(elementToBeClickable(allFieldsLinkLocator)).click()
+                val newAllFieldsLinkLocator = getVisibleAllFieldsLinkLocator(configureFieldsDialogClass)
+                driver.wait(not(elementToBeClickable(newAllFieldsLinkLocator)))
+            }
         }
 
         dismissConfigureFieldsDialog()
@@ -96,6 +112,10 @@ class IssueCreateDialog(
     private fun getVisibleAllFieldsLinkLocator(dialogClass: String) : By {
         val sectionIndex = if (driver.findElement(By.cssSelector(".$dialogClass dl:nth-of-type(1)")).isDisplayed) 1 else 2
         return By.xpath("//div[@class='$dialogClass']//dl[$sectionIndex]//dd[1]//a")
+    }
+
+    private fun getFieldsSelectLocator(dialogClass: String): By {
+        return By.cssSelector(".$dialogClass #configure-fields");
     }
 
     private fun openConfigureFieldsDialog(popupLocator: By) {
