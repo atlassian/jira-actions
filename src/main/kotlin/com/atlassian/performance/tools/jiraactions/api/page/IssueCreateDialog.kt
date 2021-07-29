@@ -152,9 +152,10 @@ class IssueCreateDialog(
     private fun elementIsFocused(locator: By): ExpectedCondition<WebElement?> {
         return object : ExpectedCondition<WebElement?> {
             override fun apply(driver: WebDriver?): WebElement? {
-                val summary = driver!!.findElement(locator)
-
-                return if (summary == driver.switchTo().activeElement()) summary else null
+                return elementToBeClickable(locator)
+                    .apply(driver)
+                    ?.also { it.click() }
+                    ?.takeIf { it == driver!!.switchTo().activeElement() }
             }
 
             override fun toString(): String {
