@@ -22,7 +22,7 @@ configurations.all {
         failOnVersionConflict()
         eachDependency {
             when (requested.module.toString()) {
-                "commons-codec:commons-codec" -> useVersion("1.10")
+                "commons-codec:commons-codec" -> useVersion("1.11")
                 "org.jetbrains:annotations" -> useVersion("13.0")
                 "org.slf4j:slf4j-api" -> useVersion("1.7.25")
                 "org.testcontainers:testcontainers" -> useVersion("1.15.1")
