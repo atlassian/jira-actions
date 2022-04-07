@@ -2,6 +2,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 val kotlinVersion = "1.2.70"
 val seleniumVersion = "3.141.59"
+val log4jVersion = "2.17.2"
 
 plugins {
     kotlin("jvm").version("1.2.70")
@@ -32,6 +33,7 @@ configurations.all {
             when (requested.group) {
                 "org.jetbrains.kotlin" -> useVersion(kotlinVersion)
                 "org.seleniumhq.selenium" -> useVersion(seleniumVersion)
+                "org.apache.logging.log4j" -> useVersion(log4jVersion)
             }
         }
     }
@@ -54,7 +56,7 @@ dependencies {
         "slf4j-impl",
         "jul"
     ).map { module ->
-        "org.apache.logging.log4j:log4j-$module:2.10.0"
+        "org.apache.logging.log4j:log4j-$module:$log4jVersion"
     }.forEach { implementation(it) }
     testCompile("org.assertj:assertj-core:3.11.0")
     testCompile("com.atlassian.performance.tools:io:[1.0.0,2.0.0)")
