@@ -24,7 +24,10 @@ Adding a requirement of a major version of a dependency is breaking a contract.
 Dropping a requirement of a major version of a dependency is a new contract.
 
 ## [Unreleased]
-[Unreleased]: https://github.com/atlassian/jira-actions/compare/release-3.16.2...master
+[Unreleased]: https://github.com/atlassian/jira-actions/compare/release-3.16.3...master
+
+## [3.16.3] - 2022-04-08
+[3.16.3]: https://github.com/atlassian/jira-actions/compare/release-3.16.2...release-3.16.3
 
 ### Fixed
 - Bump log4j dependency to 2.17.2. Fix [JPERF-775].
