@@ -82,4 +82,12 @@ class IssuePage(
 
     fun getIssueId(): Long = driver.findElement(By.id("key-val")).getAttribute("rel").toLong()
     fun getIssueType(): String = driver.findElement(By.id("type-val")).text
+
+    fun openCommentTabPanel(): CommentTabPanel {
+        return CommentTabPanel(driver).waitForActive()
+    }
+
+    fun openHistoryTabPanel(): HistoryTabPanel {
+        return HistoryTabPanel(driver).waitForActive()
+    }
 }

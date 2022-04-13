@@ -5,10 +5,7 @@ import com.atlassian.performance.tools.jiraactions.api.WebJira
 import com.atlassian.performance.tools.jiraactions.api.action.*
 import com.atlassian.performance.tools.jiraactions.api.measure.ActionMeter
 import com.atlassian.performance.tools.jiraactions.api.memories.IssueKeyMemory
-import com.atlassian.performance.tools.jiraactions.api.memories.adaptive.AdaptiveIssueKeyMemory
-import com.atlassian.performance.tools.jiraactions.api.memories.adaptive.AdaptiveIssueMemory
-import com.atlassian.performance.tools.jiraactions.api.memories.adaptive.AdaptiveJqlMemory
-import com.atlassian.performance.tools.jiraactions.api.memories.adaptive.AdaptiveProjectMemory
+import com.atlassian.performance.tools.jiraactions.api.memories.adaptive.*
 
 /**
  * Provides Jira Core specific `Scenario`.
@@ -26,6 +23,7 @@ class JiraCoreScenario constructor() : Scenario {
         val projectMemory = AdaptiveProjectMemory(random = seededRandom)
         val jqlMemory = AdaptiveJqlMemory(seededRandom)
         val issueMemory = AdaptiveIssueMemory(issueKeyMemory, seededRandom)
+        val commentMemory = AdaptiveCommentMemory(seededRandom)
 
         val scenario: MutableList<Action> = mutableListOf()
 
@@ -41,13 +39,13 @@ class JiraCoreScenario constructor() : Scenario {
             jqlMemory = jqlMemory,
             issueKeyMemory = issueKeyMemory
         )
-        val viewIssue = ViewIssueAction(
-            jira = jira,
-            meter = meter,
-            issueKeyMemory = issueKeyMemory,
-            issueMemory = issueMemory,
-            jqlMemory = jqlMemory
-        )
+        val viewIssue = ViewIssueAction.Builder(jira, meter)
+            .issueKeyMemory(issueKeyMemory)
+            .issueMemory(issueMemory)
+            .jqlMemory(jqlMemory)
+            .commentMemory(commentMemory)
+            .build()
+
         val projectSummary = ProjectSummaryAction(
             jira = jira,
             meter = meter,
@@ -73,6 +71,18 @@ class JiraCoreScenario constructor() : Scenario {
             projectMemory = projectMemory
         )
 
+        val viewComment = ViewCommentAction(
+            jira = jira,
+            meter = meter,
+            commentMemory = commentMemory
+        )
+
+        val viewHistoryTabAction = ViewHistoryTabAction(
+            jira = jira,
+            meter = meter,
+            issueKeyMemory = issueKeyMemory
+        )
+
         val actionProportions = mapOf(
             createIssue to 5,
             searchWithJql to 20,
@@ -81,7 +91,9 @@ class JiraCoreScenario constructor() : Scenario {
             viewDashboard to 15, // note that we may end up generating more views if we need to display top nav
             editIssue to 5,
             addComment to 2,
-            browseProjects to 5
+            browseProjects to 5,
+            viewComment to 5,
+            viewHistoryTabAction to 5
         )
 
         actionProportions.entries.forEach { scenario.addMultiple(element = it.key, repeats = it.value) }
