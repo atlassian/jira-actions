@@ -25,6 +25,14 @@ Dropping a requirement of a major version of a dependency is a new contract.
 
 ## [Unreleased]
 [Unreleased]: https://github.com/atlassian/jira-actions/compare/release-3.16.3...master
+### Added
+- Add new action View History Tab
+- Add new action View Comment
+- Add new page objects for Comment Tab Panel and History Tab Panel
+- Add `ViewIssueAction.Builder`
+- Extend `ViewIssueAction` with comment remembering capability
+- Add `CommentMemory`
+- Add new method to `WebJira` that allows visiting a comment
 
 ## [3.16.3] - 2022-04-08
 [3.16.3]: https://github.com/atlassian/jira-actions/compare/release-3.16.2...release-3.16.3

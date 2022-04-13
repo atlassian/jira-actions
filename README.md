@@ -19,6 +19,8 @@ Edit Issue Submit   | While in Edit Issue Action: Press Submit → Wait for the 
 Add Comment         | Go to Add Comment for an issue form → Wait for form to load → Enter comment text → Press Submit → Wait for the summary on view issue page to show
 Add Comment Submit  | While in Add Comment Action: Press Submit → Wait for the summary on view issue page to show
 Browse Projects     | Go to Browse Projects Page → Wait for the project list to load
+View Comment        | Go to Comment Tab Panel located on View Issue Page → Wait until comment is focused
+View History Tab    | Go to History Tab Panel located on View Issue Page → Wait for all change history entries to load
 
 ## Reporting issues
 

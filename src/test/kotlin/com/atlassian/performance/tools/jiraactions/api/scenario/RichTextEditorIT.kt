@@ -11,10 +11,7 @@ import com.atlassian.performance.tools.jiraactions.api.measure.ActionMeter
 import com.atlassian.performance.tools.jiraactions.api.measure.output.CollectionActionMetricOutput
 import com.atlassian.performance.tools.jiraactions.api.memories.User
 import com.atlassian.performance.tools.jiraactions.api.memories.UserMemory
-import com.atlassian.performance.tools.jiraactions.api.memories.adaptive.AdaptiveIssueKeyMemory
-import com.atlassian.performance.tools.jiraactions.api.memories.adaptive.AdaptiveIssueMemory
-import com.atlassian.performance.tools.jiraactions.api.memories.adaptive.AdaptiveJqlMemory
-import com.atlassian.performance.tools.jiraactions.api.memories.adaptive.AdaptiveProjectMemory
+import com.atlassian.performance.tools.jiraactions.api.memories.adaptive.*
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 import org.assertj.core.api.Assertions
@@ -96,6 +93,7 @@ class JiraEditScenario : Scenario {
         val jqlMemory = AdaptiveJqlMemory(seededRandom)
         val issueKeyMemory = AdaptiveIssueKeyMemory(random = seededRandom)
         val issueMemory = AdaptiveIssueMemory(issueKeyMemory, seededRandom)
+        val commentMemory = AdaptiveCommentMemory(seededRandom)
 
         val createIssue = CreateIssueAction(
             jira = jira,
@@ -109,13 +107,13 @@ class JiraEditScenario : Scenario {
             jqlMemory = jqlMemory,
             issueKeyMemory = issueKeyMemory
         )
-        val viewIssue = ViewIssueAction(
-            jira = jira,
-            meter = meter,
-            issueKeyMemory = issueKeyMemory,
-            issueMemory = issueMemory,
-            jqlMemory = jqlMemory
-        )
+        val viewIssue = ViewIssueAction.Builder(jira, meter)
+            .issueKeyMemory(issueKeyMemory)
+            .issueMemory(issueMemory)
+            .jqlMemory(jqlMemory)
+            .commentMemory(commentMemory)
+            .build()
+
         val editIssue = EditIssueAction(
             jira = jira,
             meter = meter,

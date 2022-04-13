@@ -22,7 +22,7 @@ data class WebJira(
         return RichTextEditorConfiguration(driver, accessAdmin())
     }
 
-    fun configureBackupPolicy() : BackupConfiguration {
+    fun configureBackupPolicy(): BackupConfiguration {
         navigateTo("secure/admin/ViewServices!default.jspa")
         return BackupConfiguration(driver, accessAdmin())
     }
@@ -92,6 +92,13 @@ data class WebJira(
 
     fun getJiraNode(): String {
         return driver.findElement(By.id("footer-build-information")).text
+    }
+
+    fun goToComment(
+        commentUrl: String
+    ): CommentTabPanel {
+        driver.navigate().to(commentUrl)
+        return CommentTabPanel(driver)
     }
 
     fun navigateTo(path: String) {
