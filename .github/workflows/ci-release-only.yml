@@ -10,6 +10,9 @@ on:
 jobs:
   release:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
     if: github.event.inputs.release == 'yes'
     steps:
     - name: Checkout
@@ -21,10 +24,13 @@ jobs:
       with:
         path: ~/.gradle
         key: ${{ runner.os }}-${{ hashFiles('gradle') }}
+    - name: Get publish token
+      id: publish-token
+      uses: atlassian-labs/artifact-publish-token@v1.0.1
     - name: Release
       env:
-        atlassian_private_username: ${{ secrets.ARTIFACTORY_USERNAME }}
-        atlassian_private_password: ${{ secrets.ARTIFACTORY_API_KEY }}
+        atlassian_private_username: ${{ steps.publish-token.outputs.artifactoryUsername }}
+        atlassian_private_password: ${{ steps.publish-token.outputs.artifactoryApiKey }}
       run: |
         ./gradlew build -x testIntegration
         ./gradlew release -Prelease.customUsername=${{ secrets.REPOSITORY_ACCESS_TOKEN }}
