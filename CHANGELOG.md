@@ -25,6 +25,10 @@ Dropping a requirement of a major version of a dependency is a new contract.
 
 ## [Unreleased]
 [Unreleased]: https://github.com/atlassian/jira-actions/compare/release-3.17.0...master
+### Fixed
+- Show all history entries in Jira 9.x
+- Use proper locator when exploring comments in Jira 9
+- Increase the waiting time when looking for presence of DOM elements in `ViewHistoryTabAction` and `ViewCommentAction`
 
 ## [3.17.0] - 2022-05-20
 [3.17.0]: https://github.com/atlassian/jira-actions/compare/release-3.16.3...release-3.17.0
