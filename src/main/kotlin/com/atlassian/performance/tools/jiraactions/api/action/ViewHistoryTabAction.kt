@@ -25,7 +25,7 @@ class ViewHistoryTabAction(
         val page = jira.goToIssue(issueKey).waitForSummary()
         meter.measure(
             key = VIEW_HISTORY_TAB,
-            action = { page.openHistoryTabPanel().loadAllHistoryEntries() },
+            action = { page.openHistoryTabPanel().showAllHistoryEntries() },
             observation = { IssueObservation(issueKey).serialize() }
         )
     }

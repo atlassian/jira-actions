@@ -15,16 +15,20 @@ class CommentTabPanel(
 ) {
     private val logger: Logger = LogManager.getLogger(this::class.java)
 
+    // the duration is set to such value because viewing issue with many comments is a heavy operation, and we assume
+    // the user is patient enough to wait for all comments to show up
+    private val duration: Duration = Duration.ofMinutes(2)
     private val loadMoreCommentsJira8Locator: By = By.cssSelector("a.show-more-comments")
     private val loadMoreCommentsJira9Locator: By = By.cssSelector("button.show-more-comment-tabpanel")
+    private val attemptLimit = 5
 
     fun waitForActive(): CommentTabPanel {
         driver.wait(
-            Duration.ofSeconds(45),
+            duration,
             ExpectedConditions.elementToBeClickable(By.id("comment-tabpanel"))
         ).click()
         driver.wait(
-            Duration.ofSeconds(60),
+            duration,
             ExpectedConditions.presenceOfElementLocated(By.cssSelector("#comment-tabpanel.active-tab"))
         )
         return this
@@ -43,7 +47,7 @@ class CommentTabPanel(
         commentId: String
     ): CommentTabPanel {
         driver.wait(
-            Duration.ofSeconds(30),
+            duration,
             ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#comment-$commentId.focused"))
         )
         return this
@@ -57,7 +61,7 @@ class CommentTabPanel(
         } else if (driver.isElementPresent(loadMoreCommentsJira9Locator)) {
             return showAllCommentsInJira9()
         } else {
-            logger.debug("This Jira version is not supported.")
+            logger.debug("The number of comments is less than ten or this Jira version is not supported.")
         }
         return this
     }
@@ -66,20 +70,18 @@ class CommentTabPanel(
         val loadMoreButton = driver.findElement(loadMoreCommentsJira8Locator)
         loadMoreButton.click()
         driver.wait(
-            timeout = Duration.ofSeconds(60),
-            condition = ExpectedConditions.stalenessOf(loadMoreButton)
+            duration,
+            ExpectedConditions.stalenessOf(loadMoreButton)
         )
         return this
     }
 
     private fun showAllCommentsInJira9(): CommentTabPanel {
-        driver.findElement(loadMoreCommentsJira9Locator).click()
-
-        if (driver.isElementPresent(loadMoreCommentsJira8Locator) && driver.findElement(loadMoreCommentsJira9Locator)
-                .getAttribute("data-load-all-enabled").equals("true")
-        ) {
+        repeat(attemptLimit) {
+            if (!driver.isElementPresent(loadMoreCommentsJira9Locator)) {
+                return this
+            }
             val loadMoreButton = driver.findElement(loadMoreCommentsJira9Locator)
-
             Actions(driver)
                 .keyDown(Keys.SHIFT)
                 .click(loadMoreButton)
@@ -87,8 +89,8 @@ class CommentTabPanel(
                 .build()
                 .perform()
             driver.wait(
-                timeout = Duration.ofSeconds(60),
-                condition = ExpectedConditions.stalenessOf(loadMoreButton)
+                duration,
+                ExpectedConditions.stalenessOf(loadMoreButton)
             )
         }
         return this
