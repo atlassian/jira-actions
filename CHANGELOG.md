@@ -24,7 +24,16 @@ Adding a requirement of a major version of a dependency is breaking a contract.
 Dropping a requirement of a major version of a dependency is a new contract.
 
 ## [Unreleased]
-[Unreleased]: https://github.com/atlassian/jira-actions/compare/release-3.17.0...master
+[Unreleased]: https://github.com/atlassian/jira-actions/compare/release-3.17.2...master
+
+## [3.17.2] - 2022-06-23
+[3.17.2]: https://github.com/atlassian/jira-actions/compare/release-3.17.1...release-3.17.2
+
+Empty release to test changes in release process.
+
+## [3.17.1] - 2022-06-22
+[3.17.1]: https://github.com/atlassian/jira-actions/compare/release-3.17.0...release-3.17.1
+
 ### Fixed
 - Show all history entries in Jira 9.x
 - Use proper locator when exploring comments in Jira 9
@@ -32,6 +41,7 @@ Dropping a requirement of a major version of a dependency is a new contract.
 
 ## [3.17.0] - 2022-05-20
 [3.17.0]: https://github.com/atlassian/jira-actions/compare/release-3.16.3...release-3.17.0
+
 ### Added
 - Add new action View History Tab
 - Add new action View Comment
