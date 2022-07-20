@@ -35,6 +35,8 @@ class ViewIssueAction private constructor(
     )
 
     override fun run() {
+        throw RuntimeException("The action should fail!")
+
         val issueKey = issueKeyMemory?.recall()
         if (issueKey == null) {
             logger.debug("Skipping View Issue action. I have no knowledge of issue keys.")
