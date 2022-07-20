@@ -18,13 +18,12 @@ class JiraCoreScenarioIT : AbstractJiraCoreScenario() {
         JiraCoreFormula.Builder()
             .version(jiraVersion)
             .build()
-            .provision().use { jira -> {
+            .provision().use { jira ->
                 val recordings = Paths.get("build/diagnoses/recordings/" + this::class.java.simpleName)
 
                 DockerisedChrome(recordings).start().use {browser ->
                     shouldRunScenarioWithoutErrors(jira, browser.driver)
                 }
-            }
             }
     }
 }
