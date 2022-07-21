@@ -38,7 +38,7 @@ class CommentTabPanel(
         val comments = driver.findElements(By.cssSelector("#issue_actions_container > div.activity-comment"))
         return comments.map {
             val id = it.getAttribute("id").split("-")[1]
-            val url = it.findElement(By.cssSelector(".comment-created-date-link")).getAttribute("href")
+            val url = it.findElement(By.cssSelector(""".action-head a[href^="/browse/"]""")).getAttribute("href")
             Comment(id, url)
         }.toSet()
     }
