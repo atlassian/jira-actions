@@ -29,7 +29,7 @@ class CommentTabPanel(
         ).click()
         driver.wait(
             duration,
-            ExpectedConditions.presenceOfElementLocated(By.cssSelector("#comment-tabpanel.active-tab"))
+            ExpectedConditions.presenceOfElementLocated(By.cssSelector("#comment-tabpanel.active"))
         )
         return this
     }

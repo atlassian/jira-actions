@@ -34,7 +34,7 @@ class HistoryTabPanel(
         ).click()
         driver.wait(
             duration,
-            ExpectedConditions.presenceOfElementLocated(By.cssSelector("#changehistory-tabpanel.active-tab"))
+            ExpectedConditions.presenceOfElementLocated(By.cssSelector("#changehistory-tabpanel.active"))
         )
         return this
     }

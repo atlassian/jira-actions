@@ -33,9 +33,11 @@ Dropping a requirement of a major version of a dependency is a new contract.
 ### Fixed
 - Allow `JiraCoreScenario` to learn about project specific JQL, so that it will find out about issues even if none of them is matching JQLs present in memory at the start of the scenario. Fix [JPERF-816].
 - Correct issue comment link reading to work with Jira versions prior to 8.17.0. Fix [JPERF-814].
+- Correct issue active tab selector to work with Jira 7.2.0. Fix [JPERF-819].
 
 [JPERF-816]: https://ecosystem.atlassian.net/browse/JPERF-816
 [JPERF-814]: https://ecosystem.atlassian.net/browse/JPERF-814
+[JPERF-819]: https://ecosystem.atlassian.net/browse/JPERF-819
 
 ## [3.17.2] - 2022-06-23
 [3.17.2]: https://github.com/atlassian/jira-actions/compare/release-3.17.1...release-3.17.2
