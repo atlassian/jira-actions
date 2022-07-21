@@ -20,8 +20,13 @@ class JiraCoreScenario constructor() : Scenario {
 
     override fun getActions(jira: WebJira, seededRandom: SeededRandom, meter: ActionMeter): List<Action> {
         initializeIssueKeyMemory(seededRandom)
-        val projectMemory = AdaptiveProjectMemory(random = seededRandom)
         val jqlMemory = AdaptiveJqlMemory(seededRandom)
+        val projectMemory = JqlRememberingProjectMemory
+            .Builder(
+                delegate = AdaptiveProjectMemory(random = seededRandom),
+                jqlMemory = jqlMemory
+            )
+            .build()
         val issueMemory = AdaptiveIssueMemory(issueKeyMemory, seededRandom)
         val commentMemory = AdaptiveCommentMemory(seededRandom)
 

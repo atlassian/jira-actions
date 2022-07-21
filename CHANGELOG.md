@@ -26,6 +26,15 @@ Dropping a requirement of a major version of a dependency is a new contract.
 ## [Unreleased]
 [Unreleased]: https://github.com/atlassian/jira-actions/compare/release-3.17.2...master
 
+### Added
+- Introduce `JqlRememberingProjectMemory` so that we have 2nd source of new JQL queries other than using `ViewIssueAction`, which already relies on `JqlMemory`.
+- Add `ProjectJqlFactory` and `SimpleProjectJqlFactory` primarily as components of the new `JqlRememberingProjectMemory`.
+
+### Fixed
+- Allow `JiraCoreScenario` to learn about project specific JQL, so that it will find out about issues even if none of them is matching JQLs present in memory at the start of the scenario. Fix [JPERF-816].
+
+[JPERF-816]: https://ecosystem.atlassian.net/browse/JPERF-816
+
 ## [3.17.2] - 2022-06-23
 [3.17.2]: https://github.com/atlassian/jira-actions/compare/release-3.17.1...release-3.17.2
 
