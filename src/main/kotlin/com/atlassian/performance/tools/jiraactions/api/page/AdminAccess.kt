@@ -63,6 +63,10 @@ class AdminAccess(
             }
         }
         driver.wait(elementToBeClickable(dropAdminRightsLocator)).click()
+        DashboardPage(driver).waitForDashboard()
+        if(isDropNotificationPresent()) {
+            throw Exception("Unexpected state: Admin access was still present after dropping it")
+        }
     }
 
     private fun isDropNotificationPresent() = driver.findElements(dropAdminRightsLocator).isNotEmpty()
