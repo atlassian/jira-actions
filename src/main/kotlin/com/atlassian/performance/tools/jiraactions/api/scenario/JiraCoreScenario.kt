@@ -24,7 +24,10 @@ class JiraCoreScenario constructor() : Scenario {
         val projectMemory = JqlRememberingProjectMemory
             .Builder(
                 delegate = AdaptiveProjectMemory(random = seededRandom),
-                jqlMemory = jqlMemory
+                jqlMemory = LimitedJqlMemory(
+                    delegate = jqlMemory,
+                    limit = 3
+                )
             )
             .build()
         val issueMemory = AdaptiveIssueMemory(issueKeyMemory, seededRandom)
