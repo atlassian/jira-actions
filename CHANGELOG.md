@@ -29,6 +29,7 @@ Dropping a requirement of a major version of a dependency is a new contract.
 ### Added
 - Introduce `JqlRememberingProjectMemory` so that we have 2nd source of new JQL queries other than using `ViewIssueAction`, which already relies on `JqlMemory`.
 - Add `ProjectJqlFactory` and `SimpleProjectJqlFactory` primarily as components of the new `JqlRememberingProjectMemory`.
+- Introduce `LimitedJqlMemory` to allow for limiting number of queries remembered from specific source.
 
 ### Fixed
 - Allow `JiraCoreScenario` to learn about project specific JQL, so that it will find out about issues even if none of them is matching JQLs present in memory at the start of the scenario. Fix [JPERF-816].
