@@ -1,7 +1,7 @@
 # This is a Gradle generated file for dependency locking.
 # Manual edits can break the build and are not advised.
 # This file is expected to be part of source control.
-com.atlassian.performance.tools:docker-infrastructure:0.3.3
+com.atlassian.performance.tools:docker-infrastructure:0.3.6
 com.atlassian.performance.tools:io:1.2.0
 com.fasterxml.jackson.core:jackson-annotations:2.10.3
 com.github.docker-java:docker-java-api:3.2.7
