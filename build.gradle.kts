@@ -60,7 +60,7 @@ dependencies {
     }.forEach { implementation(it) }
     testCompile("org.assertj:assertj-core:3.11.0")
     testCompile("com.atlassian.performance.tools:io:[1.0.0,2.0.0)")
-    testCompile("com.atlassian.performance.tools:docker-infrastructure:0.3.3")
+    testCompile("com.atlassian.performance.tools:docker-infrastructure:0.3.6")
     testCompile("junit:junit:4.12")
     testCompile("org.testcontainers:testcontainers:1.15.1")
 }
