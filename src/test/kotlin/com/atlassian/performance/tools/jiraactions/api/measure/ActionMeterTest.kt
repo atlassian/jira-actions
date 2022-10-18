@@ -1,21 +1,16 @@
 package com.atlassian.performance.tools.jiraactions.api.measure
 
-import com.atlassian.performance.tools.jiraactions.api.ActionMetric
-import com.atlassian.performance.tools.jiraactions.api.ActionResult
+import com.atlassian.performance.tools.jiraactions.api.*
 import com.atlassian.performance.tools.jiraactions.api.ActionResult.ERROR
 import com.atlassian.performance.tools.jiraactions.api.ActionResult.OK
-import com.atlassian.performance.tools.jiraactions.api.ActionType
-import com.atlassian.performance.tools.jiraactions.api.CREATE_ISSUE
-import com.atlassian.performance.tools.jiraactions.api.EDIT_ISSUE
-import com.atlassian.performance.tools.jiraactions.api.VIEW_BOARD
 import com.atlassian.performance.tools.jiraactions.api.measure.output.ActionMetricOutput
 import com.atlassian.performance.tools.jiraactions.api.measure.output.CollectionActionMetricOutput
-import com.atlassian.performance.tools.jiraactions.api.measure.output.ThrowawayActionMetricOutput
 import com.atlassian.performance.tools.jiraactions.api.w3c.RecordedPerformanceEntries
 import com.atlassian.performance.tools.jiraactions.api.w3c.W3cPerformanceTimeline
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 import org.assertj.core.api.Assertions.assertThat
+import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.Test
 import java.time.Clock
 import java.time.Duration
@@ -79,6 +74,8 @@ class ActionMeterTest {
         start = start
     ).virtualUser(vu).build()
 
+    private class TestException : Exception()
+
     @Test
     fun shouldMeasureErrors() {
         val output = CollectionActionMetricOutput(mutableListOf())
@@ -91,11 +88,7 @@ class ActionMeterTest {
             .appendPostMetricHook(DrillDownHook(HardcodedTimeline(entries)))
             .build()
 
-        try {
-            actionMeter.measure(CREATE_ISSUE) { throw Exception("Ignore this exception, it's test-only") }
-        } catch (e: Exception) {
-            logger.info("Ignoring exception", e)
-        }
+        assertThatThrownBy { actionMeter.measure(CREATE_ISSUE) { throw TestException() } }.hasCauseInstanceOf(TestException::class.java)
         actionMeter.measure(VIEW_BOARD) {}
 
         assertThat(output.metrics).containsExactlyInAnyOrder(
@@ -116,10 +109,12 @@ class ActionMeterTest {
         val actionMeter = ActionMeter.Builder(
             output = output
         )
-            .appendPostMetricHook(ConditionalHook(
-                Predicate { actionMetric -> CREATE_ISSUE.label == actionMetric.label },
-                DrillDownHook(w3cPerformanceTimelineMock)
-            ))
+            .appendPostMetricHook(
+                ConditionalHook(
+                    Predicate { actionMetric -> CREATE_ISSUE.label == actionMetric.label },
+                    DrillDownHook(w3cPerformanceTimelineMock)
+                )
+            )
             .virtualUser(vu)
             .clock(clock)
             .build()
@@ -139,7 +134,7 @@ class ActionMeterTest {
 
     private class ConditionalHook(
         private val predicate: Predicate<ActionMetric>,
-        private val hook : PostMetricHook
+        private val hook: PostMetricHook
     ) : PostMetricHook {
         override fun run(actionMetricBuilder: ActionMetric.Builder) {
             if (predicate.test(actionMetricBuilder.build())) {
@@ -214,8 +209,8 @@ class ActionMeterTest {
             .overrideOutput { output }
             .build()
 
-        actionMeter.measure(CREATE_ISSUE){}
-        actionMeter.measure(VIEW_BOARD){}
+        actionMeter.measure(CREATE_ISSUE) {}
+        actionMeter.measure(VIEW_BOARD) {}
 
         assertThat(output.metrics).hasSize(2)
     }
@@ -239,8 +234,8 @@ class ActionMeterTest {
             .overrideOutput { DelegatingOutput(it) }
             .build()
 
-        actionMeter.measure(CREATE_ISSUE){}
-        actionMeter.measure(VIEW_BOARD){}
+        actionMeter.measure(CREATE_ISSUE) {}
+        actionMeter.measure(VIEW_BOARD) {}
 
         assertThat(output.metrics).hasSize(2)
     }
