@@ -24,7 +24,10 @@ Adding a requirement of a major version of a dependency is breaking a contract.
 Dropping a requirement of a major version of a dependency is a new contract.
 
 ## [Unreleased]
-[Unreleased]: https://github.com/atlassian/jira-actions/compare/release-3.17.2...master
+[Unreleased]: https://github.com/atlassian/jira-actions/compare/release-3.17.3...master
+
+## [3.17.3] - 2022-10-19
+[3.17.3]: https://github.com/atlassian/jira-actions/compare/release-3.17.2...release-3.17.3
 
 ### Added
 - Introduce `JqlRememberingProjectMemory` so that we have 2nd source of new JQL queries other than using `ViewIssueAction`, which already relies on `JqlMemory`.
