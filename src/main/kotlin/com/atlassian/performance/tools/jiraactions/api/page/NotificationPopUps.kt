@@ -1,6 +1,5 @@
-package com.atlassian.performance.tools.jiraactions.page
+package com.atlassian.performance.tools.jiraactions.api.page
 
-import com.atlassian.performance.tools.jiraactions.api.page.wait
 import com.atlassian.performance.tools.jiraactions.api.webdriver.JavaScriptUtils
 import org.openqa.selenium.By
 import org.openqa.selenium.TimeoutException
@@ -9,7 +8,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions.invisibilityOfElementLo
 import java.time.Duration
 
 
-internal class NotificationPopUps(private val driver: WebDriver) {
+class NotificationPopUps(private val driver: WebDriver) {
     private val auiFlagCloseLocator = By.cssSelector(".aui-flag .icon-close, .aui-flag .aui-close-button")
 
     fun dismissHealthCheckNotifications() : NotificationPopUps {
