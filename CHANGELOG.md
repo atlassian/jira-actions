@@ -26,6 +26,9 @@ Dropping a requirement of a major version of a dependency is a new contract.
 ## [Unreleased]
 [Unreleased]: https://github.com/atlassian/jira-actions/compare/release-3.17.3...master
 
+### Changed
+- Remove `internal` modifier from `NotificationPopUps`. Unblock [JPERF-903]
+
 ## [3.17.3] - 2022-10-19
 [3.17.3]: https://github.com/atlassian/jira-actions/compare/release-3.17.2...release-3.17.3
 

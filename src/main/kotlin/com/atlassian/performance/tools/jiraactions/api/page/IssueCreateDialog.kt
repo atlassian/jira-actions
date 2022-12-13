@@ -2,7 +2,6 @@ package com.atlassian.performance.tools.jiraactions.api.page
 
 import com.atlassian.performance.tools.jiraactions.api.page.form.IssueForm
 import com.atlassian.performance.tools.jiraactions.api.webdriver.sendKeysWhenClickable
-import com.atlassian.performance.tools.jiraactions.page.NotificationPopUps
 import com.atlassian.performance.tools.jiraactions.page.SingleSelect
 import org.openqa.selenium.*
 import org.openqa.selenium.support.ui.ExpectedCondition
