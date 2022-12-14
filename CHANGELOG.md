@@ -24,7 +24,10 @@ Adding a requirement of a major version of a dependency is breaking a contract.
 Dropping a requirement of a major version of a dependency is a new contract.
 
 ## [Unreleased]
-[Unreleased]: https://github.com/atlassian/jira-actions/compare/release-3.17.3...master
+[Unreleased]: https://github.com/atlassian/jira-actions/compare/release-3.18.0...master
+
+## [3.18.0] - 2022-12-15
+[3.18.0]: https://github.com/atlassian/jira-actions/compare/release-3.17.3...release-3.18.0
 
 ### Changed
 - Remove `internal` modifier from `NotificationPopUps`. Unblock [JPERF-903]
