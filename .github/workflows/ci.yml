@@ -46,7 +46,7 @@ jobs:
   release:
     runs-on: ubuntu-latest
     permissions:
-      contents: read
+      contents: write
       id-token: write
     needs: build-check
     if: github.event.inputs.release == 'yes'
@@ -68,5 +68,7 @@ jobs:
         atlassian_private_username: ${{ steps.publish-token.outputs.artifactoryUsername }}
         atlassian_private_password: ${{ steps.publish-token.outputs.artifactoryApiKey }}
       run: |
-        ./gradlew release -Prelease.customUsername=${{ secrets.REPOSITORY_ACCESS_TOKEN }}
+        ./gradlew release \
+            -Prelease.customUsername=${{ github.actor }} \
+            -Prelease.customPassword=${{ github.token }}
         ./gradlew publish
