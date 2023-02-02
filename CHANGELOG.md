@@ -26,6 +26,11 @@ Dropping a requirement of a major version of a dependency is a new contract.
 ## [Unreleased]
 [Unreleased]: https://github.com/atlassian/jira-actions/compare/release-3.18.0...master
 
+### Fixed
+- Tolerate dirty form warnings in `BackupConfiguration`. Fix [JPERF-967].
+
+[JPERF-967]: https://ecosystem.atlassian.net/browse/JPERF-967
+
 ## [3.18.0] - 2022-12-15
 [3.18.0]: https://github.com/atlassian/jira-actions/compare/release-3.17.3...release-3.18.0
 

@@ -8,6 +8,7 @@ import com.atlassian.performance.tools.jiraactions.api.measure.output.Collection
 import com.atlassian.performance.tools.jiraactions.api.memories.User
 import com.atlassian.performance.tools.jiraactions.api.memories.UserMemory
 import com.atlassian.performance.tools.jiraactions.api.page.isElementPresent
+import com.atlassian.performance.tools.jiraactions.api.page.tolerateDirtyFormsOnCurrentPage
 import com.atlassian.performance.tools.jiraactions.api.w3c.JavascriptW3cPerformanceTimeline
 import com.atlassian.performance.tools.jiraactions.api.webdriver.sendKeysAndValidate
 import org.apache.logging.log4j.LogManager
@@ -107,6 +108,7 @@ abstract class AbstractJiraCoreScenario {
             driver.findElementById("login-form-authenticatePassword").sendKeys("admin")
             driver.findElement(By.id("login-form-submit")).click()
         }
+        driver.tolerateDirtyFormsOnCurrentPage()
     }
 
     private fun addBackupService(driver: RemoteWebDriver) {
