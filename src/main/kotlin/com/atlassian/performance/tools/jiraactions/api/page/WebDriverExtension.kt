@@ -29,7 +29,7 @@ fun <T> WebDriver.wait(
 
 @JvmOverloads
 fun WebDriver.wait(
-    timeout: Duration,
+    timeout: Duration = Duration.ofSeconds(10),
     condition: NativeExpectedCondition,
     precision: Duration = Duration.ofMillis(100)
 ) {
@@ -46,7 +46,7 @@ fun WebDriver.wait(
 internal fun <T> WebDriver.wait(
     condition: ExpectedCondition<T>
 ): T {
-    return this.wait(Duration.ofSeconds(5), condition)
+    return this.wait(Duration.ofSeconds(10), condition)
 }
 
 internal fun WebDriver.isElementPresent(
