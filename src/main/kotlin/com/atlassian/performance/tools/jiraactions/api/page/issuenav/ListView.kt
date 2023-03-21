@@ -8,14 +8,13 @@ import com.atlassian.performance.tools.jiraactions.api.page.wait
 import org.openqa.selenium.By
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.support.ui.ExpectedConditions.elementToBeClickable
-import java.time.Duration
 
 class ListView(
     private val driver: WebDriver
 ) : IssueNavResultsView {
 
     override fun isSelected(): Boolean {
-        driver.wait(Duration.ofSeconds(10), presenceOfElementLocated(By.className("results-panel")))
+        driver.wait(condition = presenceOfElementLocated(By.className("results-panel")))
         return driver.isElementPresent(By.className("list-view"))
     }
 

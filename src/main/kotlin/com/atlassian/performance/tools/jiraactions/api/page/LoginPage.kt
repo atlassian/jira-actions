@@ -4,8 +4,7 @@ import com.atlassian.performance.tools.jiraactions.api.memories.User
 import com.atlassian.performance.tools.jiraactions.api.webdriver.sendKeysAndValidate
 import org.openqa.selenium.By
 import org.openqa.selenium.WebDriver
-import org.openqa.selenium.support.ui.ExpectedConditions
-import java.time.Duration
+import org.openqa.selenium.support.ui.ExpectedConditions.presenceOfElementLocated
 
 class LoginPage(
     private val driver: WebDriver
@@ -15,10 +14,7 @@ class LoginPage(
     fun logIn(
         user: User
     ): DashboardPage {
-        driver.wait(
-            Duration.ofMinutes(4),
-            ExpectedConditions.presenceOfElementLocated(loginFormLocator)
-        )
+        driver.wait(presenceOfElementLocated(loginFormLocator))
         val loginForm = driver.findElement(loginFormLocator)
         loginForm.findElement(By.name("os_username")).sendKeysAndValidate(driver, user.name)
         loginForm.findElement(By.name("os_password")).sendKeysAndValidate(driver, user.password)

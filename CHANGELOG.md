@@ -26,6 +26,12 @@ Dropping a requirement of a major version of a dependency is a new contract.
 ## [Unreleased]
 [Unreleased]: https://github.com/atlassian/jira-actions/compare/release-3.20.0...master
 
+### Fixed
+- Change the default timeout for `WebDriver.wait` to 10 seconds. Fix [JPERF-1026].
+- Apply `WebDriver.wait` consistently.
+
+[JPERF-1026]: https://ecosystem.atlassian.net/browse/JPERF-1026
+
 ## [3.20.0] - 2023-03-31
 [3.20.0]: https://github.com/atlassian/jira-actions/compare/release-3.19.0...release-3.20.0
 

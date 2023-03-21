@@ -3,7 +3,7 @@ package com.atlassian.performance.tools.jiraactions.api.page
 import org.apache.logging.log4j.LogManager
 import org.openqa.selenium.By
 import org.openqa.selenium.WebDriver
-import org.openqa.selenium.support.ui.ExpectedConditions
+import org.openqa.selenium.support.ui.ExpectedConditions.elementToBeClickable
 
 class BackupConfiguration(
     private val driver: WebDriver,
@@ -30,7 +30,7 @@ class BackupConfiguration(
     }
 
     private fun deleteBackupService() {
-        driver.wait(ExpectedConditions.elementToBeClickable(deleteBackupLocator)).click()
+        driver.wait(elementToBeClickable(deleteBackupLocator)).click()
         driver.tolerateDirtyFormsOnCurrentPage()
         if (access.isPrompted()) {
             access.gain()

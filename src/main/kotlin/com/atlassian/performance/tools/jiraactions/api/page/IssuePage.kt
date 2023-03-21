@@ -7,7 +7,6 @@ import com.atlassian.performance.tools.jiraactions.page.UserProfilePage
 import org.openqa.selenium.By
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.support.ui.ExpectedConditions.visibilityOfElementLocated
-import java.time.Duration
 
 class IssuePage(
     private val driver: WebDriver
@@ -23,7 +22,6 @@ class IssuePage(
         driver.findElements(By.id("summary-val")).stream().findFirst()
         val jiraErrors = JiraErrors(driver)
         driver.wait(
-            timeout = Duration.ofSeconds(10),
             condition = or(
                 NativeExpectedConditions.visibilityOfElementLocated(summaryField),
                 jiraErrors.anyCommonErrorNative()
@@ -51,7 +49,7 @@ class IssuePage(
             ?.click()
             ?: return null
         return driver
-            .wait(Duration.ofSeconds(2), visibilityOfElementLocated(By.id("priority-suggestions")))
+            .wait(visibilityOfElementLocated(By.id("priority-suggestions")))
             .findElements(By.tagName("a"))
             .map { it.text }
     }

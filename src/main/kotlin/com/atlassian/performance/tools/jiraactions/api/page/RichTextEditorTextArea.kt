@@ -4,7 +4,6 @@ import org.openqa.selenium.By
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.WebElement
 import org.openqa.selenium.support.ui.ExpectedConditions.*
-import java.time.Duration
 
 /**
  * Represents the [Jira Rich Text Editor](https://confluence.atlassian.com/adminjiraserver/rich-text-editing-938847886.html)
@@ -26,7 +25,7 @@ class RichTextEditorTextArea(
     }
 
     private fun overwritePlain(text: String) {
-        driver.wait(timeout = Duration.ofSeconds(2), condition = elementToBeClickable(textArea))
+        driver.wait(elementToBeClickable(textArea))
         textArea.clear()
         textArea.sendKeys(text)
     }
@@ -45,15 +44,9 @@ class RichTextEditorTextArea(
         val iframeXpath = "//div[textarea[@id='${textArea.getAttribute("id")}']]//iframe"
 
         try {
-            driver.wait(
-                timeout = Duration.ofSeconds(10),
-                condition = frameToBeAvailableAndSwitchToIt(By.xpath(iframeXpath))
-            )
+            driver.wait(frameToBeAvailableAndSwitchToIt(By.xpath(iframeXpath)))
             val tinyMce = driver.findElement(By.id("tinymce"))
-            driver.wait(
-                timeout = Duration.ofSeconds(10),
-                condition = attributeToBeNotEmpty(tinyMce, "data-projectkey")
-            )
+            driver.wait(attributeToBeNotEmpty(tinyMce, "data-projectkey"))
             tinyMce.clear()
             tinyMce.sendKeys(text)
         } finally {

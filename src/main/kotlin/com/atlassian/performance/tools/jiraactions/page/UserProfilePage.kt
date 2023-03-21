@@ -3,8 +3,7 @@ package com.atlassian.performance.tools.jiraactions.page
 import com.atlassian.performance.tools.jiraactions.api.page.wait
 import org.openqa.selenium.By
 import org.openqa.selenium.WebDriver
-import org.openqa.selenium.support.ui.ExpectedConditions
-import java.time.Duration
+import org.openqa.selenium.support.ui.ExpectedConditions.presenceOfElementLocated
 import java.util.*
 
 fun splitTagTextIntoLines(text: String): List<String> {
@@ -40,13 +39,13 @@ internal class UserProfilePage(
     }
 
     fun waitForPageLoad(): UserProfilePage {
-        driver.wait(Duration.ofSeconds(20), ExpectedConditions.presenceOfElementLocated(profileDetails))
+        driver.wait(presenceOfElementLocated(profileDetails))
         return this
     }
 
     fun navigateTo(user: String?): UserProfilePage {
         driver.findElement(headerUserInfo).click()
-        driver.wait(Duration.ofSeconds(10), ExpectedConditions.presenceOfElementLocated(headerProfileLink))
+        driver.wait(presenceOfElementLocated(headerProfileLink))
         val uri = driver.findElement(headerProfileLink).getAttribute("href")
         if (user == null) {
             driver.navigate().to(uri)

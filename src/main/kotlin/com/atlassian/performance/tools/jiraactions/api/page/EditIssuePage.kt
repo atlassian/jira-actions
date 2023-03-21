@@ -4,7 +4,6 @@ import com.atlassian.performance.tools.jiraactions.api.page.form.IssueForm
 import org.openqa.selenium.By
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.support.ui.ExpectedConditions.*
-import java.time.Duration
 
 class EditIssuePage(
     private val driver: WebDriver
@@ -17,8 +16,7 @@ class EditIssuePage(
     fun waitForEditIssueForm(): EditIssuePage {
         val jiraErrors = JiraErrors(driver)
         driver.wait(
-            timeout = Duration.ofSeconds(5),
-            condition = or(
+            or(
                 presenceOfElementLocated(updateButtonLocator),
                 jiraErrors.anyCommonError(),
                 jiraErrors.anyCommonWarning()
@@ -47,7 +45,7 @@ class EditIssuePage(
     private fun By.clearAndTypeIfPresent(text: String) {
         if (driver.isElementPresent(this)) {
             val webElement = driver.findElement(this)
-            driver.wait(timeout = Duration.ofSeconds(2), condition = elementToBeClickable(webElement))
+            driver.wait(elementToBeClickable(webElement))
             webElement.clear()
             webElement.sendKeys(text)
         }

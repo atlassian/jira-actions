@@ -4,10 +4,10 @@ import com.atlassian.performance.tools.jiraactions.api.page.wait
 import org.openqa.selenium.Keys
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.WebElement
-import org.openqa.selenium.support.ui.ExpectedConditions
+import org.openqa.selenium.support.ui.ExpectedConditions.elementToBeClickable
 
 fun WebElement.sendKeysWhenClickable(driver: WebDriver, vararg keysToSend: CharSequence): WebElement {
-    driver.wait(ExpectedConditions.elementToBeClickable(this))
+    driver.wait(elementToBeClickable(this))
     click()
 
     sendKeys(*keysToSend)
