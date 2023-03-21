@@ -7,7 +7,6 @@ import org.openqa.selenium.*
 import org.openqa.selenium.support.ui.ExpectedCondition
 import org.openqa.selenium.support.ui.ExpectedConditions.*
 import org.openqa.selenium.support.ui.Select
-import java.time.Duration
 import java.util.function.Supplier
 
 class IssueCreateDialog(
@@ -24,8 +23,7 @@ class IssueCreateDialog(
     fun waitForDialog(): IssueCreateDialog {
         val jiraErrors = JiraErrors(driver)
         driver.wait(
-            timeout = Duration.ofSeconds(30),
-            condition = or(
+            or(
                 visibilityOfElementLocated(dialog),
                 jiraErrors.anyCommonError()
             )
@@ -36,11 +34,7 @@ class IssueCreateDialog(
     }
 
     private fun waitForDialogToHide() {
-        driver.wait(
-            timeout = Duration.ofSeconds(30),
-            condition = invisibilityOfElementLocated(dialog)
-        )
-    }
+        driver.wait(invisibilityOfElementLocated(dialog)) }
 
     fun selectProject(projectName: String) = form.waitForRefresh(Supplier {
         projectField.select(projectName)
@@ -108,8 +102,9 @@ class IssueCreateDialog(
         return this
     }
 
-    private fun getVisibleAllFieldsLinkLocator(dialogClass: String) : By {
-        val sectionIndex = if (driver.findElement(By.cssSelector(".$dialogClass dl:nth-of-type(1)")).isDisplayed) 1 else 2
+    private fun getVisibleAllFieldsLinkLocator(dialogClass: String): By {
+        val sectionIndex =
+            if (driver.findElement(By.cssSelector(".$dialogClass dl:nth-of-type(1)")).isDisplayed) 1 else 2
         return By.xpath("//div[@class='$dialogClass']//dl[$sectionIndex]//dd[1]//a")
     }
 
@@ -130,7 +125,7 @@ class IssueCreateDialog(
         driver.wait(visibilityOfElementLocated(popupLocator))
     }
 
-    private fun dismissConfigureFieldsDialog(){
+    private fun dismissConfigureFieldsDialog() {
         driver.wait(elementToBeClickable(By.xpath("//*[@id='create-issue-dialog']//h2"))).click()
     }
 
@@ -145,7 +140,7 @@ class IssueCreateDialog(
     }
 
     private fun waitUntilSummaryIsFocused() {
-        driver.wait(Duration.ofSeconds(5), elementIsFocused(By.id("summary")))
+        driver.wait(elementIsFocused(By.id("summary")))
     }
 
     private fun elementIsFocused(locator: By): ExpectedCondition<WebElement?> {

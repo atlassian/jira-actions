@@ -7,8 +7,7 @@ import org.openqa.selenium.By
 import org.openqa.selenium.Keys
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.interactions.Actions
-import org.openqa.selenium.support.ui.ExpectedConditions
-import java.time.Duration
+import org.openqa.selenium.support.ui.ExpectedConditions.*
 
 class CommentTabPanel(
     val driver: WebDriver
@@ -17,20 +16,13 @@ class CommentTabPanel(
 
     // the duration is set to such value because viewing issue with many comments is a heavy operation, and we assume
     // the user is patient enough to wait for all comments to show up
-    private val duration: Duration = Duration.ofMinutes(2)
     private val loadMoreCommentsJira8Locator: By = By.cssSelector("a.show-more-comments")
     private val loadMoreCommentsJira9Locator: By = By.cssSelector("button.show-more-comment-tabpanel")
     private val attemptLimit = 5
 
     fun waitForActive(): CommentTabPanel {
-        driver.wait(
-            duration,
-            ExpectedConditions.elementToBeClickable(By.id("comment-tabpanel"))
-        ).click()
-        driver.wait(
-            duration,
-            ExpectedConditions.presenceOfElementLocated(By.cssSelector("#comment-tabpanel.active"))
-        )
+        driver.wait(elementToBeClickable(By.id("comment-tabpanel"))).click()
+        driver.wait(presenceOfElementLocated(By.cssSelector("#comment-tabpanel.active")))
         return this
     }
 
@@ -46,10 +38,7 @@ class CommentTabPanel(
     fun validateCommentIsFocused(
         commentId: String
     ): CommentTabPanel {
-        driver.wait(
-            duration,
-            ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#comment-$commentId.focused"))
-        )
+        driver.wait(visibilityOfElementLocated(By.cssSelector("#comment-$commentId.focused")))
         return this
     }
 
@@ -69,10 +58,7 @@ class CommentTabPanel(
     private fun showAllCommentsInJira8(): CommentTabPanel {
         val loadMoreButton = driver.findElement(loadMoreCommentsJira8Locator)
         loadMoreButton.click()
-        driver.wait(
-            duration,
-            ExpectedConditions.stalenessOf(loadMoreButton)
-        )
+        driver.wait(stalenessOf(loadMoreButton))
         return this
     }
 
@@ -88,10 +74,7 @@ class CommentTabPanel(
                 .keyUp(Keys.SHIFT)
                 .build()
                 .perform()
-            driver.wait(
-                duration,
-                ExpectedConditions.stalenessOf(loadMoreButton)
-            )
+            driver.wait(stalenessOf(loadMoreButton))
         }
         return this
     }

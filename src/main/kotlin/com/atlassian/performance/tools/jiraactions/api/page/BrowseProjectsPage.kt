@@ -6,7 +6,6 @@ import com.atlassian.performance.tools.jiraactions.api.memories.Project
 import org.openqa.selenium.By
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.WebElement
-import java.time.Duration
 
 class BrowseProjectsPage(
     private val driver: WebDriver
@@ -16,8 +15,7 @@ class BrowseProjectsPage(
     fun waitForProjectList(): BrowseProjectsPage {
         val jiraErrors = JiraErrors(driver)
         driver.wait(
-            Duration.ofSeconds(6),
-            or(
+            condition = or(
                 presenceOfElementLocated(By.cssSelector("tbody.projects-list")),
                 presenceOfElementLocated(By.className("none-panel")),
                 jiraErrors.anyCommonErrorNative()

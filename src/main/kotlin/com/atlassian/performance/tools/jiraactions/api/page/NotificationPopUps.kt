@@ -5,13 +5,12 @@ import org.openqa.selenium.By
 import org.openqa.selenium.TimeoutException
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.support.ui.ExpectedConditions.invisibilityOfElementLocated
-import java.time.Duration
 
 
 class NotificationPopUps(private val driver: WebDriver) {
     private val auiFlagCloseLocator = By.cssSelector(".aui-flag .icon-close, .aui-flag .aui-close-button")
 
-    fun dismissHealthCheckNotifications() : NotificationPopUps {
+    fun dismissHealthCheckNotifications(): NotificationPopUps {
         // NPS is an AUI flag
         // e.g. healthcheck notifications: "Don't remind me again"
         return clickAll(By.cssSelector(".dismiss-notification"))
@@ -19,47 +18,44 @@ class NotificationPopUps(private val driver: WebDriver) {
 
     fun waitUntilAuiFlagsAreGone(): NotificationPopUps {
         try {
-            waitUntilAuiFlagsAreGone(Duration.ofSeconds(5))
+            waitUntilAuiFlagsAreInvisible()
             return this
         } catch (e: TimeoutException) {
         }
 
         try {
             dismissAuiFlags()
-            waitUntilAuiFlagsAreGone(Duration.ofSeconds(30))
+            waitUntilAuiFlagsAreInvisible()
             return this
         } catch (e: Exception) {
             throw e
         }
     }
 
-    private fun waitUntilAuiFlagsAreGone(duration: Duration) {
-        driver.wait(
-            duration, //this is animated and can take a looong time
-            invisibilityOfElementLocated(By.id("aui-flag-container"))
-        )
+    private fun waitUntilAuiFlagsAreInvisible() {
+        driver.wait(invisibilityOfElementLocated(By.id("aui-flag-container")))
     }
 
-    fun dismissAuiFlags() : NotificationPopUps {
+    fun dismissAuiFlags(): NotificationPopUps {
         // X mark on AUI flag
         return clickAll(auiFlagCloseLocator)
     }
 
-    fun dismissFindYourWorkFaster() : NotificationPopUps {
+    fun dismissFindYourWorkFaster(): NotificationPopUps {
         // Find your work faster "OK, got it"
         return clickAll(By.cssSelector(".aui-button.helptip-close"))
     }
 
-    fun disableNpsFeedback() : NotificationPopUps {
+    fun disableNpsFeedback(): NotificationPopUps {
         //NPS is an AUI flag
         return clickAll(By.id("nps-acknowledgement-accept-button"))
     }
 
-    fun dismissJiraHelpTips() : NotificationPopUps {
+    fun dismissJiraHelpTips(): NotificationPopUps {
         return clickAll(By.cssSelector(".jira-help-tip .cancel"))
     }
 
-    fun dismissPostSetup() : NotificationPopUps {
+    fun dismissPostSetup(): NotificationPopUps {
         return clickAll(By.className("postsetup-close-link"))
     }
 

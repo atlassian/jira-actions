@@ -4,7 +4,6 @@ import org.openqa.selenium.By
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.support.ui.ExpectedConditions.or
 import org.openqa.selenium.support.ui.ExpectedConditions.presenceOfElementLocated
-import java.time.Duration
 
 class CommentForm(
     private val driver: WebDriver
@@ -15,8 +14,7 @@ class CommentForm(
     fun waitForButton(): CommentForm {
         val jiraErrors = JiraErrors(driver)
         driver.wait(
-            timeout = Duration.ofSeconds(6),
-            condition = or(
+            or(
                 presenceOfElementLocated(submitLocator),
                 jiraErrors.anyCommonError()
             )

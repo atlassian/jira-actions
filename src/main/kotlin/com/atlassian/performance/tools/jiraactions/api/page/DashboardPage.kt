@@ -5,7 +5,6 @@ import org.openqa.selenium.JavascriptExecutor
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.support.ui.ExpectedCondition
 import org.openqa.selenium.support.ui.ExpectedConditions.*
-import java.time.Duration
 
 class DashboardPage(
     private val driver: WebDriver
@@ -23,7 +22,6 @@ class DashboardPage(
 
     fun waitForDashboard(): DashboardPage {
         driver.wait(
-            Duration.ofSeconds(60),
             or(
                 and(
                     presenceOfElementLocated(By.className("page-type-dashboard")),

@@ -5,8 +5,7 @@ import com.atlassian.performance.tools.jiraactions.page.form.*
 import org.openqa.selenium.By
 import org.openqa.selenium.By.xpath
 import org.openqa.selenium.WebDriver
-import org.openqa.selenium.support.ui.ExpectedConditions
-import java.time.Duration
+import org.openqa.selenium.support.ui.ExpectedConditions.invisibilityOf
 import java.util.function.Supplier
 
 class IssueForm(
@@ -20,7 +19,7 @@ class IssueForm(
     ): T {
         val form = getForm()
         val result = action.get()
-        driver.wait(Duration.ofSeconds(30), ExpectedConditions.invisibilityOf(form))
+        driver.wait(invisibilityOf(form))
         return result
     }
 
