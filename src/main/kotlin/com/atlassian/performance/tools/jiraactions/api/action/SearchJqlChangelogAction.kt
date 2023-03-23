@@ -32,7 +32,7 @@ class SearchJqlChangelogAction(
 
         val issueNavigatorPage = meter.measure(
             key = SEARCH_JQL_CHANGELOG,
-            action = { jira.goToIssueNavigator(jqlQuery).switchLayoutTo(view).waitForIssueNavigator() },
+            action = { jira.goToIssueNavigator(jqlQuery).switchTo(view).waitForIssueNavigator() },
             observation = this::observe
         )
         issueKeyMemory.remember(issueNavigatorPage.getIssueKeys())

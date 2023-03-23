@@ -32,7 +32,7 @@ class SearchJqlSimpleAction(
 
         val issueNavigatorPage = meter.measure(
             key = SEARCH_JQL_SIMPLE,
-            action = { jira.goToIssueNavigator(jqlQueries).switchLayoutTo(view).waitForIssueNavigator() },
+            action = { jira.goToIssueNavigator(jqlQueries).switchTo(view).waitForIssueNavigator() },
             observation = this::observe
         )
         issueKeyMemory.remember(issueNavigatorPage.getIssueKeys())

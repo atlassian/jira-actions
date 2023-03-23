@@ -27,15 +27,15 @@ Dropping a requirement of a major version of a dependency is a new contract.
 [Unreleased]: https://github.com/atlassian/jira-actions/compare/release-3.18.1...master
 
 ### Added
-- Add optional `IssueNavigatorView` parameter to JQL actions constructors. Make `IssueNavigationPage` support both list view and split view. Fix [JPERF-1043].
+- Support both list view and detail view in `IssueNavigatorPage`. Fix [JPERF-1043].
+- Add `IssueNavigatorView` parameter to JQL actions constructors.
 
 ### Fixed
 - Disable instance health notifications in `SetUpAction`. Fix [JPERF-1050].
+- Randomly pick between list view and detail view in `JiraCoreScenario`.
 
 [JPERF-1050]: https://ecosystem.atlassian.net/browse/JPERF-1050
-
-### Fixed
-- Randomly pick between list view and detail view in `JiraCoreScenario`.
+[JPERF-1043]: https://ecosystem.atlassian.net/browse/JPERF-1043
 
 ## [3.18.1] - 2023-02-02
 [3.18.1]: https://github.com/atlassian/jira-actions/compare/release-3.18.0...release-3.18.1
