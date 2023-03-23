@@ -4,7 +4,7 @@ import com.atlassian.performance.seleniumjs.NativeExpectedCondition
 import com.atlassian.performance.seleniumjs.NativeExpectedConditions.Companion.and
 import com.atlassian.performance.seleniumjs.NativeExpectedConditions.Companion.or
 import com.atlassian.performance.seleniumjs.NativeExpectedConditions.Companion.presenceOfElementLocated
-import com.atlassian.performance.tools.jiraactions.api.page.IssueNavigatorView.*
+import com.atlassian.performance.tools.jiraactions.api.page.IssueNavigatorPage.View.*
 import com.atlassian.performance.tools.jiraactions.api.webdriver.JavaScriptUtils
 import org.openqa.selenium.By
 import org.openqa.selenium.WebDriver
@@ -31,7 +31,7 @@ open class IssueNavigatorPage(
         return this
     }
 
-    fun switchTo(view: IssueNavigatorView): IssueNavigatorPage {
+    fun switchTo(view: View): IssueNavigatorPage {
         val currentView = getCurrentView()
         if (currentView != view) {
             driver.wait(elementToBeClickable(By.id("layout-switcher-button"))).click()
@@ -40,7 +40,7 @@ open class IssueNavigatorPage(
         return this
     }
 
-    private fun getCurrentView(): IssueNavigatorView {
+    private fun getCurrentView(): View {
         driver.wait(Duration.ofSeconds(10), presenceOfElementLocated(By.className("results-panel")))
         return if (driver.isElementPresent(By.cssSelector("div.list-view"))) {
             LIST_VIEW
@@ -77,29 +77,29 @@ open class IssueNavigatorPage(
         ?.trim()
         ?.substringAfter("of ")
         ?.toInt() ?: 0
-}
 
-enum class IssueNavigatorView(
-    val selector: String,
-    val resultsPresent: NativeExpectedCondition
-) {
-    LIST_VIEW(
-        "list-view",
-        and(
-            presenceOfElementLocated(By.id("issuetable")),
-            presenceOfElementLocated(By.cssSelector(".issuerow.focused"))
-        )
-    ),
-    DETAIL_VIEW(
-        "split-view",
-        and(
-            or(
-                presenceOfElementLocated(By.cssSelector("ol.issue-list")),
+    enum class View(
+        val selector: String,
+        val resultsPresent: NativeExpectedCondition
+    ) {
+        LIST_VIEW(
+            "list-view",
+            and(
                 presenceOfElementLocated(By.id("issuetable")),
-                presenceOfElementLocated(By.id("issue-content"))
-            ),
-            presenceOfElementLocated(By.id("key-val")),
-            presenceOfElementLocated(By.className("issue-body-content"))
+                presenceOfElementLocated(By.cssSelector(".issuerow.focused"))
+            )
+        ),
+        DETAIL_VIEW(
+            "split-view",
+            and(
+                or(
+                    presenceOfElementLocated(By.cssSelector("ol.issue-list")),
+                    presenceOfElementLocated(By.id("issuetable")),
+                    presenceOfElementLocated(By.id("issue-content"))
+                ),
+                presenceOfElementLocated(By.id("key-val")),
+                presenceOfElementLocated(By.className("issue-body-content"))
+            )
         )
-    )
+    }
 }

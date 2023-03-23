@@ -28,7 +28,7 @@ Dropping a requirement of a major version of a dependency is a new contract.
 
 ### Added
 - Support both list view and detail view in `IssueNavigatorPage`. Fix [JPERF-1043].
-- Add `IssueNavigatorView` parameter to JQL actions constructors.
+- Add `IssueNavigatorPage.View` parameter to JQL actions constructors.
 
 ### Fixed
 - Randomly pick between list view and detail view in `JiraCoreScenario`.

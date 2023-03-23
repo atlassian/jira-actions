@@ -7,7 +7,6 @@ import com.atlassian.performance.tools.jiraactions.api.memories.IssueKeyMemory
 import com.atlassian.performance.tools.jiraactions.api.memories.JqlMemory
 import com.atlassian.performance.tools.jiraactions.api.observation.SearchJqlObservation
 import com.atlassian.performance.tools.jiraactions.api.page.IssueNavigatorPage
-import com.atlassian.performance.tools.jiraactions.api.page.IssueNavigatorView
 import com.atlassian.performance.tools.jiraactions.jql.BuiltInJQL
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
@@ -19,7 +18,7 @@ class SearchJqlChangelogAction(
     private val meter: ActionMeter,
     private val jqlMemory: JqlMemory,
     private val issueKeyMemory: IssueKeyMemory,
-    private val view: IssueNavigatorView = IssueNavigatorView.DETAIL_VIEW
+    private val view: IssueNavigatorPage.View = IssueNavigatorPage.View.DETAIL_VIEW
 ) : Action {
     private val logger: Logger = LogManager.getLogger(this::class.java)
 
