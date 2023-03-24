@@ -16,16 +16,14 @@ class DetailView(
     private val driver: WebDriver
 ) : IssueNavResultsView {
 
-    private fun isSelected(): Boolean {
+    override fun isSelected(): Boolean {
         driver.wait(Duration.ofSeconds(10), presenceOfElementLocated(By.className("results-panel")))
         return driver.isElementPresent(By.className("details-layout"))
     }
 
     override fun switchToView() {
-        if (!isSelected()) {
-            driver.wait(elementToBeClickable(By.id("layout-switcher-button"))).click()
-            driver.wait(elementToBeClickable(By.cssSelector("[data-layout-key=split-view]"))).click()
-        }
+        driver.wait(elementToBeClickable(By.id("layout-switcher-button"))).click()
+        driver.wait(elementToBeClickable(By.cssSelector("[data-layout-key=split-view]"))).click()
     }
 
     override fun detectResults(): NativeExpectedCondition = and(

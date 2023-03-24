@@ -14,16 +14,14 @@ class ListView(
     private val driver: WebDriver
 ) : IssueNavResultsView {
 
-    private fun isSelected(): Boolean {
+    override fun isSelected(): Boolean {
         driver.wait(Duration.ofSeconds(10), presenceOfElementLocated(By.className("results-panel")))
         return driver.isElementPresent(By.className("list-view"))
     }
 
     override fun switchToView() {
-        if (!isSelected()) {
-            driver.wait(elementToBeClickable(By.id("layout-switcher-button"))).click()
-            driver.wait(elementToBeClickable(By.cssSelector("[data-layout-key=list-view]"))).click()
-        }
+        driver.wait(elementToBeClickable(By.id("layout-switcher-button"))).click()
+        driver.wait(elementToBeClickable(By.cssSelector("[data-layout-key=list-view]"))).click()
     }
 
     override fun detectResults(): NativeExpectedCondition = and(
