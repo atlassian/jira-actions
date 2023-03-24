@@ -43,13 +43,11 @@ class JiraCoreScenario constructor() : Scenario {
             seededRandom = seededRandom,
             projectMemory = projectMemory
         )
-        val searchWithJql = SearchJqlAction(
-            jira = jira,
-            meter = meter,
-            jqlMemory = jqlMemory,
-            issueKeyMemory = issueKeyMemory,
-            view = seededRandom.pick(listOf(DetailView(jira.driver), ListView(jira.driver)))!!
-        )
+        val searchWithJql = SearchIssues.Builder(jira, meter, seededRandom)
+            .jqlMemory(jqlMemory)
+            .issueKeyMemory(issueKeyMemory)
+            .desiredView(seededRandom.pick(listOf(DetailView(jira.driver), ListView(jira.driver)))!!)
+            .build()
         val viewIssue = ViewIssueAction.Builder(jira, meter)
             .issueKeyMemory(issueKeyMemory)
             .issueMemory(issueMemory)
