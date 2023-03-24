@@ -14,6 +14,8 @@ class UnknownView(
     private val detail = DetailView(driver)
     private val list = ListView(driver)
 
+    override fun isSelected(): Boolean = detail.isSelected() || list.isSelected()
+
     override fun switchToView() {
         // unknown
     }

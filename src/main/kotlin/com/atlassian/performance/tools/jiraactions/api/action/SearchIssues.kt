@@ -15,6 +15,7 @@ import com.atlassian.performance.tools.jiraactions.api.page.issuenav.DetailView
 import com.atlassian.performance.tools.jiraactions.api.page.issuenav.IssueNavResultsView
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
+import javax.json.Json
 import javax.json.JsonObject
 
 class SearchIssues private constructor(
@@ -43,8 +44,30 @@ class SearchIssues private constructor(
 
     private fun search(jqlQuery: String) = jira
         .goToIssueNavigator(jqlQuery)
-        .also { desiredView.switchToView() }
+        .also { switchResultsView() }
         .waitForResults(desiredView)
+
+    private fun switchResultsView() {
+        meter.measure(
+            switchActionType,
+            {
+                val observation = SwitchObservation.Builder(desiredView.javaClass.simpleName)
+                val selectedBefore = desiredView.isSelected()
+                observation.selectedBefore(selectedBefore)
+                if (!selectedBefore) {
+                    desiredView.switchToView()
+                    observation.switched()
+                }
+                observation
+            },
+            { observation ->
+                observation
+                    .selectedAfter(desiredView.isSelected())
+                    .build()
+                    .serialize()
+            }
+        )
+    }
 
     private fun observe(page: IssueNavigatorPage): JsonObject {
         val issueKeys = desiredView.listIssueKeys()
@@ -70,4 +93,42 @@ class SearchIssues private constructor(
 
         fun build(): Action = SearchIssues(jira, meter, actionType, jqlMemory, issueKeyMemory, desiredView)
     }
+
+    private val switchActionType = ActionType("Switch issue nav view") { SwitchObservation(it) }
+
+    private class SwitchObservation(
+        val desiredView: String,
+        val selectedBefore: Boolean,
+        val selectedAfter: Boolean,
+        val switched: Boolean
+    ) {
+        constructor(json: JsonObject) : this(
+            json.getString("desiredView"),
+            json.getBoolean("selectedBefore"),
+            json.getBoolean("selectedAfter"),
+            json.getBoolean("switched")
+        )
+
+        fun serialize(): JsonObject = Json.createObjectBuilder()
+            .add("desiredView", desiredView)
+            .add("selectedBefore", selectedBefore)
+            .add("selectedAfter", selectedAfter)
+            .add("switched", switched)
+            .build()
+
+        class Builder(
+            private var desiredView: String
+        ) {
+            private var selectedBefore: Boolean = false
+            private var selectedAfter: Boolean = false
+            private var switched: Boolean = false
+
+            fun selectedBefore(selectedBefore: Boolean) = apply { this.selectedBefore = selectedBefore }
+            fun selectedAfter(selectedAfter: Boolean) = apply { this.selectedAfter = selectedAfter }
+            fun switched() = apply { this.switched = true }
+
+            fun build() = SwitchObservation(desiredView, switched, selectedBefore, selectedAfter)
+        }
+    }
+
 }
