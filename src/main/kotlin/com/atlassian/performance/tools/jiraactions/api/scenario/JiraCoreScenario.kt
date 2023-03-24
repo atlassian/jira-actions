@@ -6,7 +6,8 @@ import com.atlassian.performance.tools.jiraactions.api.action.*
 import com.atlassian.performance.tools.jiraactions.api.measure.ActionMeter
 import com.atlassian.performance.tools.jiraactions.api.memories.IssueKeyMemory
 import com.atlassian.performance.tools.jiraactions.api.memories.adaptive.*
-import com.atlassian.performance.tools.jiraactions.api.page.IssueNavigatorPage
+import com.atlassian.performance.tools.jiraactions.api.page.issuenav.DetailView
+import com.atlassian.performance.tools.jiraactions.api.page.issuenav.ListView
 
 /**
  * Provides Jira Core specific `Scenario`.
@@ -47,7 +48,7 @@ class JiraCoreScenario constructor() : Scenario {
             meter = meter,
             jqlMemory = jqlMemory,
             issueKeyMemory = issueKeyMemory,
-            view = seededRandom.pick(IssueNavigatorPage.View.values().toList())!!
+            view = seededRandom.pick(listOf(DetailView(jira.driver), ListView(jira.driver)))!!
         )
         val viewIssue = ViewIssueAction.Builder(jira, meter)
             .issueKeyMemory(issueKeyMemory)
