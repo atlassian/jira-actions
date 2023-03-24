@@ -5,6 +5,11 @@ import com.atlassian.performance.seleniumjs.NativeExpectedCondition
 interface IssueNavResultsView {
 
     /**
+     * @return true if the view is already selected, false otherwise
+     */
+    fun isSelected(): Boolean
+
+    /**
      * Switch to the issue nav results view (like detail or list).
      */
     fun switchToView()

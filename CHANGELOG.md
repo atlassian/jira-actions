@@ -42,6 +42,7 @@ Dropping a requirement of a major version of a dependency is a new contract.
 ### Fixed
 - Disable instance health notifications in `SetUpAction`. Fix [JPERF-1050].
 - Randomly pick between `ListView` and `DetailView` in `JiraCoreScenario`.
+- Measure `IssueNavResultsView` switching.
 
 [JPERF-1050]: https://ecosystem.atlassian.net/browse/JPERF-1050
 [JPERF-1043]: https://ecosystem.atlassian.net/browse/JPERF-1043
