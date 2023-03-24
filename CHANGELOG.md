@@ -34,6 +34,9 @@ Dropping a requirement of a major version of a dependency is a new contract.
 
 [JPERF-1050]: https://ecosystem.atlassian.net/browse/JPERF-1050
 
+### Fixed
+- Randomly pick between list view and detail view in `JiraCoreScenario`.
+
 ## [3.18.1] - 2023-02-02
 [3.18.1]: https://github.com/atlassian/jira-actions/compare/release-3.18.0...release-3.18.1
 
