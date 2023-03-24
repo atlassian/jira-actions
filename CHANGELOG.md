@@ -27,11 +27,15 @@ Dropping a requirement of a major version of a dependency is a new contract.
 [Unreleased]: https://github.com/atlassian/jira-actions/compare/release-3.18.1...master
 
 ### Added
-- Support both list view and detail view in `IssueNavigatorPage`. Fix [JPERF-1043].
-- Add `IssueNavigatorPage.View` parameter to JQL actions constructors.
+- Support `ListView`, `DetailView` and other possible `IssueNavResultsView`s. Fix [JPERF-1043].
+- Add `IssueNavResultsView` parameter to JQL actions constructors.
+
+### Deprecated
+- Deprecate most methods of `IssueNavigatorPage`,
+  because they implicitly assumed `DetailView`, which won't work on `ListView`.
 
 ### Fixed
-- Randomly pick between list view and detail view in `JiraCoreScenario`.
+- Randomly pick between `ListView` and `DetailView` in `JiraCoreScenario`.
 
 [JPERF-1043]: https://ecosystem.atlassian.net/browse/JPERF-1043
 

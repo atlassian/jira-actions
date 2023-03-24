@@ -7,6 +7,8 @@ import com.atlassian.performance.tools.jiraactions.api.memories.IssueKeyMemory
 import com.atlassian.performance.tools.jiraactions.api.memories.JqlMemory
 import com.atlassian.performance.tools.jiraactions.api.observation.SearchJqlObservation
 import com.atlassian.performance.tools.jiraactions.api.page.IssueNavigatorPage
+import com.atlassian.performance.tools.jiraactions.api.page.issuenav.DetailView
+import com.atlassian.performance.tools.jiraactions.api.page.issuenav.IssueNavResultsView
 import com.atlassian.performance.tools.jiraactions.jql.BuiltInJQL
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
@@ -18,7 +20,7 @@ class SearchJqlChangelogAction(
     private val meter: ActionMeter,
     private val jqlMemory: JqlMemory,
     private val issueKeyMemory: IssueKeyMemory,
-    private val view: IssueNavigatorPage.View = IssueNavigatorPage.View.DETAIL_VIEW
+    private val view: IssueNavResultsView = DetailView(jira.driver)
 ) : Action {
     private val logger: Logger = LogManager.getLogger(this::class.java)
 
@@ -31,17 +33,17 @@ class SearchJqlChangelogAction(
 
         val issueNavigatorPage = meter.measure(
             key = SEARCH_JQL_CHANGELOG,
-            action = { jira.goToIssueNavigator(jqlQuery).switchTo(view).waitForIssueNavigator() },
+            action = { jira.goToIssueNavigator(jqlQuery).also { view.switchToView() }.waitForResults(view) },
             observation = this::observe
         )
-        issueKeyMemory.remember(issueNavigatorPage.getIssueKeys())
+        issueKeyMemory.remember(view.listIssueKeys())
     }
 
     private fun observe(
         page: IssueNavigatorPage
     ): JsonObject {
-        val issueKeys = page.getIssueKeys()
+        val issueKeys = view.listIssueKeys()
         issueKeyMemory.remember(issueKeys)
-        return SearchJqlObservation(page.jql, issueKeys.size, page.getTotalResults()).serialize()
+        return SearchJqlObservation(page.jql, issueKeys.size, view.countResults() ?: 0).serialize()
     }
 }
