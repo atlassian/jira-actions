@@ -24,17 +24,12 @@ class RichTextEditorConfiguration(
      * Supports both enabled and disabled websudo.
      */
     fun disable(): RichTextEditorConfiguration {
-        val prompted = access.isPrompted()
-        if (prompted) {
-            access.gain()
-        }
-        if (isSwitchPresent()) {
-            ensureSwitchIsOff()
-        } else {
-            logger.info("This Jira does not support RTE configuration, so RTE should be de facto disabled")
-        }
-        if (prompted) {
-            access.drop()
+        access.runWithAccess {
+            if (isSwitchPresent()) {
+                ensureSwitchIsOff()
+            } else {
+                logger.info("This Jira does not support RTE configuration, so RTE should be de facto disabled")
+            }
         }
         return this
     }

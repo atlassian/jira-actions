@@ -11,6 +11,14 @@ class SetUpAction(
     override fun run() {
         meter.measure(SET_UP) {
             jira.configureRichTextEditor().disable()
+            val systemAdministrationPage = jira.administrate().system()
+            jira.accessAdmin().runWithAccess {
+                systemAdministrationPage
+                    .troubleshootingAndSupportTools()
+                    .instanceHealth()
+                    .notifications()
+                    .dontShowAny()
+            }
         }
     }
 }

@@ -69,5 +69,16 @@ class AdminAccess(
         }
     }
 
+    internal fun runWithAccess(runnable: () -> Unit) {
+        val prompted = isPrompted()
+        if (prompted) {
+            gain()
+        }
+        runnable()
+        if (prompted) {
+            drop()
+        }
+    }
+
     private fun isDropNotificationPresent() = driver.findElements(dropAdminRightsLocator).isNotEmpty()
 }
