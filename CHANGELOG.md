@@ -26,6 +26,11 @@ Dropping a requirement of a major version of a dependency is a new contract.
 ## [Unreleased]
 [Unreleased]: https://github.com/atlassian/jira-actions/compare/release-3.18.1...master
 
+### Fixed
+- Disable instance health notifications in `SetUpAction`. Fix [JPERF-1050].
+
+[JPERF-1050]: https://ecosystem.atlassian.net/browse/JPERF-1050
+
 ## [3.18.1] - 2023-02-02
 [3.18.1]: https://github.com/atlassian/jira-actions/compare/release-3.18.0...release-3.18.1
 

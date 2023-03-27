@@ -19,17 +19,12 @@ class BackupConfiguration(
     )
 
     fun delete(): BackupConfiguration {
-        val prompted = access.isPrompted()
-        if (prompted) {
-            access.gain()
-        }
-        driver.tolerateDirtyFormsOnCurrentPage()
-        while (driver.isElementPresent(deleteBackupLocator)) {
-            deleteBackupService()
-        }
-        logger.info("Backup services have been deleted")
-        if (prompted) {
-            access.drop()
+        access.runWithAccess {
+            driver.tolerateDirtyFormsOnCurrentPage()
+            while (driver.isElementPresent(deleteBackupLocator)) {
+                deleteBackupService()
+            }
+            logger.info("Backup services have been deleted")
         }
         return this
     }
