@@ -38,6 +38,12 @@ jobs:
       with:
         name: test-reports
         path: build/reports/tests
+    - name: Upload diagnoses
+      if: always()
+      uses: actions/upload-artifact@v2
+      with:
+        name: ${{ matrix.jira-version }}-diagnoses
+        path: build/diagnoses
   build-check:
     runs-on: ubuntu-latest
     needs: build
