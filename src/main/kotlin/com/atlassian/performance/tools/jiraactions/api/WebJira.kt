@@ -1,5 +1,6 @@
 package com.atlassian.performance.tools.jiraactions.api
 
+import com.atlassian.performance.tools.jiraactions.administration.JiraAdministrationMenu
 import com.atlassian.performance.tools.jiraactions.api.page.*
 import org.openqa.selenium.By
 import org.openqa.selenium.WebDriver
@@ -103,5 +104,11 @@ data class WebJira(
 
     fun navigateTo(path: String) {
         driver.navigate().to(base.resolve(path).toURL())
+    }
+
+    internal fun administrate(): JiraAdministrationMenu {
+        driver.findElement(By.id("admin_menu")).click()
+        val menu = driver.findElement(By.id("system-admin-menu-content"))
+        return JiraAdministrationMenu(driver, menu)
     }
 }
