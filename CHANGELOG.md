@@ -26,6 +26,10 @@ Dropping a requirement of a major version of a dependency is a new contract.
 ## [Unreleased]
 [Unreleased]: https://github.com/atlassian/jira-actions/compare/release-3.19.0...master
 
+### Added
+- Add `AdaptiveJqlMemory.Companion` JQL filtering extension functions.
+  With them, you can actually replace the deprecated `SearchJql*Action`s.
+
 ## [3.19.0] - 2023-03-30
 [3.19.0]: https://github.com/atlassian/jira-actions/compare/release-3.18.1...release-3.19.0
 
