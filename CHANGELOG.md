@@ -24,10 +24,12 @@ Adding a requirement of a major version of a dependency is breaking a contract.
 Dropping a requirement of a major version of a dependency is a new contract.
 
 ## [Unreleased]
-[Unreleased]: https://github.com/atlassian/jira-actions/compare/release-3.18.1...master
+[Unreleased]: https://github.com/atlassian/jira-actions/compare/release-3.19.0...master
+
+## [3.19.0] - 2023-03-30
+[3.19.0]: https://github.com/atlassian/jira-actions/compare/release-3.18.1...release-3.19.0
 
 ### Added
-- Support `ListView`, `DetailView` and other possible `IssueNavResultsView`s.
 - Add `SearchIssues` action, which supports various `IssueNavResultsView`s. Fix [JPERF-1043].
 
 ### Deprecated
