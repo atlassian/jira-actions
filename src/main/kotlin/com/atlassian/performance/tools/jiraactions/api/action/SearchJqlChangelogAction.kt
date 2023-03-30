@@ -6,11 +6,20 @@ import com.atlassian.performance.tools.jiraactions.api.WebJira
 import com.atlassian.performance.tools.jiraactions.api.measure.ActionMeter
 import com.atlassian.performance.tools.jiraactions.api.memories.IssueKeyMemory
 import com.atlassian.performance.tools.jiraactions.api.memories.JqlMemory
+import com.atlassian.performance.tools.jiraactions.api.memories.adaptive.AdaptiveJqlMemory.Companion.changelog
 import com.atlassian.performance.tools.jiraactions.jql.BuiltInJQL
 import com.atlassian.performance.tools.jiraactions.memories.jql.TagSelectiveJqlMemory
 import java.util.function.Predicate
 
-@Deprecated("Use SearchIssues.Builder")
+@Deprecated(
+    "Use SearchIssues.Builder",
+    ReplaceWith(
+        "SearchIssues.Builder(jira, meter, SeededRandom()).actionType(SEARCH_JQL_CHANGELOG).jqlMemory(jqlMemory.changelog()).issueKeyMemory(issueKeyMemory).build()",
+        "com.atlassian.performance.tools.jiraactions.api.SEARCH_JQL_CHANGELOG",
+        "com.atlassian.performance.tools.jiraactions.api.memories.adaptive.AdaptiveJqlMemory.Companion.changelog",
+        "com.atlassian.performance.tools.jiraactions.api.SeededRandom"
+    )
+)
 class SearchJqlChangelogAction(
     jira: WebJira,
     meter: ActionMeter,
@@ -20,7 +29,7 @@ class SearchJqlChangelogAction(
 
     private val action = SearchIssues.Builder(jira, meter, SeededRandom())
         .actionType(SEARCH_JQL_CHANGELOG)
-        .jqlMemory(TagSelectiveJqlMemory(jqlMemory, Predicate { it == BuiltInJQL.REPORTERS.name }))
+        .jqlMemory(jqlMemory.changelog())
         .issueKeyMemory(issueKeyMemory)
         .build()
 

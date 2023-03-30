@@ -6,6 +6,7 @@ import com.atlassian.performance.tools.jiraactions.api.memories.adaptive.jql.Jql
 import com.atlassian.performance.tools.jiraactions.api.memories.adaptive.jql.JqlPrescriptions
 import com.atlassian.performance.tools.jiraactions.api.page.IssuePage
 import com.atlassian.performance.tools.jiraactions.jql.BuiltInJQL
+import com.atlassian.performance.tools.jiraactions.memories.jql.TagSelectiveJqlMemory
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 import java.util.function.Predicate
@@ -18,6 +19,16 @@ class AdaptiveJqlMemory(
 
     companion object {
         fun getAvailableTags(): List<String> = BuiltInJQL.values().map { it.name }.toList()
+
+        fun JqlMemory.simple() = filterJqls { tag ->
+            tag != BuiltInJQL.GENERIC_WIDE.name && tag != BuiltInJQL.REPORTERS.name
+        }
+        fun JqlMemory.changelog() = filterJqls { tag -> tag == BuiltInJQL.REPORTERS.name }
+        fun JqlMemory.wildcard() = filterJqls { tag -> tag == BuiltInJQL.GENERIC_WIDE.name }
+
+        private fun JqlMemory.filterJqls(
+            tagFilter: (String) -> Boolean
+        ): JqlMemory = TagSelectiveJqlMemory(this, Predicate { tagFilter(it) })
     }
 
     private val jqls = mutableListOf(

@@ -6,11 +6,20 @@ import com.atlassian.performance.tools.jiraactions.api.WebJira
 import com.atlassian.performance.tools.jiraactions.api.measure.ActionMeter
 import com.atlassian.performance.tools.jiraactions.api.memories.IssueKeyMemory
 import com.atlassian.performance.tools.jiraactions.api.memories.JqlMemory
+import com.atlassian.performance.tools.jiraactions.api.memories.adaptive.AdaptiveJqlMemory.Companion.wildcard
 import com.atlassian.performance.tools.jiraactions.jql.BuiltInJQL
 import com.atlassian.performance.tools.jiraactions.memories.jql.TagSelectiveJqlMemory
 import java.util.function.Predicate
 
-@Deprecated("Use SearchIssues.Builder")
+@Deprecated(
+    "Use SearchIssues.Builder",
+    ReplaceWith(
+        "SearchIssues.Builder(jira, meter, SeededRandom()).actionType(SEARCH_WITH_JQL_WILDCARD).jqlMemory(jqlMemory.wildcard()).issueKeyMemory(issueKeyMemory).build()",
+        "com.atlassian.performance.tools.jiraactions.api.SEARCH_WITH_JQL_WILDCARD",
+        "com.atlassian.performance.tools.jiraactions.api.memories.adaptive.AdaptiveJqlMemory.Companion.wildcard",
+        "com.atlassian.performance.tools.jiraactions.api.SeededRandom"
+    )
+)
 class SearchJqlWildcardAction(
     jira: WebJira,
     meter: ActionMeter,
@@ -20,7 +29,7 @@ class SearchJqlWildcardAction(
 
     private val action = SearchIssues.Builder(jira, meter, SeededRandom())
         .actionType(SEARCH_WITH_JQL_WILDCARD)
-        .jqlMemory(TagSelectiveJqlMemory(jqlMemory, Predicate { it == BuiltInJQL.GENERIC_WIDE.name }))
+        .jqlMemory(jqlMemory.wildcard())
         .issueKeyMemory(issueKeyMemory)
         .build()
 
