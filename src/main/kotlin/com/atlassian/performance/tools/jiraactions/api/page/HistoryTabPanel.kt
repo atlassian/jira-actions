@@ -53,7 +53,7 @@ class HistoryTabPanel(
                 .perform()
             driver.wait(
                 duration,
-                ExpectedConditions.stalenessOf(loadMoreButton)
+                ExpectedConditions.invisibilityOfElementLocated(By.xpath("//button[@aria-busy='true']"))
             )
         }
         return this

@@ -30,6 +30,11 @@ Dropping a requirement of a major version of a dependency is a new contract.
 - Add `AdaptiveJqlMemory.Companion` JQL filtering extension functions.
   With them, you can actually replace the deprecated `SearchJql*Action`s.
 
+### Fixed
+- Change the condition used to verify if the content is loading in `ViewHistoryTabAction` to avoid TimeoutException. Fix [JPERF-1052].
+
+[JPERF-1052]: https://ecosystem.atlassian.net/browse/JPERF-1052
+
 ## [3.19.0] - 2023-03-30
 [3.19.0]: https://github.com/atlassian/jira-actions/compare/release-3.18.1...release-3.19.0
 
