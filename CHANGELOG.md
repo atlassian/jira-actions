@@ -24,7 +24,10 @@ Adding a requirement of a major version of a dependency is breaking a contract.
 Dropping a requirement of a major version of a dependency is a new contract.
 
 ## [Unreleased]
-[Unreleased]: https://github.com/atlassian/jira-actions/compare/release-3.20.0...master
+[Unreleased]: https://github.com/atlassian/jira-actions/compare/release-3.20.1...master
+
+## [3.20.1] - 2023-04-03
+[3.20.1]: https://github.com/atlassian/jira-actions/compare/release-3.20.0...3.20.1
 
 ### Fixed
 - Change the default timeout for `WebDriver.wait` to 10 seconds. Fix [JPERF-1026].
