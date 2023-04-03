@@ -54,13 +54,13 @@ those contributing as an individual.
 
 1. Mark commit with tag `release-?.?.0-alpha`. Always remember to mark first commit which introduce minor/major change
 2. Push tag to repository
-3. Run a Travis build with `{"env":"RELEASE=true"}`
-4. Update `CHANGELOG.md` file with information about release date, release version and github comparing changes link
+3. Go to GitHub Actions, select CI workflow, click `Run workflow` and type `yes` in `Release?` field
+4. Update `CHANGELOG.md` file with information about release date, release version and GitHub comparing changes link
 
 ##### If you are going to release module with bug-fix change
 
-1. Run a Travis build with `{"env":"RELEASE=true"}`
-2. Update `CHANGELOG.md` file with information about release date, release version and github comparing changes link
+1. Go to GitHub Actions, select CI workflow, click `Run workflow` and type `yes` in `Release?` field
+2. Update `CHANGELOG.md` file with information about release date, release version and GitHub comparing changes link
 
 Versioning, releasing and distribution can be done also by the [gradle-release] plugin.
 
