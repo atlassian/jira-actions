@@ -26,6 +26,11 @@ Dropping a requirement of a major version of a dependency is a new contract.
 ## [Unreleased]
 [Unreleased]: https://github.com/atlassian/jira-actions/compare/release-3.20.1...master
 
+### Fixed
+- Close flags before using administration menu. Fix [JPERF-1060].
+
+[JPERF-1060]: https://ecosystem.atlassian.net/browse/JPERF-1060
+
 ## [3.20.1] - 2023-04-03
 [3.20.1]: https://github.com/atlassian/jira-actions/compare/release-3.20.0...3.20.1
 
