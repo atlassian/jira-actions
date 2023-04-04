@@ -107,6 +107,7 @@ data class WebJira(
     }
 
     internal fun administrate(): JiraAdministrationMenu {
+        NotificationPopUps(driver).waitUntilAuiFlagsAreGone()
         driver.findElement(By.id("admin_menu")).click()
         val menu = driver.findElement(By.id("system-admin-menu-content"))
         return JiraAdministrationMenu(driver, menu)
