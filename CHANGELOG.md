@@ -26,6 +26,11 @@ Dropping a requirement of a major version of a dependency is a new contract.
 ## [Unreleased]
 [Unreleased]: https://github.com/atlassian/jira-actions/compare/release-3.20.2...master
 
+### Fixed
+- Fix gathering priorities for JQL queries on Jira 9.9.0. Fix [JPERF-1088].
+
+[JPERF-1088]: https://ecosystem.atlassian.net/browse/JPERF-1088
+
 ## [3.20.2] - 2023-04-04
 [3.20.2]: https://github.com/atlassian/jira-actions/compare/release-3.20.1...3.20.2
 
