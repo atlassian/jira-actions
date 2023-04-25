@@ -44,7 +44,7 @@ class IssuePage(
 
     fun getPossiblePriorities(): List<String>? {
         driver
-            .findElements(By.cssSelector("#priority-val .drop-menu"))
+            .findElements(By.id("priority-val"))
             .firstOrNull()
             ?.click()
             ?: return null
