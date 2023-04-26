@@ -24,7 +24,10 @@ Adding a requirement of a major version of a dependency is breaking a contract.
 Dropping a requirement of a major version of a dependency is a new contract.
 
 ## [Unreleased]
-[Unreleased]: https://github.com/atlassian/jira-actions/compare/release-3.20.2...master
+[Unreleased]: https://github.com/atlassian/jira-actions/compare/release-3.20.3...master
+
+## [3.20.3]
+[3.20.3]: https://github.com/atlassian/jira-actions/compare/release-3.20.2...release-3.20.3
 
 ### Fixed
 - Fix gathering priorities for JQL queries on Jira 9.9.0. Fix [JPERF-1088].
@@ -32,7 +35,7 @@ Dropping a requirement of a major version of a dependency is a new contract.
 [JPERF-1088]: https://ecosystem.atlassian.net/browse/JPERF-1088
 
 ## [3.20.2] - 2023-04-04
-[3.20.2]: https://github.com/atlassian/jira-actions/compare/release-3.20.1...3.20.2
+[3.20.2]: https://github.com/atlassian/jira-actions/compare/release-3.20.1...release-3.20.2
 
 ### Fixed
 - Close flags before using administration menu. Fix [JPERF-1060].
@@ -40,7 +43,7 @@ Dropping a requirement of a major version of a dependency is a new contract.
 [JPERF-1060]: https://ecosystem.atlassian.net/browse/JPERF-1060
 
 ## [3.20.1] - 2023-04-03
-[3.20.1]: https://github.com/atlassian/jira-actions/compare/release-3.20.0...3.20.1
+[3.20.1]: https://github.com/atlassian/jira-actions/compare/release-3.20.0...release-3.20.1
 
 ### Fixed
 - Change the default timeout for `WebDriver.wait` to 10 seconds. Fix [JPERF-1026].
