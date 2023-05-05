@@ -4,7 +4,8 @@ import org.openqa.selenium.By
 import org.openqa.selenium.Keys
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.interactions.Actions
-import org.openqa.selenium.support.ui.ExpectedConditions.*
+import org.openqa.selenium.support.ui.ExpectedConditions.invisibilityOfElementLocated
+import org.openqa.selenium.support.ui.ExpectedConditions.presenceOfElementLocated
 
 class HistoryTabPanel(
     private val driver: WebDriver
@@ -23,7 +24,10 @@ class HistoryTabPanel(
     }
 
     fun waitForActive(): HistoryTabPanel {
-        driver.wait(elementToBeClickable(By.id("changehistory-tabpanel"))).click()
+        Actions(driver)
+            .moveToElement(driver.findElement(By.id("changehistory-tabpanel")))
+            .click()
+            .perform()
         driver.wait(presenceOfElementLocated(By.cssSelector("#changehistory-tabpanel.active")))
         return this
     }

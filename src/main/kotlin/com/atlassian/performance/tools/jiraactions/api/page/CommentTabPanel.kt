@@ -21,7 +21,10 @@ class CommentTabPanel(
     private val attemptLimit = 5
 
     fun waitForActive(): CommentTabPanel {
-        driver.wait(elementToBeClickable(By.id("comment-tabpanel"))).click()
+        Actions(driver)
+            .moveToElement(driver.findElement(By.id("comment-tabpanel")))
+            .click()
+            .perform()
         driver.wait(presenceOfElementLocated(By.cssSelector("#comment-tabpanel.active")))
         return this
     }
