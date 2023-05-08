@@ -1,6 +1,7 @@
 package com.atlassian.performance.tools.jiraactions.api.scenario
 
 import com.atlassian.performance.tools.dockerinfrastructure.api.jira.Jira
+import com.atlassian.performance.tools.jiraactions.api.SeededRandom
 import org.junit.Ignore
 import org.junit.Test
 import org.openqa.selenium.PageLoadStrategy
@@ -31,7 +32,7 @@ class JiraCoreScenarioDevloop : AbstractJiraCoreScenario() {
         }
         val driver = createBrowser()
         try {
-            shouldRunScenarioWithoutErrors(jira, driver)
+            shouldRunScenarioWithoutErrors(jira, driver, SeededRandom(789))
         } finally {
             driver.close()
         }
