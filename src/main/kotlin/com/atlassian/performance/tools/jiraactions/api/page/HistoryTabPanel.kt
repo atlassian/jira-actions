@@ -1,5 +1,6 @@
 package com.atlassian.performance.tools.jiraactions.api.page
 
+import com.atlassian.performance.tools.jiraactions.page.scrollIntoView
 import org.openqa.selenium.By
 import org.openqa.selenium.Keys
 import org.openqa.selenium.WebDriver
@@ -24,10 +25,7 @@ class HistoryTabPanel(
     }
 
     fun waitForActive(): HistoryTabPanel {
-        Actions(driver)
-            .moveToElement(driver.findElement(By.id("changehistory-tabpanel")))
-            .click()
-            .perform()
+        driver.findElement(By.id("changehistory-tabpanel")).scrollIntoView(driver).click()
         driver.wait(presenceOfElementLocated(By.cssSelector("#changehistory-tabpanel.active")))
         return this
     }

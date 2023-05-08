@@ -1,6 +1,7 @@
 package com.atlassian.performance.tools.jiraactions.api.page
 
 import com.atlassian.performance.tools.jiraactions.api.memories.Comment
+import com.atlassian.performance.tools.jiraactions.page.scrollIntoView
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 import org.openqa.selenium.By
@@ -21,10 +22,7 @@ class CommentTabPanel(
     private val attemptLimit = 5
 
     fun waitForActive(): CommentTabPanel {
-        Actions(driver)
-            .moveToElement(driver.findElement(By.id("comment-tabpanel")))
-            .click()
-            .perform()
+        driver.findElement(By.id("comment-tabpanel")).scrollIntoView(driver).click()
         driver.wait(presenceOfElementLocated(By.cssSelector("#comment-tabpanel.active")))
         return this
     }
