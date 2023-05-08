@@ -1,7 +1,9 @@
 package com.atlassian.performance.tools.jiraactions.api.scenario
 
 import com.atlassian.performance.tools.dockerinfrastructure.api.browser.DockerisedChrome
+import com.atlassian.performance.tools.dockerinfrastructure.api.jira.Jira
 import com.atlassian.performance.tools.dockerinfrastructure.api.jira.JiraCoreFormula
+import com.atlassian.performance.tools.jiraactions.api.SeededRandom
 import org.junit.Test
 import java.nio.file.Paths
 
@@ -19,11 +21,20 @@ class JiraCoreScenarioIT : AbstractJiraCoreScenario() {
             .version(jiraVersion)
             .build()
             .provision().use { jira ->
-                val recordings = Paths.get("build/diagnoses/recordings/" + this::class.java.simpleName)
-
-                DockerisedChrome(recordings).start().use {browser ->
-                    shouldRunScenarioWithoutErrors(jira, browser.driver)
-                }
+                testScenario(jira, 123)
+                testScenario(jira, 456)
             }
+    }
+
+    private fun testScenario(
+        jira: Jira,
+        seed: Long
+    ) {
+        val recordings = Paths.get("build/diagnoses/recordings/")
+            .resolve(this::class.java.simpleName)
+            .resolve("seed-$seed")
+        DockerisedChrome(recordings).start().use { browser ->
+            shouldRunScenarioWithoutErrors(jira, browser.driver, SeededRandom(seed))
+        }
     }
 }

@@ -24,7 +24,7 @@ abstract class AbstractJiraCoreScenario {
 
     protected val jiraVersion = System.getenv("JIRA_SOFTWARE_VERSION") ?: "8.0.0"
 
-    fun shouldRunScenarioWithoutErrors(jira: Jira, driver: RemoteWebDriver) {
+    fun shouldRunScenarioWithoutErrors(jira: Jira, driver: RemoteWebDriver, rng: SeededRandom) {
         logger.info("Testing Jira $jiraVersion")
         val scenario = JiraCoreScenario()
         val metrics = mutableListOf<ActionMetric>()
@@ -65,7 +65,7 @@ abstract class AbstractJiraCoreScenario {
         )
         val actions = scenario.getActions(
             webJira,
-            SeededRandom(123),
+            rng,
             actionMeter
         )
 
