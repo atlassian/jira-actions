@@ -1,7 +1,7 @@
 package com.atlassian.performance.tools.jiraactions.api
 
-import org.hamcrest.CoreMatchers.*
-import org.junit.Assert.assertThat
+import org.assertj.core.api.Assertions.assertThat
+import org.assertj.core.data.Offset.offset
 import org.junit.Test
 
 class SeededRandomTest {
@@ -13,7 +13,7 @@ class SeededRandomTest {
         }
 
         val anyOfTheNumbers = numbers.first()
-        assertThat(numbers, everyItem(equalTo(anyOfTheNumbers)))
+        assertThat(numbers).allSatisfy { assertThat(it).isEqualTo(anyOfTheNumbers) }
     }
 
     @Test
@@ -21,7 +21,7 @@ class SeededRandomTest {
         val alpha = SeededRandom(32409823).random.nextInt()
         val beta = SeededRandom(7475212423).random.nextInt()
 
-        assertThat(alpha, not(equalTo(beta)))
+        assertThat(alpha).isNotEqualTo(beta)
     }
 
     @Test
@@ -48,6 +48,18 @@ class SeededRandomTest {
 
         val generatedNumbers = (1..16).map { random.nextInt() }
 
-        assertThat(generatedNumbers, equalTo(predictedNumbers))
+        assertThat(generatedNumbers).isEqualTo(predictedNumbers)
+    }
+
+    @Test
+    fun shouldNotBiasFirstPick() {
+        val list = listOf("A", "B")
+
+        val picked = (1..200L).map { SeededRandom(it).pick(list) }
+
+        val aRatio = picked.count { it == "A" }.toDouble() / picked.size
+        val bRatio = picked.count { it == "B" }.toDouble() / picked.size
+        assertThat(aRatio).`as`("A ratio is close to 50%").isCloseTo(0.50, offset(0.10))
+        assertThat(bRatio).`as`("B ratio is close to 50%").isCloseTo(0.50, offset(0.10))
     }
 }
