@@ -26,6 +26,11 @@ Dropping a requirement of a major version of a dependency is a new contract.
 ## [Unreleased]
 [Unreleased]: https://github.com/atlassian/jira-actions/compare/release-3.20.3...master
 
+### Fixed
+- Fix listing issue keys on list view. Fix [JPERF-1098].
+
+[JPERF-1098]: https://ecosystem.atlassian.net/browse/JPERF-1098
+
 ## [3.20.3]
 [3.20.3]: https://github.com/atlassian/jira-actions/compare/release-3.20.2...release-3.20.3
 

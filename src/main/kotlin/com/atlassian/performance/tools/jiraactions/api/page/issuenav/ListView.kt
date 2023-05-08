@@ -37,5 +37,5 @@ class ListView(
 
     override fun listIssueKeys(): List<String> = driver
         .findElements(By.cssSelector("[data-issuekey]"))
-        .map { it.getAttribute("[data-issuekey") }
+        .map { it.getAttribute("data-issuekey") }
 }
