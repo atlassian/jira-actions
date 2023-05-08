@@ -90,6 +90,7 @@ abstract class AbstractJiraCoreScenario {
         val viewIssueMetrics = metrics.filter {
             VIEW_ISSUE.label.equals(it.label)
         }
+        Assertions.assertThat(viewIssueMetrics).isNotEmpty()
         Assertions.assertThat(viewIssueMetrics).allMatch { m -> m.observation != null }
         Assertions.assertThat(firstBackupElement).isFalse()
         Assertions.assertThat(secondBackupElement).isFalse()
