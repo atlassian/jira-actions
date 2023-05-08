@@ -29,7 +29,7 @@ Dropping a requirement of a major version of a dependency is a new contract.
 ### Fixed
 - Fix listing issue keys on list view. Fix [JPERF-1098].
 - Counteract seed bias.
-- Fix switching Activity Tabs on Jira 9.8.0. Fix [JPERF-1091].
+- Switch to Activity Tabs despite sticky comments footer (introduced in Jira 9.8.0). Fix [JPERF-1091].
 
 [JPERF-1098]: https://ecosystem.atlassian.net/browse/JPERF-1098
 [JPERF-1091]: https://ecosystem.atlassian.net/browse/JPERF-1091
