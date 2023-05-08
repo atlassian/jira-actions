@@ -13,7 +13,7 @@ import com.atlassian.performance.tools.jiraactions.api.w3c.JavascriptW3cPerforma
 import com.atlassian.performance.tools.jiraactions.api.webdriver.sendKeysAndValidate
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
-import org.assertj.core.api.Assertions
+import org.assertj.core.api.Assertions.assertThat
 import org.openqa.selenium.By
 import org.openqa.selenium.JavascriptExecutor
 import org.openqa.selenium.OutputType
@@ -83,17 +83,14 @@ abstract class AbstractJiraCoreScenario {
         val firstBackupElement = driver.isElementPresent(By.id("del_10001"))
         val secondBackupElement = driver.isElementPresent(By.id("del_10200"))
 
-        val results = metrics.map { metric ->
-            metric.result
-        }
-        Assertions.assertThat(results).containsOnly(ActionResult.OK)
-        val viewIssueMetrics = metrics.filter {
-            VIEW_ISSUE.label.equals(it.label)
-        }
-        Assertions.assertThat(viewIssueMetrics).isNotEmpty()
-        Assertions.assertThat(viewIssueMetrics).allMatch { m -> m.observation != null }
-        Assertions.assertThat(firstBackupElement).isFalse()
-        Assertions.assertThat(secondBackupElement).isFalse()
+        assertThat(metrics).`as`("all results are OK").allMatch { it.result == ActionResult.OK }
+        val viewIssueMetrics = metrics.filter { VIEW_ISSUE.label == it.label }
+        assertThat(viewIssueMetrics)
+            .`as`("view issue metrics")
+            .isNotEmpty()
+            .allMatch { m -> m.observation != null }
+        assertThat(firstBackupElement).isFalse()
+        assertThat(secondBackupElement).isFalse()
     }
 
     private fun goToServices(driver: RemoteWebDriver, jira: Jira) {
