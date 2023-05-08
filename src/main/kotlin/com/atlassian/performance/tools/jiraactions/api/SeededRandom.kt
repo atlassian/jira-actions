@@ -9,7 +9,7 @@ class SeededRandom(
 ) {
 
     private val logger: Logger = LogManager.getLogger(this::class.java)
-    val random = Random(seed)
+    val random = Random(Random(seed).nextLong())
 
     init {
         logger.debug("Using seed $seed")

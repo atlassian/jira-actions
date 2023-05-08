@@ -28,6 +28,7 @@ Dropping a requirement of a major version of a dependency is a new contract.
 
 ### Fixed
 - Fix listing issue keys on list view. Fix [JPERF-1098].
+- Counteract seed bias.
 
 [JPERF-1098]: https://ecosystem.atlassian.net/browse/JPERF-1098
 
