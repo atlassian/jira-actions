@@ -24,7 +24,10 @@ Adding a requirement of a major version of a dependency is breaking a contract.
 Dropping a requirement of a major version of a dependency is a new contract.
 
 ## [Unreleased]
-[Unreleased]: https://github.com/atlassian/jira-actions/compare/release-3.20.3...master
+[Unreleased]: https://github.com/atlassian/jira-actions/compare/release-3.20.4...master
+
+## [3.20.4] - 2023-05-09
+[3.20.4]: https://github.com/atlassian/jira-actions/compare/release-3.20.3...release-3.20.4
 
 ### Fixed
 - Fix listing issue keys on list view. Fix [JPERF-1098].
@@ -34,7 +37,7 @@ Dropping a requirement of a major version of a dependency is a new contract.
 [JPERF-1098]: https://ecosystem.atlassian.net/browse/JPERF-1098
 [JPERF-1091]: https://ecosystem.atlassian.net/browse/JPERF-1091
 
-## [3.20.3]
+## [3.20.3] - 2023-04-26
 [3.20.3]: https://github.com/atlassian/jira-actions/compare/release-3.20.2...release-3.20.3
 
 ### Fixed
