@@ -26,6 +26,11 @@ Dropping a requirement of a major version of a dependency is a new contract.
 ## [Unreleased]
 [Unreleased]: https://github.com/atlassian/jira-actions/compare/release-3.20.4...master
 
+### Added
+- Dismiss pin comment discovery dialog in `ViewIssueAction`. Fix [JPERF-1102].
+
+[JPERF-1102]: https://ecosystem.atlassian.net/browse/JPERF-1102
+
 ## [3.20.4] - 2023-05-09
 [3.20.4]: https://github.com/atlassian/jira-actions/compare/release-3.20.3...release-3.20.4
 
