@@ -6,6 +6,7 @@ import com.atlassian.performance.tools.jiraactions.api.action.*
 import com.atlassian.performance.tools.jiraactions.api.measure.ActionMeter
 import com.atlassian.performance.tools.jiraactions.api.memories.IssueKeyMemory
 import com.atlassian.performance.tools.jiraactions.api.memories.adaptive.*
+import com.atlassian.performance.tools.jiraactions.api.action.DismissCommentPinDiscovery
 import com.atlassian.performance.tools.jiraactions.api.page.issuenav.DetailView
 import com.atlassian.performance.tools.jiraactions.api.page.issuenav.ListView
 
@@ -54,6 +55,7 @@ class JiraCoreScenario constructor() : Scenario {
             .jqlMemory(jqlMemory)
             .commentMemory(commentMemory)
             .build()
+            .then(DismissCommentPinDiscovery(jira.driver))
 
         val projectSummary = ProjectSummaryAction(
             jira = jira,
