@@ -24,7 +24,10 @@ Adding a requirement of a major version of a dependency is breaking a contract.
 Dropping a requirement of a major version of a dependency is a new contract.
 
 ## [Unreleased]
-[Unreleased]: https://github.com/atlassian/jira-actions/compare/release-3.20.4...master
+[Unreleased]: https://github.com/atlassian/jira-actions/compare/release-3.21.0...master
+
+## [3.21.0] - 2023-05-10
+[3.21.0]: https://github.com/atlassian/jira-actions/compare/release-3.20.4...release-3.21.0
 
 ### Added
 - Dismiss pin comment discovery dialog in `ViewIssueAction`. Fix [JPERF-1102].
