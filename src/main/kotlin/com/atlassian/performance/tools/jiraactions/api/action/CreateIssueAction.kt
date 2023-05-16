@@ -22,7 +22,7 @@ class CreateIssueAction(
         }
 
         val topNav = jira.getTopNav()
-        if (!topNav.isPresent()) {
+        if (!topNav.isPresent() || topNav.isObscured()) {
             meter.measure(VIEW_DASHBOARD) {
                 jira.goToDashboard().waitForDashboard()
             }.apply {

@@ -15,4 +15,8 @@ class TopNav(private val driver: WebDriver) {
     fun isPresent(): Boolean {
         return driver.findElements(createButtonLocator).any()
     }
+
+    fun isObscured(): Boolean {
+        return driver.findElements(By.className("aui-blanket")).firstOrNull()?.isDisplayed ?: false
+    }
 }
