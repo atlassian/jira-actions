@@ -26,6 +26,11 @@ Dropping a requirement of a major version of a dependency is a new contract.
 ## [Unreleased]
 [Unreleased]: https://github.com/atlassian/jira-actions/compare/release-3.21.1...master
 
+### Fixed
+- Search for unresolved issues via JQL. Seed the issue key memory on Jiras without resolved issues. Fix [JPERF-573].
+
+[JPERF-573]: https://ecosystem.atlassian.net/browse/JPERF-573
+
 ## [3.21.1] - 2023-05-17
 [3.21.1]: https://github.com/atlassian/jira-actions/compare/release-3.21.0...release-3.21.1
 
