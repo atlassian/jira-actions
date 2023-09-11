@@ -26,6 +26,11 @@ Dropping a requirement of a major version of a dependency is a new contract.
 ## [Unreleased]
 [Unreleased]: https://github.com/atlassian/jira-actions/compare/release-3.21.2...master
 
+### Fixed
+- Stop expecting a single iframe on `DashboardPage`. Fix [JPERF-149].
+
+[JPERF-149]: https://ecosystem.atlassian.net/browse/JPERF-149
+
 ## [3.21.2] - 2023-08-03
 [3.21.2]: https://github.com/atlassian/jira-actions/compare/release-3.21.1...release-3.21.2
 
