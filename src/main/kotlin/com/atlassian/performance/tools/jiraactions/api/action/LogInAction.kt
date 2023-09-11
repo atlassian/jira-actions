@@ -18,6 +18,8 @@ class LogInAction(
             dashboardPage.waitForDashboard()
             NotificationPopUps(jira.driver)
                 .dismissHealthCheckNotifications()
+                .dismissJiraHelpTips()
+                .dismissPostSetup()
                 .disableNpsFeedback()
                 .dismissAuiFlags()
                 .dismissFindYourWorkFaster()
