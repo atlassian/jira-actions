@@ -4,6 +4,7 @@ import com.atlassian.performance.tools.jiraactions.api.LOG_IN
 import com.atlassian.performance.tools.jiraactions.api.WebJira
 import com.atlassian.performance.tools.jiraactions.api.measure.ActionMeter
 import com.atlassian.performance.tools.jiraactions.api.memories.UserMemory
+import com.atlassian.performance.tools.jiraactions.api.page.NotificationPopUps
 
 class LogInAction(
     private val jira: WebJira,
@@ -14,14 +15,13 @@ class LogInAction(
         val user = userMemory.recall()!!
         meter.measure(LOG_IN) {
             val dashboardPage = jira.goToLogin().logIn(user)
-            val dashboard = dashboardPage.waitForDashboard()
-            dashboard.getPopUps()
+            dashboardPage.waitForDashboard()
+            NotificationPopUps(jira.driver)
                 .dismissHealthCheckNotifications()
                 .disableNpsFeedback()
                 .dismissAuiFlags()
                 .dismissFindYourWorkFaster()
                 .waitUntilAuiFlagsAreGone()
-            dashboard
         }
     }
 }
