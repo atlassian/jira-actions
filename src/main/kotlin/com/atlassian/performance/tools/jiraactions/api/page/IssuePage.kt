@@ -78,6 +78,7 @@ class IssuePage(
         return driver.findElement(By.cssSelector("#description-val .user-content-block")).text
     }
 
+    @Deprecated("Do not use it. IssueId is not supported anymore")
     fun getIssueId(): Long = driver.findElement(By.id("key-val")).getAttribute("rel").toLong()
     fun getIssueType(): String = driver.findElement(By.id("type-val")).text
 

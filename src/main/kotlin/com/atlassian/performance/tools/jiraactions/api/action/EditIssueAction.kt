@@ -24,7 +24,7 @@ class EditIssueAction(
         }
         meter.measure(EDIT_ISSUE) {
             val editIssueForm = jira
-                .goToEditIssue(issue.id)
+                .goToEditIssue(issue.key)
                 .waitForEditIssueForm()
                 .fillForm()
             meter.measure(
