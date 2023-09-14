@@ -26,6 +26,9 @@ Dropping a requirement of a major version of a dependency is a new contract.
 ## [Unreleased]
 [Unreleased]: https://github.com/atlassian/jira-actions/compare/release-3.21.2...master
 
+## [3.22.0] - 2023-09-14
+[3.22.0]: https://github.com/atlassian/jira-actions/compare/release-3.21.2...release-3.22.0
+
 ### Added
 - Expose adminPassword so it's available for `Scenario` [JPERF-126].
 
@@ -33,6 +36,7 @@ Dropping a requirement of a major version of a dependency is a new contract.
 - Stop expecting a single iframe on `DashboardPage`. Fix [JPERF-149].
 
 [JPERF-149]: https://ecosystem.atlassian.net/browse/JPERF-149
+[JPERF-126]: https://ecosystem.atlassian.net/browse/JPERF-126
 
 ## [3.21.2] - 2023-08-03
 [3.21.2]: https://github.com/atlassian/jira-actions/compare/release-3.21.1...release-3.21.2
