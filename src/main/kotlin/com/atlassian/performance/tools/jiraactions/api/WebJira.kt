@@ -10,7 +10,7 @@ import java.net.URLEncoder
 data class WebJira(
     val driver: WebDriver,
     val base: URI,
-    private val adminPassword: String
+    val adminPassword: String
 ) {
 
     fun goToLogin(): LoginPage {
