@@ -39,6 +39,7 @@ open class IssueNavigatorPage(
         return IssuePage(driver)
     }
 
+    @Deprecated("Do not use it. IssueId is no longer supported")
     fun selectedIssueId(): Long {
         return IssuePage(driver).getIssueId()
     }

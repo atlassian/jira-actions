@@ -31,8 +31,10 @@ Dropping a requirement of a major version of a dependency is a new contract.
 
 ### Fixed
 - Stop expecting a single iframe on `DashboardPage`. Fix [JPERF-149].
+- Stop using Issue.id to identify issues in `IssueNavigatorPage`. Fix [JPERF-1053].
 
 [JPERF-149]: https://ecosystem.atlassian.net/browse/JPERF-149
+[JPERF-1053]: https://ecosystem.atlassian.net/browse/JPERF-1053
 
 ## [3.21.2] - 2023-08-03
 [3.21.2]: https://github.com/atlassian/jira-actions/compare/release-3.21.1...release-3.21.2
@@ -76,6 +78,7 @@ Dropping a requirement of a major version of a dependency is a new contract.
 - Fix gathering priorities for JQL queries on Jira 9.9.0. Fix [JPERF-1088].
 
 [JPERF-1088]: https://ecosystem.atlassian.net/browse/JPERF-1088
+
 
 ## [3.20.2] - 2023-04-04
 [3.20.2]: https://github.com/atlassian/jira-actions/compare/release-3.20.1...release-3.20.2

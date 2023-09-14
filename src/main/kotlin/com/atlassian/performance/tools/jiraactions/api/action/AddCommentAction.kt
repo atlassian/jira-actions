@@ -22,7 +22,7 @@ class AddCommentAction(
             return
         }
         meter.measure(ADD_COMMENT) {
-            val commentForm = jira.goToCommentForm(issue.id).waitForButton().enterCommentText("SNARKY REMARK")
+            val commentForm = jira.goToCommentForm(issue.key).waitForButton().enterCommentText("SNARKY REMARK")
             meter.measure(ADD_COMMENT_SUBMIT) {
                 commentForm.submit().waitForSummary()
             }

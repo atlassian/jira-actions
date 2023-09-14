@@ -79,6 +79,7 @@ data class WebJira(
         return BrowseProjectsPage(driver)
     }
 
+    @Deprecated("Use goToCommentForm(String) instead")
     fun goToCommentForm(
         issueId: Long
     ): CommentForm {
@@ -86,8 +87,21 @@ data class WebJira(
         return CommentForm(driver)
     }
 
+    fun goToCommentForm(
+        issueKey: String
+    ): CommentForm {
+        navigateTo("secure/AddComment!default.jspa?key=$issueKey")
+        return CommentForm(driver)
+    }
+
+    @Deprecated("Use gotoEditIssue(String) instead")
     fun goToEditIssue(issueId: Long): EditIssuePage {
         navigateTo("secure/EditIssue!default.jspa?id=$issueId")
+        return EditIssuePage(driver)
+    }
+
+    fun goToEditIssue(issueKey: String): EditIssuePage {
+        navigateTo("secure/EditIssue!default.jspa?id=$issueKey")
         return EditIssuePage(driver)
     }
 
