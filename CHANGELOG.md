@@ -24,7 +24,10 @@ Adding a requirement of a major version of a dependency is breaking a contract.
 Dropping a requirement of a major version of a dependency is a new contract.
 
 ## [Unreleased]
-[Unreleased]: https://github.com/atlassian/jira-actions/compare/release-3.21.2...master
+[Unreleased]: https://github.com/atlassian/jira-actions/compare/release-3.23.0...master
+
+## [3.23.0] - 2023-10-04
+[3.23.0]: https://github.com/atlassian/jira-actions/compare/release-3.22.0...release-3.23.0
 
 ### Added
 - Expose filtering for all JQLs currently created by `AdaptiveJqlMemory`. Unblock [JPERF-1395].
