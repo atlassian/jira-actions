@@ -40,6 +40,7 @@ dependencies {
     api("com.github.stephenc.jcip:jcip-annotations:1.0-1")
     api(webdriver("selenium-api"))
     api("com.atlassian.performance:selenium-js:[1.0.0,2.0.0)")
+    api("javax.json:javax.json-api:1.1")
 
     implementation(webdriver("selenium-support"))
     implementation(webdriver("selenium-chrome-driver"))

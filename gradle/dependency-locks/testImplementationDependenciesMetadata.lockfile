@@ -17,6 +17,7 @@ com.google.guava:guava:25.0-jre
 com.google.j2objc:j2objc-annotations:1.1
 com.squareup.okhttp3:okhttp:3.11.0
 com.squareup.okio:okio:1.14.0
+javax.json:javax.json-api:1.1
 junit:junit:4.13.2
 net.bytebuddy:byte-buddy:1.8.15
 net.java.dev.jna:jna:5.8.0
