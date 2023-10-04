@@ -25,6 +25,13 @@ class AdaptiveJqlMemory(
         }
         fun JqlMemory.changelog() = filterJqls { tag -> tag == BuiltInJQL.REPORTERS.name }
         fun JqlMemory.wildcard() = filterJqls { tag -> tag == BuiltInJQL.GENERIC_WIDE.name }
+        fun JqlMemory.resolved() = filterJqls { tag -> tag == BuiltInJQL.RESOLVED.name }
+        fun JqlMemory.unresolved() = filterJqls { tag -> tag == BuiltInJQL.UNRESOLVED.name }
+        fun JqlMemory.priorities() = filterJqls { tag -> tag == BuiltInJQL.PRIORITIES.name }
+        fun JqlMemory.project() = filterJqls { tag -> tag == BuiltInJQL.PROJECT.name }
+        fun JqlMemory.assignee() = filterJqls { tag -> tag == BuiltInJQL.ASSIGNEE.name }
+        fun JqlMemory.projectAssignee() = filterJqls { tag -> tag == BuiltInJQL.PROJECT_ASSIGNEE.name }
+        fun JqlMemory.givenWord() = filterJqls { tag -> tag == BuiltInJQL.GIVEN_WORD.name }
 
         private fun JqlMemory.filterJqls(
             tagFilter: (String) -> Boolean

@@ -26,6 +26,11 @@ Dropping a requirement of a major version of a dependency is a new contract.
 ## [Unreleased]
 [Unreleased]: https://github.com/atlassian/jira-actions/compare/release-3.21.2...master
 
+### Added
+- Expose filtering for all JQLs currently created by `AdaptiveJqlMemory`. Unblock [JPERF-1395].
+
+[JPERF-1395]: https://ecosystem.atlassian.net/browse/JPERF-1395
+
 ## [3.22.0] - 2023-09-14
 [3.22.0]: https://github.com/atlassian/jira-actions/compare/release-3.21.2...release-3.22.0
 
