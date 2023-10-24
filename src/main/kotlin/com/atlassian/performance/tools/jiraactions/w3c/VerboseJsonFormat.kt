@@ -79,6 +79,11 @@ internal class VerboseJsonFormat {
             .add("transferSize", transferSize)
             .add("encodedBodySize", encodedBodySize)
             .add("decodedBodySize", decodedBodySize)
+            .apply {
+                if (serverTiming != null) {
+                    add("serverTiming", serverTiming.map { serializeServerTiming(it) }.toJsonArray())
+                }
+            }
             .build()
     }
 
@@ -103,8 +108,10 @@ internal class VerboseJsonFormat {
             responseEnd = getDuration("responseEnd"),
             transferSize = getJsonNumber("transferSize").longValueExact(),
             encodedBodySize = getJsonNumber("encodedBodySize").longValueExact(),
-            decodedBodySize = getJsonNumber("decodedBodySize").longValueExact()
-
+            decodedBodySize = getJsonNumber("decodedBodySize").longValueExact(),
+            serverTiming = getJsonArray("serverTiming")
+                ?.map { it.asJsonObject() }
+                ?.map { deserializeServerTiming(it) }
         )
     }
 
@@ -141,6 +148,26 @@ internal class VerboseJsonFormat {
             loadEventEnd = getDuration("loadEventEnd"),
             type = NavigationType.valueOf(getString("type")),
             redirectCount = getJsonNumber("redirectCount").intValueExact()
+        )
+    }
+
+    private fun serializeServerTiming(
+        serverTiming: PerformanceServerTiming
+    ): JsonObject = serverTiming.run {
+        Json.createObjectBuilder()
+            .add("name", serverTiming.name)
+            .add("duration", serverTiming.duration.toString())
+            .add("description", serverTiming.description)
+            .build()
+    }
+
+    private fun deserializeServerTiming(
+        json: JsonObject
+    ): PerformanceServerTiming = json.run {
+        PerformanceServerTiming(
+            name = json.getString("name"),
+            duration = json.getDuration("duration"),
+            description = json.getString("description")
         )
     }
 

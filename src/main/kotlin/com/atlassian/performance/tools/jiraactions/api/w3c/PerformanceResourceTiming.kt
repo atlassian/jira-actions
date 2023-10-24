@@ -23,5 +23,12 @@ class PerformanceResourceTiming internal constructor(
     val responseEnd: Duration,
     val transferSize: Long,
     val encodedBodySize: Long,
-    val decodedBodySize: Long
+    val decodedBodySize: Long,
+    /**
+     * Represents the [serverTiming attribute](https://www.w3.org/TR/2023/WD-server-timing-20230411/#servertiming-attribute)
+     *
+     * @return Null if blocked, e.g. by same-origin policy.
+     *         Empty if not blocked, but server didn't send any `Server-Timing` headers.
+     */
+    val serverTiming: List<PerformanceServerTiming>?
 )

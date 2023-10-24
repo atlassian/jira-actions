@@ -26,6 +26,11 @@ Dropping a requirement of a major version of a dependency is a new contract.
 ## [Unreleased]
 [Unreleased]: https://github.com/atlassian/jira-actions/compare/release-3.23.1...master
 
+### Added
+- Add `PerformanceServerTiming`. Aid with [JPERF-1408].
+
+[JPERF-1408]: https://ecosystem.atlassian.net/browse/JPERF-1408
+
 ## [3.23.1] - 2023-10-05
 [3.23.1]: https://github.com/atlassian/jira-actions/compare/release-3.23.0...release-3.23.1
 

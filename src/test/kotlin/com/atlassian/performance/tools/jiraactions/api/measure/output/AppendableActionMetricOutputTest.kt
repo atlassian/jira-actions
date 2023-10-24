@@ -123,7 +123,11 @@ class AppendableActionMetricOutputTest {
                     responseEnd = ofMillis(391),
                     transferSize = 12956,
                     encodedBodySize = 11818,
-                    decodedBodySize = 59535
+                    decodedBodySize = 59535,
+                    serverTiming = listOf(
+                        PerformanceServerTiming("userCache", ofMillis(13), "miss"),
+                        PerformanceServerTiming("sqlTotal", ofMillis(40), "")
+                    )
                 ),
                 unloadEventStart = ofMillis(210),
                 unloadEventEnd = ofMillis(210),
@@ -161,7 +165,8 @@ class AppendableActionMetricOutputTest {
                 responseEnd = ofMillis(982),
                 transferSize = 3524,
                 encodedBodySize = 3032,
-                decodedBodySize = 24340
+                decodedBodySize = 24340,
+                serverTiming = null
             )
         ),
         elements = listOf(
