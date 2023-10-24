@@ -1,11 +1,11 @@
 package com.atlassian.performance.tools.jiraactions.api.format
 
+import com.atlassian.performance.tools.jiraactions.JsonProviderSingleton.JSON
 import com.atlassian.performance.tools.jiraactions.api.ActionMetric
 import com.atlassian.performance.tools.jiraactions.api.ActionResult
 import java.time.Duration
 import java.time.Instant
 import java.util.*
-import javax.json.Json
 import javax.json.JsonObject
 
 /**
@@ -16,7 +16,7 @@ class MetricCompactJsonFormat: MetricJsonFormat {
     override fun serialize(
         actionMetric: ActionMetric
     ): JsonObject = actionMetric.run {
-        Json.createObjectBuilder()
+        JSON.createObjectBuilder()
             .add("label", label)
             .add("result", result.name)
             .add("duration", duration.toString())

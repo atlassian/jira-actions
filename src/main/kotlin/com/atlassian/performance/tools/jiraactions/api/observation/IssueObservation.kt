@@ -1,6 +1,6 @@
 package com.atlassian.performance.tools.jiraactions.api.observation
 
-import javax.json.Json
+import com.atlassian.performance.tools.jiraactions.JsonProviderSingleton.JSON
 import javax.json.JsonObject
 
 data class IssueObservation(
@@ -8,7 +8,7 @@ data class IssueObservation(
 ) {
     constructor(json: JsonObject) : this(json.getString("issueKey"))
 
-    fun serialize(): JsonObject = Json.createObjectBuilder()
+    fun serialize(): JsonObject = JSON.createObjectBuilder()
         .add("issueKey", issueKey)
         .build()
 }

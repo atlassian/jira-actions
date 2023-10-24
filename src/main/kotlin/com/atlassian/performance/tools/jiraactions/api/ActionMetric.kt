@@ -1,11 +1,11 @@
 package com.atlassian.performance.tools.jiraactions.api
 
+import com.atlassian.performance.tools.jiraactions.JsonProviderSingleton.JSON
 import com.atlassian.performance.tools.jiraactions.api.w3c.RecordedPerformanceEntries
 import com.atlassian.performance.tools.jiraactions.w3c.VerboseJsonFormat
 import java.time.Duration
 import java.time.Instant
 import java.util.*
-import javax.json.Json
 import javax.json.JsonObject
 
 /**
@@ -63,7 +63,7 @@ data class ActionMetric @Deprecated("Use ActionMetric.Builder instead.") constru
 
     @Deprecated("Use AppendableActionMetricOutput instead.")
     fun toJson(): JsonObject {
-        val builder = Json.createObjectBuilder()
+        val builder = JSON.createObjectBuilder()
             .add("label", label)
             .add("result", result.name)
             .add("duration", duration.toString())

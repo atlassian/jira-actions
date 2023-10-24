@@ -1,5 +1,6 @@
 package com.atlassian.performance.tools.jiraactions.api.action
 
+import com.atlassian.performance.tools.jiraactions.JsonProviderSingleton.JSON
 import com.atlassian.performance.tools.jiraactions.api.ActionType
 import com.atlassian.performance.tools.jiraactions.api.SEARCH_WITH_JQL
 import com.atlassian.performance.tools.jiraactions.api.SeededRandom
@@ -15,7 +16,6 @@ import com.atlassian.performance.tools.jiraactions.api.page.issuenav.DetailView
 import com.atlassian.performance.tools.jiraactions.api.page.issuenav.IssueNavResultsView
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
-import javax.json.Json
 import javax.json.JsonObject
 
 class SearchIssues private constructor(
@@ -109,7 +109,7 @@ class SearchIssues private constructor(
             json.getBoolean("switched")
         )
 
-        fun serialize(): JsonObject = Json.createObjectBuilder()
+        fun serialize(): JsonObject = JSON.createObjectBuilder()
             .add("desiredView", desiredView)
             .add("selectedBefore", selectedBefore)
             .add("selectedAfter", selectedAfter)

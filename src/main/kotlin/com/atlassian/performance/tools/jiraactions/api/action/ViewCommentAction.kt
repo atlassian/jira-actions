@@ -1,12 +1,12 @@
 package com.atlassian.performance.tools.jiraactions.api.action
 
+import com.atlassian.performance.tools.jiraactions.JsonProviderSingleton.JSON
 import com.atlassian.performance.tools.jiraactions.api.VIEW_COMMENT
 import com.atlassian.performance.tools.jiraactions.api.WebJira
 import com.atlassian.performance.tools.jiraactions.api.measure.ActionMeter
 import com.atlassian.performance.tools.jiraactions.api.memories.CommentMemory
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
-import javax.json.Json
 
 class ViewCommentAction(
     private val jira: WebJira,
@@ -26,7 +26,7 @@ class ViewCommentAction(
             key = VIEW_COMMENT,
             action = { jira.goToComment(comment.url).validateCommentIsFocused(comment.id) },
             observation = { page ->
-                Json.createObjectBuilder()
+                JSON.createObjectBuilder()
                     .add("issueKey", page.getIssueKey())
                     .add("commentId", comment.id)
                     .build()

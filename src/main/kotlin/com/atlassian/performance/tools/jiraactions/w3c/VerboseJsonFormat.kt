@@ -1,5 +1,6 @@
 package com.atlassian.performance.tools.jiraactions.w3c
 
+import com.atlassian.performance.tools.jiraactions.JsonProviderSingleton.JSON
 import com.atlassian.performance.tools.jiraactions.api.w3c.*
 import java.time.Duration
 import javax.json.Json
@@ -11,7 +12,7 @@ internal class VerboseJsonFormat {
     fun serializeRecordedEntries(
         entries: RecordedPerformanceEntries
     ): JsonObject = entries.run {
-        Json.createObjectBuilder()
+        JSON.createObjectBuilder()
             .add("navigations", navigations.map { serializeNavigationTiming(it) }.toJsonArray())
             .add("resources", resources.map { serializeResourceTiming(it) }.toJsonArray())
             .add("elements", (elements.map { serializeElementTiming(it) }).toJsonArray())
@@ -38,7 +39,7 @@ internal class VerboseJsonFormat {
     private fun serializeEntry(
         entry: PerformanceEntry
     ): JsonObject = entry.run {
-        Json.createObjectBuilder()
+        JSON.createObjectBuilder()
             .add("name", name)
             .add("entryType", entryType)
             .add("startTime", startTime.toString())
@@ -60,7 +61,7 @@ internal class VerboseJsonFormat {
     private fun serializeResourceTiming(
         resourceTiming: PerformanceResourceTiming
     ): JsonObject = resourceTiming.run {
-        Json.createObjectBuilder()
+        JSON.createObjectBuilder()
             .add("entry", serializeEntry(entry))
             .add("initiatorType", initiatorType)
             .add("nextHopProtocol", nextHopProtocol)
@@ -118,7 +119,7 @@ internal class VerboseJsonFormat {
     private fun serializeNavigationTiming(
         navigationTiming: PerformanceNavigationTiming
     ): JsonObject = navigationTiming.run {
-        Json.createObjectBuilder()
+        JSON.createObjectBuilder()
             .add("resource", serializeResourceTiming(resource))
             .add("unloadEventStart", unloadEventStart.toString())
             .add("unloadEventEnd", unloadEventEnd.toString())
@@ -154,7 +155,7 @@ internal class VerboseJsonFormat {
     private fun serializeServerTiming(
         serverTiming: PerformanceServerTiming
     ): JsonObject = serverTiming.run {
-        Json.createObjectBuilder()
+        JSON.createObjectBuilder()
             .add("name", serverTiming.name)
             .add("duration", serverTiming.duration.toString())
             .add("description", serverTiming.description)
@@ -172,7 +173,7 @@ internal class VerboseJsonFormat {
     }
 
     private fun List<JsonObject>.toJsonArray(): JsonArray {
-        val builder = Json.createArrayBuilder()
+        val builder = JSON.createArrayBuilder()
         forEach { builder.add(it) }
         return builder.build()
     }
@@ -184,7 +185,7 @@ internal class VerboseJsonFormat {
     private fun serializeElementTiming(
         elementTiming: PerformanceElementTiming
     ): JsonObject = elementTiming.run {
-        return Json.createObjectBuilder()
+        return JSON.createObjectBuilder()
             .add("renderTime", renderTime.toString())
             .add("loadTime", loadTime.toString())
             .add("identifier", identifier)
