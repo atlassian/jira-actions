@@ -26,6 +26,11 @@ Dropping a requirement of a major version of a dependency is a new contract.
 ## [Unreleased]
 [Unreleased]: https://github.com/atlassian/jira-actions/compare/release-3.24.0...master
 
+### Fixed
+- Speed up all JSON code, by reusing a `JsonProvider` instance. Fix the same root cause as in [JPERF-1401].
+
+[JPERF-1401]: https://ecosystem.atlassian.net/browse/JPERF-1401
+
 ## [3.24.0] - 2023-10-24
 [3.24.0]: https://github.com/atlassian/jira-actions/compare/release-3.23.1...release-3.24.0
 

@@ -1,12 +1,12 @@
 package com.atlassian.performance.tools.jiraactions.api.action
 
+import com.atlassian.performance.tools.jiraactions.JsonProviderSingleton.JSON
 import com.atlassian.performance.tools.jiraactions.api.VIEW_ISSUE
 import com.atlassian.performance.tools.jiraactions.api.WebJira
 import com.atlassian.performance.tools.jiraactions.api.measure.ActionMeter
 import com.atlassian.performance.tools.jiraactions.api.memories.*
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
-import javax.json.Json
 
 class ViewIssueAction private constructor(
     private val jira: WebJira,
@@ -44,7 +44,7 @@ class ViewIssueAction private constructor(
             key = VIEW_ISSUE,
             action = { jira.goToIssue(issueKey).waitForSummary() },
             observation = { page ->
-                Json.createObjectBuilder()
+                JSON.createObjectBuilder()
                     .add("issueKey", issueKey)
                     .add("issueId", page.getIssueId())
                     .build()
