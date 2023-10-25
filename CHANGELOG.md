@@ -24,7 +24,10 @@ Adding a requirement of a major version of a dependency is breaking a contract.
 Dropping a requirement of a major version of a dependency is a new contract.
 
 ## [Unreleased]
-[Unreleased]: https://github.com/atlassian/jira-actions/compare/release-3.23.1...master
+[Unreleased]: https://github.com/atlassian/jira-actions/compare/release-3.24.0...master
+
+## [3.24.0] - 2023-10-24
+[3.24.0]: https://github.com/atlassian/jira-actions/compare/release-3.23.1...release-3.24.0
 
 ### Added
 - Add `PerformanceServerTiming`. Aid with [JPERF-1408].
