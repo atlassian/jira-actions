@@ -29,6 +29,7 @@ class PerformanceResourceTiming internal constructor(
      *
      * @return Null if blocked, e.g. by same-origin policy.
      *         Empty if not blocked, but server didn't send any `Server-Timing` headers.
+     * @since 3.24.0
      */
     val serverTiming: List<PerformanceServerTiming>?
 )
