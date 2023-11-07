@@ -4,28 +4,30 @@ import com.atlassian.performance.tools.jiraactions.api.w3c.NavigationType
 import com.atlassian.performance.tools.jiraactions.api.w3c.PerformanceNavigationTiming
 import org.openqa.selenium.JavascriptExecutor
 
-internal fun getJsNavigationsPerformance(javascript: JavascriptExecutor): List<PerformanceNavigationTiming> {
-    val jsNavigations = javascript.executeScript("return window.performance.getEntriesByType(\"navigation\");")
-    return parseNavigations(jsNavigations)
+internal fun getJsNavigationsPerformance(jsExecutor: JavascriptExecutor): List<PerformanceNavigationTiming> {
+    val jsNavigations = jsExecutor.executeScript("return window.performance.getEntriesByType(\"navigation\");")
+    return parseNavigations(jsNavigations, jsExecutor)
 }
 
 private fun parseNavigations(
-    jsNavigations: Any?
+    jsNavigations: Any?,
+    jsExecutor: JavascriptExecutor
 ): List<PerformanceNavigationTiming> {
     if (jsNavigations !is List<*>) {
         throw Exception("Unexpected non-list JavaScript value: $jsNavigations")
     }
-    return jsNavigations.map { parsePerformanceNavigationTiming(it) }
+    return jsNavigations.map { parsePerformanceNavigationTiming(it, jsExecutor) }
 }
 
 private fun parsePerformanceNavigationTiming(
-    map: Any?
+    map: Any?,
+    jsExecutor: JavascriptExecutor
 ): PerformanceNavigationTiming {
     if (map !is Map<*, *>) {
         throw Exception("Unexpected non-map JavaScript value: $map")
     }
     return PerformanceNavigationTiming(
-        resource = parsePerformanceResourceTiming(map),
+        resource = parsePerformanceResourceTiming(map, jsExecutor),
         unloadEventStart = parseTimestamp(map["unloadEventStart"]),
         unloadEventEnd = parseTimestamp(map["unloadEventEnd"]),
         domInteractive = parseTimestamp(map["domInteractive"]),
