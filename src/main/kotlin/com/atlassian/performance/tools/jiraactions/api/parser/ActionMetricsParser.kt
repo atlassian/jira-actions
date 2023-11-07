@@ -10,18 +10,12 @@ import java.io.StringReader
 import java.util.stream.Stream
 import javax.json.JsonStructure
 import kotlin.streams.asStream
-import kotlin.streams.toList
 
 class ActionMetricsParser(private val format: MetricJsonFormat) {
 
     private val logger = LogManager.getLogger(this::class.java)
 
     constructor(): this(MetricVerboseJsonFormat())
-
-    @Deprecated("Accumulating results in lists leads to memory leaks", ReplaceWith("stream(metricsStream)"))
-    fun parse(
-        metricsStream: InputStream
-    ): List<ActionMetric> = stream(metricsStream).toList()
 
     fun stream(
         metricsStream: InputStream

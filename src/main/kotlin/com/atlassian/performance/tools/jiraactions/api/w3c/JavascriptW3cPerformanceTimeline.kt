@@ -15,11 +15,6 @@ class JavascriptW3cPerformanceTimeline private constructor(
     private val recordElements: Boolean
 ) : W3cPerformanceTimeline {
 
-    @Deprecated("Use JavascriptW3cPerformanceTimeline.Builder instead.")
-    constructor(
-        javascript: JavascriptExecutor
-    ) : this(javascript, true, true, false)
-
     override fun record(): RecordedPerformanceEntries {
         return RecordedPerformanceEntries(
             navigations = if (recordNavigation) getJsNavigationsPerformance(javascript) else emptyList(),

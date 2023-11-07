@@ -2,10 +2,7 @@ package com.atlassian.performance.tools.jiraactions.api.scenario
 
 import com.atlassian.performance.tools.dockerinfrastructure.api.browser.DockerisedChrome
 import com.atlassian.performance.tools.dockerinfrastructure.api.jira.JiraCoreFormula
-import com.atlassian.performance.tools.jiraactions.api.ActionMetric
-import com.atlassian.performance.tools.jiraactions.api.ActionResult
-import com.atlassian.performance.tools.jiraactions.api.SeededRandom
-import com.atlassian.performance.tools.jiraactions.api.WebJira
+import com.atlassian.performance.tools.jiraactions.api.*
 import com.atlassian.performance.tools.jiraactions.api.action.*
 import com.atlassian.performance.tools.jiraactions.api.measure.ActionMeter
 import com.atlassian.performance.tools.jiraactions.api.measure.output.CollectionActionMetricOutput
@@ -101,12 +98,12 @@ class JiraEditScenario : Scenario {
             seededRandom = seededRandom,
             projectMemory = projectMemory
         )
-        val searchWithJql = SearchJqlAction(
-            jira = jira,
-            meter = meter,
-            jqlMemory = jqlMemory,
-            issueKeyMemory = issueKeyMemory
-        )
+        val searchWithJql = SearchIssues.Builder(jira, meter, SeededRandom())
+            .actionType(SEARCH_WITH_JQL)
+            .jqlMemory(jqlMemory)
+            .issueKeyMemory(issueKeyMemory)
+            .build()
+
         val viewIssue = ViewIssueAction.Builder(jira, meter)
             .issueKeyMemory(issueKeyMemory)
             .issueMemory(issueMemory)

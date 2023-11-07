@@ -13,11 +13,6 @@ class MergingActionMetricsParser(format: MetricJsonFormat) {
 
     constructor(): this(MetricVerboseJsonFormat())
 
-    @Deprecated("Accumulating results in lists leads to memory leaks", ReplaceWith("stream(metrics)"))
-    fun parse(
-        metrics: List<File>
-    ): List<ActionMetric> = stream(metrics).toList()
-
     fun stream(
         metrics: List<File>
     ): Stream<ActionMetric> = metrics

@@ -18,22 +18,6 @@ class ViewIssueAction private constructor(
 ) : Action {
     private val logger: Logger = LogManager.getLogger(this::class.java)
 
-    @Deprecated("Use ViewIssueAction.Builder instead.")
-    constructor(
-        jira: WebJira,
-        meter: ActionMeter,
-        issueKeyMemory: IssueKeyMemory?,
-        issueMemory: IssueMemory?,
-        jqlMemory: JqlMemory?
-    ) : this(
-        jira = jira,
-        meter = meter,
-        issueKeyMemory = issueKeyMemory,
-        issueMemory = issueMemory,
-        jqlMemory = jqlMemory,
-        commentMemory = null
-    )
-
     override fun run() {
         val issueKey = issueKeyMemory?.recall()
         if (issueKey == null) {
