@@ -1,5 +1,6 @@
 package com.atlassian.performance.tools.jiraactions.api
 
+import com.atlassian.performance.tools.jiraactions.api.w3c.PerformanceResourceTiming
 import com.atlassian.performance.tools.jiraactions.api.w3c.RecordedPerformanceEntries
 import java.time.Duration
 import java.time.Instant
@@ -16,6 +17,32 @@ data class ActionMetric internal constructor(
     var drilldown: RecordedPerformanceEntries? = null
 ) {
     val end: Instant = start + duration
+
+    fun toBackendTimeSlots(): List<BackendTimeSlot> {
+        return drilldown
+            ?.navigations
+            ?.map { toBackendTimeSlot(it.resource) }
+            ?: emptyList()
+    }
+
+    private fun toBackendTimeSlot(resource: PerformanceResourceTiming): BackendTimeSlot {
+        return BackendTimeSlot(
+            start = start + resource.requestStart,
+            end = start + resource.responseEnd,
+            threadId = resource
+                .serverTiming
+                ?.find { it.name == "threadId" }
+                ?.description
+                ?.toLong()
+                ?: throw Exception("No thread id in $this, so we cannot map it to a backend timeslot"),
+            nodeId = resource
+                .serverTiming
+                .find { it.name == "nodeId" }
+                ?.description
+                ?: throw Exception("No nodeId in $this, so we cannot map it to a backend timeslot")
+        )
+    }
+
 
     class Builder(
         private val label: String,

@@ -53,12 +53,12 @@ class ActionMeterTest {
         val threeTicksLater = twoTicksLater + tick
 
         assertThat(output.metrics).containsExactlyInAnyOrder(
-            expectedActionMetric(CREATE_ISSUE, OK, tick, start),
-            expectedActionMetric(VIEW_BOARD, OK, ZERO, oneTickLater),
-            expectedActionMetric(EDIT_ISSUE, OK, tick, oneTickLater),
-            expectedActionMetric(CREATE_ISSUE, OK, ZERO, twoTicksLater),
-            expectedActionMetric(VIEW_BOARD, OK, tick, twoTicksLater),
-            expectedActionMetric(EDIT_ISSUE, OK, ZERO, threeTicksLater)
+            expectedActionMetric(CREATE_ISSUE, OK, tick, start, null),
+            expectedActionMetric(VIEW_BOARD, OK, ZERO, oneTickLater, null),
+            expectedActionMetric(EDIT_ISSUE, OK, tick, oneTickLater, null),
+            expectedActionMetric(CREATE_ISSUE, OK, ZERO, twoTicksLater, null),
+            expectedActionMetric(VIEW_BOARD, OK, tick, twoTicksLater, null),
+            expectedActionMetric(EDIT_ISSUE, OK, ZERO, threeTicksLater, null)
         )
     }
 
@@ -66,13 +66,17 @@ class ActionMeterTest {
         actionType: ActionType<*>,
         result: ActionResult,
         duration: Duration,
-        start: Instant
+        start: Instant,
+        entries: RecordedPerformanceEntries? = RecordedPerformanceEntries(emptyList(), emptyList(), emptyList())
     ): ActionMetric = ActionMetric.Builder(
         label = actionType.label,
         result = result,
         duration = duration,
         start = start
-    ).virtualUser(vu).build()
+    )
+        .virtualUser(vu)
+        .drilldown(entries)
+        .build()
 
     private class TestException : Exception()
 
@@ -88,7 +92,9 @@ class ActionMeterTest {
             .appendPostMetricHook(DrillDownHook(HardcodedTimeline(entries)))
             .build()
 
-        assertThatThrownBy { actionMeter.measure(CREATE_ISSUE) { throw TestException() } }.hasCauseInstanceOf(TestException::class.java)
+        assertThatThrownBy { actionMeter.measure(CREATE_ISSUE) { throw TestException() } }.hasCauseInstanceOf(
+            TestException::class.java
+        )
         actionMeter.measure(VIEW_BOARD) {}
 
         assertThat(output.metrics).containsExactlyInAnyOrder(
@@ -105,7 +111,8 @@ class ActionMeterTest {
         val tick = ofSeconds(1)
         val clock = TickingClock(start, tick)
         val output = CollectionActionMetricOutput(mutableListOf())
-        val w3cPerformanceTimelineMock = HardcodedTimeline(RecordedPerformanceEntries(emptyList(), emptyList(), emptyList()))
+        val w3cPerformanceTimelineMock =
+            HardcodedTimeline(RecordedPerformanceEntries(emptyList(), emptyList(), emptyList()))
         val actionMeter = ActionMeter.Builder(
             output = output
         )
@@ -165,7 +172,7 @@ class ActionMeterTest {
         )
 
         assertThat(output.metrics).containsExactlyInAnyOrder(
-            expectedActionMetric(EDIT_ISSUE, OK, ZERO, start)
+            expectedActionMetric(EDIT_ISSUE, OK, ZERO, start, null)
         )
     }
 
