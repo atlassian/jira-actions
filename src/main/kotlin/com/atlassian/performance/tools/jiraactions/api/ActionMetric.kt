@@ -1,6 +1,8 @@
 package com.atlassian.performance.tools.jiraactions.api
 
+import com.atlassian.performance.tools.jiraactions.api.w3c.PerformanceResourceTiming
 import com.atlassian.performance.tools.jiraactions.JsonProviderSingleton.JSON
+import com.atlassian.performance.tools.jiraactions.JsonProviderSingleton
 import com.atlassian.performance.tools.jiraactions.api.w3c.RecordedPerformanceEntries
 import com.atlassian.performance.tools.jiraactions.w3c.VerboseJsonFormat
 import java.time.Duration
@@ -28,6 +30,31 @@ data class ActionMetric @Deprecated("Use ActionMetric.Builder instead.") constru
         private set
 
     val end: Instant = start + duration
+
+    fun toBackendTimeSlots(): List<BackendTimeSlot> {
+        return drilldown
+            ?.navigations
+            ?.map { toBackendTimeSlot(it.resource) }
+            ?: emptyList()
+    }
+
+    private fun toBackendTimeSlot(resource: PerformanceResourceTiming): BackendTimeSlot {
+        return BackendTimeSlot(
+            start = start + resource.requestStart,
+            end = start + resource.responseEnd,
+            threadId = resource
+                .serverTiming
+                ?.find { it.name == "threadId" }
+                ?.description
+                ?.toLong()
+                ?: throw Exception("No thread id in $this, so we cannot map it to a backend timeslot"),
+            nodeId = resource
+                .serverTiming
+                .find { it.name == "nodeId" }
+                ?.description
+                ?: throw Exception("No nodeId in $this, so we cannot map it to a backend timeslot")
+        )
+    }
 
     @Deprecated("Use ActionMetricsParser instead.")
     constructor(serialized: JsonObject) : this(

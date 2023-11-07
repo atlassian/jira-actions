@@ -118,20 +118,24 @@ class ActionMeter private constructor(
             return result
         } catch (e: Exception) {
             val duration = Duration.between(start, clock.instant())
-            val actionResult = if (e.representsInterrupt()) {
-                ActionResult.INTERRUPTED
-            } else {
-                ActionResult.ERROR
-            }
+            val failedResult = e.toActionResult()
             val actionMetricBuilder = ActionMetric.Builder(
                 label = key.label,
                 start = start,
                 duration = duration,
-                result = actionResult
+                result = failedResult
             ).virtualUser(virtualUser)
             postMetricHooks.forEach { it.run(actionMetricBuilder) }
             output.write(actionMetricBuilder.build())
-            throw Exception("Action '${key.label}' $actionResult", e)
+            throw Exception("Action '${key.label}' $failedResult", e)
+        }
+    }
+
+    private fun Exception.toActionResult(): ActionResult {
+        return if (this.representsInterrupt()) {
+            ActionResult.INTERRUPTED
+        } else {
+            ActionResult.ERROR
         }
     }
 

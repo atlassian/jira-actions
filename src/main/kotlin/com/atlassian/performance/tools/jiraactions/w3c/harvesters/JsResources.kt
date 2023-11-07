@@ -4,23 +4,26 @@ import com.atlassian.performance.tools.jiraactions.api.w3c.PerformanceEntry
 import com.atlassian.performance.tools.jiraactions.api.w3c.PerformanceResourceTiming
 import com.atlassian.performance.tools.jiraactions.api.w3c.PerformanceServerTiming
 import org.openqa.selenium.JavascriptExecutor
+import java.time.Duration
 
-internal fun getJsResourcesPerformance(javascript: JavascriptExecutor): List<PerformanceResourceTiming> {
-    val jsResources = javascript.executeScript("return window.performance.getEntriesByType(\"resource\");")
-    return parseResources(jsResources)
+internal fun getJsResourcesPerformance(jsExecutor: JavascriptExecutor): List<PerformanceResourceTiming> {
+    val jsResources = jsExecutor.executeScript("return window.performance.getEntriesByType(\"resource\");")
+    return parseResources(jsResources, jsExecutor)
 }
 
 private fun parseResources(
-    jsResources: Any
+    jsResources: Any,
+    jsExecutor: JavascriptExecutor
 ): List<PerformanceResourceTiming> {
     if (jsResources !is List<*>) {
         throw Exception("Unexpected non-list JavaScript value: $jsResources")
     }
-    return jsResources.map { parsePerformanceResourceTiming(it) }
+    return jsResources.map { parsePerformanceResourceTiming(it, jsExecutor) }
 }
 
 internal fun parsePerformanceResourceTiming(
-    map: Any?
+    map: Any?,
+    jsExecutor: JavascriptExecutor
 ): PerformanceResourceTiming {
     if (map !is Map<*, *>) {
         throw Exception("Unexpected non-map JavaScript value: $map")
@@ -44,7 +47,7 @@ internal fun parsePerformanceResourceTiming(
         transferSize = map["transferSize"] as Long,
         encodedBodySize = map["encodedBodySize"] as Long,
         decodedBodySize = map["decodedBodySize"] as Long,
-        serverTiming = map["serverTiming"]?.let { parseServerTimings(it) }
+        serverTiming = map["serverTiming"]?.let { parseServerTimings(it, jsExecutor) }
     )
 }
 
@@ -63,12 +66,25 @@ private fun parsePerformanceEntry(
 }
 
 private fun parseServerTimings(
-    jsServerTimings: Any
+    jsServerTimings: Any,
+    jsExecutor: JavascriptExecutor
 ): List<PerformanceServerTiming> {
     if (jsServerTimings !is List<*>) {
         throw Exception("Unexpected non-list JavaScript value: $jsServerTimings")
     }
-    return jsServerTimings.map { parseServerTiming(it) }
+    val result = jsServerTimings.map { parseServerTiming(it) }
+    val nodeId = getResponseHeaders(jsExecutor)["x-anodeid"]
+    return if (nodeId != null) {
+        result.plus(
+            PerformanceServerTiming(
+                name = "nodeId",
+                duration = Duration.ZERO,
+                description = nodeId
+            )
+        )
+    } else {
+        result
+    }
 }
 
 private fun parseServerTiming(
@@ -82,4 +98,26 @@ private fun parseServerTiming(
         duration = parseTimestamp(map["duration"]),
         description = map["description"] as String
     )
+}
+
+private fun getResponseHeaders(jsExecutor: JavascriptExecutor): Map<String, String?> {
+    val jsResult = jsExecutor.executeScript(
+        """
+                var r = new XMLHttpRequest();
+                r.open('HEAD', window.location, false);
+                r.send(null);
+                var headersString = r.getAllResponseHeaders();
+                const arr = headersString.trim().split(/[\r\n]+/);
+                const headerMap = {};
+                arr.forEach((line) => {
+                  const parts = line.split(": ");
+                  const header = parts.shift();
+                  const value = parts.join(": ");
+                  headerMap[header] = value;
+                });
+                return headerMap;
+        """.trimIndent()
+    )
+    @Suppress("UNCHECKED_CAST")
+    return (jsResult as Map<String, String>).mapKeys { it.key.toLowerCase() }
 }
