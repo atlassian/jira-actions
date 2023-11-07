@@ -27,49 +27,6 @@ class ActionMeter private constructor(
     private val postMetricHooks: List<PostMetricHook>
 ) {
 
-    @Deprecated(
-        message = "Use ActionMeter.Builder instead",
-        replaceWith = ReplaceWith("ActionMeter.Builder(" +
-            "\noutput = output" +
-            "\n)" +
-            "\n.clock(clock)" +
-            "\n.virtualUser(virtualUser)" +
-            "\n.build()",
-            "com.atlassian.performance.tools.jiraactions.api.measure.DrillDownHook"
-        )
-    )
-    constructor(
-        virtualUser: UUID,
-        output: ActionMetricOutput,
-        clock: Clock,
-        w3cPerformanceTimeline: W3cPerformanceTimeline
-    ) : this(
-        virtualUser = virtualUser,
-        output = output,
-        clock = clock,
-        postMetricHooks = listOf(DrillDownHook(w3cPerformanceTimeline))
-    )
-
-    @Deprecated(
-        message = "Use ActionMeter.Builder instead",
-        replaceWith = ReplaceWith("ActionMeter.Builder(" +
-            "\noutput = output" +
-            "\n)" +
-            "\n.clock(clock)" +
-            "\n.virtualUser(virtualUser)" +
-            "\n.build()")
-    )
-    constructor(
-        virtualUser: UUID,
-        output: ActionMetricOutput = ThrowawayActionMetricOutput(),
-        clock: Clock = Clock.systemUTC()
-    ) : this(
-        virtualUser = virtualUser,
-        output = output,
-        clock = clock,
-        postMetricHooks = emptyList()
-    )
-
     /**
      * Measures the latency of the [action].
      *
@@ -135,16 +92,6 @@ class ActionMeter private constructor(
         }
     }
 
-    @Deprecated(message = "Use ActionMeter.Builder instead")
-    fun withW3cPerformanceTimeline(
-        w3cPerformanceTimeline: W3cPerformanceTimeline
-    ): ActionMeter = ActionMeter(
-        virtualUser = virtualUser,
-        output = output,
-        clock = clock,
-        postMetricHooks = emptyList()
-    )
-
     class Builder(
         private var output: ActionMetricOutput
     ) {
@@ -172,13 +119,4 @@ class ActionMeter private constructor(
         )
     }
 
-}
-
-@Deprecated("This is an internal data structure used by ActionMeter. Use ActionMeter public methods instead.")
-data class Recording<out T>(
-    val result: T,
-    val duration: Duration,
-    val observation: JsonObject? = null
-) {
-    internal var drilldown: RecordedPerformanceEntries? = null
 }
