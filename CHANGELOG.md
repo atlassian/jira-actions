@@ -26,6 +26,22 @@ Dropping a requirement of a major version of a dependency is a new contract.
 ## [Unreleased]
 [Unreleased]: https://github.com/atlassian/jira-actions/compare/release-3.24.0...master
 
+### Added
+- Add `nodeId` to `PerformanceServerTiming`. Aid with [JPERF-1409].
+- Add `ActionMetric.toBackendTimeSlots()`. Aid with [JPERF-1409].
+
+### Removed
+- Remove deprecated `SearchJqlAction`
+- Remove deprecated `SearchJqlChangelogAction`
+- Remove deprecated `SearchJqlSimpleAction`
+- Remove deprecated `SearchJqlWildcardAction`
+- Remove deprecated `Recording`
+- Remove deprecated `IssueNavigatorPage` methods
+- Remove deprecated `ActionMeter` constructors and methods
+- Remove deprecated `IssueNavigatorPage` methods
+- Remove deprecated `ActionMetricsParser` methods
+- Remove deprecated `MergingActionMetricsParser` methods
+
 ### Fixed
 - Speed up all JSON code, by reusing a `JsonProvider` instance. Fix the same root cause as in [JPERF-1401].
 
