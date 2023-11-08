@@ -72,18 +72,24 @@ private fun parseServerTimings(
     if (jsServerTimings !is List<*>) {
         throw Exception("Unexpected non-list JavaScript value: $jsServerTimings")
     }
-    val result = jsServerTimings.map { parseServerTiming(it) }
-    val nodeId = getResponseHeaders(jsExecutor)["x-anodeid"]
-    return if (nodeId != null) {
-        result.plus(
+    val result = jsServerTimings.map { parseServerTiming(it) }.toMutableList()
+    val responseHeaders = getResponseHeaders(jsExecutor)
+    val nodeId = responseHeaders["x-anodeid"]
+    val requestId = responseHeaders["x-arequestid"]
+    addAttribute(result, "nodeId", nodeId)
+    addAttribute(result, "requestId", requestId)
+    return result
+}
+
+private fun addAttribute(result: MutableList<PerformanceServerTiming>, attributeName: String, attributeValue: String?) {
+    if (attributeValue != null) {
+        result.add(
             PerformanceServerTiming(
-                name = "nodeId",
+                name = attributeName,
                 duration = Duration.ZERO,
-                description = nodeId
+                description = attributeValue
             )
         )
-    } else {
-        result
     }
 }
 
