@@ -10,6 +10,7 @@ import com.atlassian.performance.tools.jiraactions.api.memories.UserMemory
 import com.atlassian.performance.tools.jiraactions.api.page.isElementPresent
 import com.atlassian.performance.tools.jiraactions.api.page.tolerateDirtyFormsOnCurrentPage
 import com.atlassian.performance.tools.jiraactions.api.w3c.JavascriptW3cPerformanceTimeline
+import com.atlassian.performance.tools.jiraactions.api.w3c.PerformanceResourceTiming
 import com.atlassian.performance.tools.jiraactions.api.webdriver.sendKeysAndValidate
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
@@ -84,6 +85,8 @@ abstract class AbstractJiraCoreScenario {
         val secondBackupElement = driver.isElementPresent(By.id("del_10200"))
 
         assertThat(metrics).`as`("all results are OK").allMatch { it.result == ActionResult.OK }
+        assertDrilldown(metrics)
+
         val viewIssueMetrics = metrics.filter { VIEW_ISSUE.label == it.label }
         assertThat(viewIssueMetrics)
             .`as`("view issue metrics")
@@ -91,6 +94,22 @@ abstract class AbstractJiraCoreScenario {
             .allMatch { m -> m.observation != null }
         assertThat(firstBackupElement).isFalse()
         assertThat(secondBackupElement).isFalse()
+    }
+
+    private fun assertDrilldown(metrics: List<ActionMetric>) {
+        val navigationsPerMetric = metrics.map { it.drilldown?.navigations ?: emptyList() }
+        assertThat(navigationsPerMetric).`as`("all results contain timings in drilldown").hasSize(metrics.size)
+        val navigationsCount = navigationsPerMetric.flatten().count()
+        val navigationsWithRequestIdCount =
+            navigationsPerMetric.flatten().mapNotNull { toRequestId(it.resource) }.count()
+        assertThat(navigationsWithRequestIdCount).`as`("all results contain requestIds in drilldown").isEqualTo(navigationsCount)
+    }
+
+    private fun toRequestId(resource: PerformanceResourceTiming): String? {
+        return resource
+            .serverTiming
+            ?.find { it.name == "requestId" }
+            ?.description
     }
 
     private fun goToServices(driver: RemoteWebDriver, jira: Jira) {
