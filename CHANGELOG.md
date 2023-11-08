@@ -28,7 +28,6 @@ Dropping a requirement of a major version of a dependency is a new contract.
 
 ### Added
 - Add `nodeId` to `PerformanceServerTiming`. Aid with [JPERF-1409].
-- Add `requestId` to `PerformanceServerTiming`. Aid with [JPERF-1409].
 - Add `ActionMetric.toBackendTimeSlots()`. Aid with [JPERF-1409].
 
 ### Fixed

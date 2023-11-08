@@ -48,10 +48,6 @@ data class ActionMetric @Deprecated("Use ActionMetric.Builder instead.") constru
                 ?.description
                 ?.toLong()
                 ?: throw Exception("No threadId in $this, so we cannot map it to a backend timeslot"),
-            requestId = resource
-                .serverTiming
-                .find { it.name == "requestId" }
-                ?.description,
             nodeId = resource
                 .serverTiming
                 .find { it.name == "nodeId" }
