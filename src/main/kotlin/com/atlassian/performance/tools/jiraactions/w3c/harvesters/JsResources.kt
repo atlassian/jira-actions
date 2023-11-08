@@ -75,9 +75,7 @@ private fun parseServerTimings(
     val result = jsServerTimings.map { parseServerTiming(it) }.toMutableList()
     val responseHeaders = getResponseHeaders(jsExecutor)
     val nodeId = responseHeaders["x-anodeid"]
-    val requestId = responseHeaders["x-arequestid"]
     addAttribute(result, "nodeId", nodeId)
-    addAttribute(result, "requestId", requestId)
     return result
 }
 
