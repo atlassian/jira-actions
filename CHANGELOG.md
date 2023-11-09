@@ -27,7 +27,6 @@ Dropping a requirement of a major version of a dependency is a new contract.
 [Unreleased]: https://github.com/atlassian/jira-actions/compare/release-3.24.0...master
 
 ### Added
-- Add `nodeId` to `PerformanceServerTiming`. Aid with [JPERF-1409].
 - Add `ActionMetric.toBackendTimeSlots()`. Aid with [JPERF-1409].
 
 ### Fixed
