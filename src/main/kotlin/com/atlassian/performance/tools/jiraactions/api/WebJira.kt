@@ -1,5 +1,6 @@
 package com.atlassian.performance.tools.jiraactions.api
 
+import com.atlassian.performance.tools.jiraactions.JiraNodeIdMemory
 import com.atlassian.performance.tools.jiraactions.administration.JiraAdministrationMenu
 import com.atlassian.performance.tools.jiraactions.api.page.*
 import org.openqa.selenium.By
@@ -12,6 +13,7 @@ data class WebJira(
     val base: URI,
     val adminPassword: String
 ) {
+    private val jiraNodeMemory = JiraNodeIdMemory()
 
     fun goToLogin(): LoginPage {
         navigateTo("login.jsp")
@@ -92,6 +94,17 @@ data class WebJira(
     }
 
     fun getJiraNode(): String {
+        return jiraNodeMemory.recallNodeId()
+            ?: (findNodeId()
+                .takeUnless { it.isNullOrBlank() }
+                ?.also { jiraNodeMemory.rememberNodeId(it) })
+            ?: throw Exception("Could not find Jira node ID")
+    }
+
+    /**
+     * Based on [How to determine which node a user is accessing in Datacenter](https://confluence.atlassian.com/jirakb/how-to-determine-which-node-a-user-is-accessing-in-datacenter-885252555.html)
+     */
+    private fun findNodeId(): String? {
         return driver.findElement(By.id("footer-build-information")).text
     }
 

@@ -5,25 +5,29 @@ import com.atlassian.performance.tools.jiraactions.api.w3c.PerformanceResourceTi
 import com.atlassian.performance.tools.jiraactions.api.w3c.PerformanceServerTiming
 import org.openqa.selenium.JavascriptExecutor
 import java.time.Duration
+import java.util.function.Supplier
 
-internal fun getJsResourcesPerformance(jsExecutor: JavascriptExecutor): List<PerformanceResourceTiming> {
+internal fun getJsResourcesPerformance(
+    jsExecutor: JavascriptExecutor,
+    nodeIdSupplier: Supplier<String?>
+): List<PerformanceResourceTiming> {
     val jsResources = jsExecutor.executeScript("return window.performance.getEntriesByType(\"resource\");")
-    return parseResources(jsResources, jsExecutor)
+    return parseResources(jsResources, nodeIdSupplier)
 }
 
 private fun parseResources(
     jsResources: Any,
-    jsExecutor: JavascriptExecutor
+    nodeIdSupplier: Supplier<String?>
 ): List<PerformanceResourceTiming> {
     if (jsResources !is List<*>) {
         throw Exception("Unexpected non-list JavaScript value: $jsResources")
     }
-    return jsResources.map { parsePerformanceResourceTiming(it, jsExecutor) }
+    return jsResources.map { parsePerformanceResourceTiming(it, nodeIdSupplier) }
 }
 
 internal fun parsePerformanceResourceTiming(
     map: Any?,
-    jsExecutor: JavascriptExecutor
+    nodeIdSupplier: Supplier<String?>
 ): PerformanceResourceTiming {
     if (map !is Map<*, *>) {
         throw Exception("Unexpected non-map JavaScript value: $map")
@@ -47,7 +51,7 @@ internal fun parsePerformanceResourceTiming(
         transferSize = map["transferSize"] as Long,
         encodedBodySize = map["encodedBodySize"] as Long,
         decodedBodySize = map["decodedBodySize"] as Long,
-        serverTiming = map["serverTiming"]?.let { parseServerTimings(it, jsExecutor) }
+        serverTiming = map["serverTiming"]?.let { parseServerTimings(it, nodeIdSupplier) }
     )
 }
 
@@ -67,15 +71,16 @@ private fun parsePerformanceEntry(
 
 private fun parseServerTimings(
     jsServerTimings: Any,
-    jsExecutor: JavascriptExecutor
+    nodeIdSupplier: Supplier<String?>
 ): List<PerformanceServerTiming> {
     if (jsServerTimings !is List<*>) {
         throw Exception("Unexpected non-list JavaScript value: $jsServerTimings")
     }
     val result = jsServerTimings.map { parseServerTiming(it) }.toMutableList()
-    val responseHeaders = getResponseHeaders(jsExecutor)
-    val nodeId = responseHeaders["x-anodeid"]
-    addAttribute(result, "nodeId", nodeId)
+    val nodeId = nodeIdSupplier.get()
+    if (nodeId != null) {
+        addAttribute(result, "nodeId", nodeId)
+    }
     return result
 }
 

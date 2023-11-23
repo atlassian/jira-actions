@@ -18,6 +18,7 @@ import org.openqa.selenium.By
 import org.openqa.selenium.JavascriptExecutor
 import org.openqa.selenium.OutputType
 import org.openqa.selenium.remote.RemoteWebDriver
+import java.util.function.Supplier
 
 abstract class AbstractJiraCoreScenario {
     private val logger: Logger = LogManager.getLogger(this::class.java)
@@ -28,16 +29,6 @@ abstract class AbstractJiraCoreScenario {
         logger.info("Testing Jira $jiraVersion")
         val scenario = JiraCoreScenario()
         val metrics = mutableListOf<ActionMetric>()
-        val actionMeter = ActionMeter.Builder(
-            output = CollectionActionMetricOutput(metrics)
-        ).appendPostMetricHook(
-            DrillDownHook(
-                JavascriptW3cPerformanceTimeline.Builder(driver as JavascriptExecutor)
-                    .recordAll()
-                    .build()
-            )
-        ).build()
-
         val user = User("admin", "admin")
         val userMemory = object : UserMemory {
             override fun recall(): User {
@@ -48,12 +39,23 @@ abstract class AbstractJiraCoreScenario {
                 throw Exception("not implemented")
             }
         }
-
         val webJira = WebJira(
             driver,
             jira.getUri(),
             user.password
         )
+        val actionMeter = ActionMeter.Builder(
+            output = CollectionActionMetricOutput(metrics)
+        ).appendPostMetricHook(
+            DrillDownHook(
+                JavascriptW3cPerformanceTimeline.Builder(driver as JavascriptExecutor)
+                    .nodeIdSupplier(Supplier { webJira.getJiraNode() })
+                    .recordAll()
+                    .build()
+            )
+        ).build()
+
+
         val logInAction = scenario.getLogInAction(
             webJira,
             actionMeter,
