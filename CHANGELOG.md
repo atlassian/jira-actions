@@ -31,6 +31,9 @@ Dropping a requirement of a major version of a dependency is a new contract.
   - formalize the dependency on `Server-Timing`s convention (e.g. `response-thread-plugin` public behavioral API)
   - encapsulate a specific `ActionMetric.drilldown` analysis (e.g. navigations are not the only backend interactions)
 
+### Fixed
+- Reduce overhead of `JavascriptW3cPerformanceTimeline`.
+
 ## [3.25.0] - 2023-11-09
 [3.25.0]: https://github.com/atlassian/jira-actions/compare/release-3.24.0...release-3.25.0
 
