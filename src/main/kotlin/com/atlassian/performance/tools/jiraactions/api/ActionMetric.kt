@@ -34,6 +34,7 @@ data class ActionMetric @Deprecated("Use ActionMetric.Builder instead.") constru
     /**
      * @since 3.25.0
      */
+    @Deprecated("This method is misplaced. It overly relies on details of response-thread-plugin. It also assumes that only navigations matter for backend timeslots.")
     fun toBackendTimeSlots(): List<BackendTimeSlot> {
         return drilldown
             ?.navigations
@@ -53,7 +54,7 @@ data class ActionMetric @Deprecated("Use ActionMetric.Builder instead.") constru
                 ?: throw Exception("No threadId in $this, so we cannot map it to a backend timeslot"),
             nodeId = resource
                 .serverTiming
-                .find { it.name == "nodeId" }
+                .find { it.name == "clusterNodeId" }
                 ?.description
         )
     }

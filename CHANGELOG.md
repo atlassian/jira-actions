@@ -26,6 +26,11 @@ Dropping a requirement of a major version of a dependency is a new contract.
 ## [Unreleased]
 [Unreleased]: https://github.com/atlassian/jira-actions/compare/release-3.25.0...master
 
+### Deprecated
+- Deprecate `ActionMetric.toBackendTimeSlots`. It belongs to a module, which can:
+  - formalize the dependency on `Server-Timing`s convention (e.g. `response-thread-plugin` public behavioral API)
+  - encapsulate a specific `ActionMetric.drilldown` analysis (e.g. navigations are not the only backend interactions)
+
 ## [3.25.0] - 2023-11-09
 [3.25.0]: https://github.com/atlassian/jira-actions/compare/release-3.24.0...release-3.25.0
 
