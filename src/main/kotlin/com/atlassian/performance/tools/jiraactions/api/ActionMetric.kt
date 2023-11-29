@@ -31,6 +31,9 @@ data class ActionMetric @Deprecated("Use ActionMetric.Builder instead.") constru
 
     val end: Instant = start + duration
 
+    /**
+     * @since 3.25.0
+     */
     fun toBackendTimeSlots(): List<BackendTimeSlot> {
         return drilldown
             ?.navigations
