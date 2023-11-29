@@ -6,28 +6,26 @@ import org.openqa.selenium.JavascriptExecutor
 
 internal fun getJsNavigationsPerformance(jsExecutor: JavascriptExecutor): List<PerformanceNavigationTiming> {
     val jsNavigations = jsExecutor.executeScript("return window.performance.getEntriesByType(\"navigation\");")
-    return parseNavigations(jsNavigations, jsExecutor)
+    return parseNavigations(jsNavigations)
 }
 
 private fun parseNavigations(
-    jsNavigations: Any?,
-    jsExecutor: JavascriptExecutor
+    jsNavigations: Any?
 ): List<PerformanceNavigationTiming> {
     if (jsNavigations !is List<*>) {
         throw Exception("Unexpected non-list JavaScript value: $jsNavigations")
     }
-    return jsNavigations.map { parsePerformanceNavigationTiming(it, jsExecutor) }
+    return jsNavigations.map { parsePerformanceNavigationTiming(it) }
 }
 
 private fun parsePerformanceNavigationTiming(
-    map: Any?,
-    jsExecutor: JavascriptExecutor
+    map: Any?
 ): PerformanceNavigationTiming {
     if (map !is Map<*, *>) {
         throw Exception("Unexpected non-map JavaScript value: $map")
     }
     return PerformanceNavigationTiming(
-        resource = parsePerformanceResourceTiming(map, jsExecutor),
+        resource = parsePerformanceResourceTiming(map),
         unloadEventStart = parseTimestamp(map["unloadEventStart"]),
         unloadEventEnd = parseTimestamp(map["unloadEventEnd"]),
         domInteractive = parseTimestamp(map["domInteractive"]),
