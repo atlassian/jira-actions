@@ -3,6 +3,9 @@ package com.atlassian.performance.tools.jiraactions.api
 import java.time.Duration
 import java.time.Instant
 
+/**
+ * @since 3.25.0
+ */
 class BackendTimeSlot internal constructor(
     val start: Instant,
     val end: Instant,
