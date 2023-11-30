@@ -24,7 +24,10 @@ Adding a requirement of a major version of a dependency is breaking a contract.
 Dropping a requirement of a major version of a dependency is a new contract.
 
 ## [Unreleased]
-[Unreleased]: https://github.com/atlassian/jira-actions/compare/release-3.25.0...master
+[Unreleased]: https://github.com/atlassian/jira-actions/compare/release-3.26.0...master
+
+## [3.26.0] - 2023-11-30
+[3.26.0]: https://github.com/atlassian/jira-actions/compare/release-3.25.0...release-3.26.0
 
 ### Deprecated
 - Deprecate `ActionMetric.toBackendTimeSlots`. It belongs to a module, which can:
