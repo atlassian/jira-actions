@@ -1,5 +1,7 @@
 package com.atlassian.performance.tools.jiraactions.api.w3c
 
+import java.time.Instant
+
 /**
  * Holds interesting recorded performance entries.
  * They share the same timeline and can be cross-examined.
@@ -7,8 +9,10 @@ package com.atlassian.performance.tools.jiraactions.api.w3c
 class RecordedPerformanceEntries internal constructor(
     val navigations: List<PerformanceNavigationTiming>,
     val resources: List<PerformanceResourceTiming>,
-    val elements: List<PerformanceElementTiming>
+    val elements: List<PerformanceElementTiming>,
+    val timeOrigin: Instant?
 ) {
+
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false

@@ -67,7 +67,7 @@ class ActionMeterTest {
         result: ActionResult,
         duration: Duration,
         start: Instant,
-        entries: RecordedPerformanceEntries? = RecordedPerformanceEntries(emptyList(), emptyList(), emptyList())
+        entries: RecordedPerformanceEntries? = RecordedPerformanceEntries(emptyList(), emptyList(), emptyList(), null)
     ): ActionMetric = ActionMetric.Builder(
         label = actionType.label,
         result = result,
@@ -83,7 +83,7 @@ class ActionMeterTest {
     @Test
     fun shouldMeasureErrors() {
         val output = CollectionActionMetricOutput(mutableListOf())
-        val entries = RecordedPerformanceEntries(emptyList(), emptyList(), emptyList())
+        val entries = RecordedPerformanceEntries(emptyList(), emptyList(), emptyList(), null)
         val actionMeter = ActionMeter.Builder(
             output = output
         )
@@ -112,7 +112,7 @@ class ActionMeterTest {
         val clock = TickingClock(start, tick)
         val output = CollectionActionMetricOutput(mutableListOf())
         val w3cPerformanceTimelineMock =
-            HardcodedTimeline(RecordedPerformanceEntries(emptyList(), emptyList(), emptyList()))
+            HardcodedTimeline(RecordedPerformanceEntries(emptyList(), emptyList(), emptyList(), null))
         val actionMeter = ActionMeter.Builder(
             output = output
         )
