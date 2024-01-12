@@ -10,6 +10,9 @@ class RecordedPerformanceEntries internal constructor(
     val navigations: List<PerformanceNavigationTiming>,
     val resources: List<PerformanceResourceTiming>,
     val elements: List<PerformanceElementTiming>,
+    /**
+     * @since 3.27.0
+     */
     val timeOrigin: Instant?
 ) {
 
