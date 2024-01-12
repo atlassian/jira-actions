@@ -26,6 +26,11 @@ Dropping a requirement of a major version of a dependency is a new contract.
 ## [Unreleased]
 [Unreleased]: https://github.com/atlassian/jira-actions/compare/release-3.26.0...master
 
+### Added
+- Add `RecordedPerformanceEntries.timeOrigin`. Help with [JPERF-1454].
+
+[JPERF-1454]: https://ecosystem.atlassian.net/browse/JPERF-1454
+
 ## [3.26.0] - 2023-11-30
 [3.26.0]: https://github.com/atlassian/jira-actions/compare/release-3.25.0...release-3.26.0
 

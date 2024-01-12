@@ -18,6 +18,9 @@ import org.openqa.selenium.By
 import org.openqa.selenium.JavascriptExecutor
 import org.openqa.selenium.OutputType
 import org.openqa.selenium.remote.RemoteWebDriver
+import java.time.LocalDate
+import java.time.ZoneId
+import java.time.ZonedDateTime
 
 abstract class AbstractJiraCoreScenario {
     private val logger: Logger = LogManager.getLogger(this::class.java)
@@ -98,6 +101,10 @@ abstract class AbstractJiraCoreScenario {
     private fun assertDrilldown(metrics: List<ActionMetric>) {
         val navigationsPerMetric = metrics.map { it.drilldown?.navigations ?: emptyList() }
         assertThat(navigationsPerMetric).`as`("all results contain timings in drilldown").hasSize(metrics.size)
+        val timeOrigin = metrics[0].drilldown?.timeOrigin
+        assertThat(timeOrigin).isNotNull()
+        val dateTimeOrigin = ZonedDateTime.ofInstant(timeOrigin, ZoneId.of("UTC"))
+        assertThat(dateTimeOrigin.year).isBetween(2024, 2060)
     }
 
     private fun goToServices(driver: RemoteWebDriver, jira: Jira) {

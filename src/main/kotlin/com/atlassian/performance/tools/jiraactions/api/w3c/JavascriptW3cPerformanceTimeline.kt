@@ -3,7 +3,9 @@ package com.atlassian.performance.tools.jiraactions.api.w3c
 import com.atlassian.performance.tools.jiraactions.w3c.harvesters.getJsElementsPerformance
 import com.atlassian.performance.tools.jiraactions.w3c.harvesters.getJsNavigationsPerformance
 import com.atlassian.performance.tools.jiraactions.w3c.harvesters.getJsResourcesPerformance
+import com.atlassian.performance.tools.jiraactions.w3c.harvesters.parseInstantMilli
 import org.openqa.selenium.JavascriptExecutor
+import java.time.Instant
 
 /**
  * Obtains entries from [javascript].
@@ -24,8 +26,13 @@ class JavascriptW3cPerformanceTimeline private constructor(
         return RecordedPerformanceEntries(
             navigations = if (recordNavigation) getJsNavigationsPerformance(javascript) else emptyList(),
             resources = if (recordResources) getJsResourcesPerformance(javascript) else emptyList(),
-            elements = if (recordElements) getJsElementsPerformance(javascript) else emptyList()
+            elements = if (recordElements) getJsElementsPerformance(javascript) else emptyList(),
+            timeOrigin = getTimeOrigin(javascript)
         )
+    }
+
+    private fun getTimeOrigin(javascript: JavascriptExecutor): Instant {
+        return parseInstantMilli(javascript.executeScript("return window.performance.timeOrigin;"))
     }
 
     class Builder(

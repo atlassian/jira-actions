@@ -3,7 +3,7 @@ package com.atlassian.performance.tools.jiraactions.w3c
 import com.atlassian.performance.tools.jiraactions.JsonProviderSingleton.JSON
 import com.atlassian.performance.tools.jiraactions.api.w3c.*
 import java.time.Duration
-import javax.json.Json
+import java.time.Instant
 import javax.json.JsonArray
 import javax.json.JsonObject
 
@@ -16,6 +16,11 @@ internal class VerboseJsonFormat {
             .add("navigations", navigations.map { serializeNavigationTiming(it) }.toJsonArray())
             .add("resources", resources.map { serializeResourceTiming(it) }.toJsonArray())
             .add("elements", (elements.map { serializeElementTiming(it) }).toJsonArray())
+            .apply {
+                if (timeOrigin != null) {
+                    add("timeOrigin", timeOrigin.toString())
+                }
+            }
             .build()
     }
 
@@ -32,7 +37,8 @@ internal class VerboseJsonFormat {
             elements = getJsonArray("elements")
                 ?.map { it.asJsonObject() }
                 ?.map { deserializeElementTiming(it) }
-                ?: emptyList()
+                ?: emptyList(),
+            timeOrigin = getJsonString("timeOrigin")?.let { Instant.parse(it.string) }
         )
     }
 

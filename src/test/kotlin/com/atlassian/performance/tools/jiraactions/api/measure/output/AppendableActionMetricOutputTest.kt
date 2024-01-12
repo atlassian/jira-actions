@@ -179,6 +179,7 @@ class AppendableActionMetricOutputTest {
                 id = "home_link",
                 url = ""
             )
-        )
+        ),
+        timeOrigin = null
     )
 }
