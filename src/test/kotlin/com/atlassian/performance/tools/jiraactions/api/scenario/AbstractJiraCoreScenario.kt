@@ -25,7 +25,7 @@ import java.time.ZonedDateTime
 abstract class AbstractJiraCoreScenario {
     private val logger: Logger = LogManager.getLogger(this::class.java)
 
-    protected val jiraVersion = System.getenv("JIRA_SOFTWARE_VERSION") ?: "8.0.0"
+    protected val jiraVersion = System.getenv("JIRA_VERSION") ?: "8.0.0"
 
     fun shouldRunScenarioWithoutErrors(jira: Jira, driver: RemoteWebDriver, rng: SeededRandom) {
         logger.info("Testing Jira $jiraVersion")
