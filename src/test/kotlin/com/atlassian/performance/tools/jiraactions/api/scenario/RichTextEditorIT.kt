@@ -29,7 +29,7 @@ class RichTextEditorIT {
 
     @Test
     fun shouldRunScenarioWithoutErrors() {
-        val version = System.getenv("JIRA_SOFTWARE_VERSION") ?: "8.0.0"
+        val version = System.getenv("JIRA_VERSION") ?: "8.0.0"
         logger.info("Testing Jira $version")
         val scenario = JiraEditScenario()
         val metrics = mutableListOf<ActionMetric>()
