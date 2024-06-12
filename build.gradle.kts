@@ -39,7 +39,7 @@ configurations.all {
 dependencies {
     api("com.github.stephenc.jcip:jcip-annotations:1.0-1")
     api(webdriver("selenium-api"))
-    api("com.atlassian.performance:selenium-js:[1.0.0,2.0.0)")
+    api("com.atlassian.performance:selenium-js:[1.0.0, 2.0.0)")
     api("javax.json:javax.json-api:1.1")
 
     implementation(webdriver("selenium-support"))
@@ -47,7 +47,7 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${kotlinVersion}")
     implementation("org.glassfish:javax.json:1.1")
     implementation("org.apache.commons:commons-math3:3.6.1")
-    implementation("com.atlassian.performance.tools:concurrency:[1.0.0,2.0.0)")
+    implementation("com.atlassian.performance.tools:concurrency:[1.0.0, 2.0.0)")
     listOf(
         "api",
         "core",
@@ -56,11 +56,10 @@ dependencies {
     ).map { module ->
         "org.apache.logging.log4j:log4j-$module:$log4jVersion"
     }.forEach { implementation(it) }
-    testCompile("org.assertj:assertj-core:3.11.0")
-    testCompile("com.atlassian.performance.tools:io:[1.0.0,2.0.0)")
-    testCompile("com.atlassian.performance.tools:docker-infrastructure:0.3.7")
-    testCompile("junit:junit:[4.12, 5.0.0)")
-    testCompile("org.testcontainers:testcontainers:[1.17.1,2.0.0)")
+    testImplementation("org.assertj:assertj-core:3.11.0")
+    testImplementation("com.atlassian.performance.tools:io:[1.0.0, 2.0.0)")
+    testImplementation("com.atlassian.performance.tools:docker-infrastructure:0.3.7")
+    testImplementation("junit:junit:[4.12, 5.0.0)")
 }
 
 tasks.test {
