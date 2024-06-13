@@ -49,5 +49,7 @@ data class ActionType<out T>(
 @JvmField val VIEW_BOARD = ActionType("View Board") { IssuesOnBoard(it) }
 @JvmField val LOG_IN = ActionType("Log In") { Unit }
 @JvmField val SET_UP = ActionType("Set Up") { Unit }
+@JvmField val DISABLE_RTE = ActionType("Disable Rich Text Editor") { Unit }
+@JvmField val HIDE_HEALTH_NOTIFICATIONS = ActionType("Hide Instance Health Notifications") { Unit }
 @JvmField val VIEW_COMMENT = ActionType("View Comment") { Unit }
 @JvmField val VIEW_HISTORY_TAB = ActionType("View History Tab") { IssueObservation(it) }

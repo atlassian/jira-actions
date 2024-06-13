@@ -2,9 +2,7 @@ package com.atlassian.performance.tools.jiraactions.api.scenario;
 
 import com.atlassian.performance.tools.jiraactions.api.SeededRandom;
 import com.atlassian.performance.tools.jiraactions.api.WebJira;
-import com.atlassian.performance.tools.jiraactions.api.action.Action;
-import com.atlassian.performance.tools.jiraactions.api.action.LogInAction;
-import com.atlassian.performance.tools.jiraactions.api.action.SetUpAction;
+import com.atlassian.performance.tools.jiraactions.api.action.*;
 import com.atlassian.performance.tools.jiraactions.api.measure.ActionMeter;
 import com.atlassian.performance.tools.jiraactions.api.memories.UserMemory;
 
@@ -39,6 +37,6 @@ public interface Scenario {
      * @param meter Measures setup action.
      */
     default Action getSetupAction(WebJira jira, ActionMeter meter) {
-        return new SetUpAction(jira, meter);
+        return new HideHealthNotifications(jira, meter);
     }
 }

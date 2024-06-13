@@ -26,6 +26,12 @@ Dropping a requirement of a major version of a dependency is a new contract.
 ## [Unreleased]
 [Unreleased]: https://github.com/atlassian/jira-actions/compare/release-3.27.0...master
 
+### Added
+- Split `SetUpAction` into `DisableRichTextEditor` and `HideHealthNotifications`.
+
+### Fixed
+- Stop disabling Rich Text Editor by default in `Scenario`. RTE is supported since [3.5.0].
+
 ## [3.27.0] - 2023-01-12
 [3.27.0]: https://github.com/atlassian/jira-actions/compare/release-3.26.0...release-3.27.0
 
