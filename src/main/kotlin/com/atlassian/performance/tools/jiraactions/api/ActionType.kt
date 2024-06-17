@@ -48,8 +48,9 @@ data class ActionType<out T>(
 @JvmField val VIEW_DASHBOARD = ActionType("View Dashboard") { Unit }
 @JvmField val VIEW_BOARD = ActionType("View Board") { IssuesOnBoard(it) }
 @JvmField val LOG_IN = ActionType("Log In") { Unit }
+@Deprecated("Use [HIDE_HEALTH_NOTIFICATIONS] and/or [DISABLE_RICH_TEXT_EDITOR] for fine-grained measurement. When you hear 'Set Up' takes 20 seconds, it's not clear what is really involved or what the UX is.")
 @JvmField val SET_UP = ActionType("Set Up") { Unit }
-@JvmField val DISABLE_RTE = ActionType("Disable Rich Text Editor") { Unit }
+@JvmField val DISABLE_RICH_TEXT_EDITOR = ActionType("Disable Rich Text Editor") { Unit }
 @JvmField val HIDE_HEALTH_NOTIFICATIONS = ActionType("Hide Instance Health Notifications") { Unit }
 @JvmField val VIEW_COMMENT = ActionType("View Comment") { Unit }
 @JvmField val VIEW_HISTORY_TAB = ActionType("View History Tab") { IssueObservation(it) }

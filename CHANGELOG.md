@@ -29,6 +29,10 @@ Dropping a requirement of a major version of a dependency is a new contract.
 ### Added
 - Split `SetUpAction` into `DisableRichTextEditor` and `HideHealthNotifications`.
 
+### Deprecated
+- Deprecate `SetUpAction` and `SET_UP`. It's too vague to interpret and track performance changes.
+  Use specific UXes instead, like `DisableRichTextEditor` or `HideHealthNotifications`.
+
 ### Fixed
 - Stop disabling Rich Text Editor by default in `Scenario`. RTE is supported since [3.5.0].
 
