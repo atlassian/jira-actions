@@ -24,7 +24,10 @@ Adding a requirement of a major version of a dependency is breaking a contract.
 Dropping a requirement of a major version of a dependency is a new contract.
 
 ## [Unreleased]
-[Unreleased]: https://github.com/atlassian/jira-actions/compare/release-3.27.0...master
+[Unreleased]: https://github.com/atlassian/jira-actions/compare/release-3.28.0...master
+
+## [3.28.0] - 2024-06-17
+[3.28.0]: https://github.com/atlassian/jira-actions/compare/release-3.27.0...release-3.28.0
 
 ### Added
 - Split `SetUpAction` into `DisableRichTextEditor` and `HideHealthNotifications`.
