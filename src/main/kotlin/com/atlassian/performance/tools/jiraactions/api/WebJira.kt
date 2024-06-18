@@ -3,7 +3,9 @@ package com.atlassian.performance.tools.jiraactions.api
 import com.atlassian.performance.tools.jiraactions.administration.JiraAdministrationMenu
 import com.atlassian.performance.tools.jiraactions.api.page.*
 import org.openqa.selenium.By
+import org.openqa.selenium.JavascriptExecutor
 import org.openqa.selenium.WebDriver
+import org.openqa.selenium.support.ui.ExpectedCondition
 import java.net.URI
 import java.net.URLEncoder
 
@@ -108,8 +110,26 @@ data class WebJira(
 
     internal fun administrate(): JiraAdministrationMenu {
         NotificationPopUps(driver).waitUntilAuiFlagsAreGone()
-        driver.findElement(By.id("admin_menu")).click()
+        val adminCog = By.id("admin_menu")
+        waitForAdminCog()
+        driver.findElement(adminCog).click()
         val menu = driver.findElement(By.id("system-admin-menu-content"))
         return JiraAdministrationMenu(driver, menu)
+    }
+
+    /**
+     * If we click on the administration cog too fast
+     * we would navigate to `plugins/servlet/applications/versions-licenses`
+     * and be asked for websudo password [AdminAccess].
+     */
+    private fun waitForAdminCog() = waitForDomComplete()
+
+    private fun waitForDomComplete() {
+        val js = driver as JavascriptExecutor
+        val domComplete = ExpectedCondition {
+            val state = js.executeScript("return document.readyState") as String?
+            state == "complete"
+        }
+        driver.wait(domComplete)
     }
 }
