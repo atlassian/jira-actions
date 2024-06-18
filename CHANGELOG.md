@@ -26,6 +26,9 @@ Dropping a requirement of a major version of a dependency is a new contract.
 ## [Unreleased]
 [Unreleased]: https://github.com/atlassian/jira-actions/compare/release-3.28.0...master
 
+### Fixed
+- Avoid premature navigation when clicking the administration cog.
+
 ## [3.28.0] - 2024-06-17
 [3.28.0]: https://github.com/atlassian/jira-actions/compare/release-3.27.0...release-3.28.0
 
