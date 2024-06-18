@@ -4,6 +4,9 @@ import com.atlassian.performance.tools.jiraactions.api.HIDE_HEALTH_NOTIFICATIONS
 import com.atlassian.performance.tools.jiraactions.api.WebJira
 import com.atlassian.performance.tools.jiraactions.api.measure.ActionMeter
 
+/**
+ * @since 3.28.0
+ */
 class HideHealthNotifications(
     private val jira: WebJira,
     private val meter: ActionMeter
