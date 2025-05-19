@@ -126,7 +126,7 @@ class IssueCreateDialog(
     }
 
     private fun dismissConfigureFieldsDialog() {
-        driver.wait(elementToBeClickable(By.xpath("//*[@id='create-issue-dialog']//h2"))).click()
+        driver.wait(elementToBeClickable(By.xpath("//*[@id='create-issue-dialog']//*[self::h1 or self::h2]"))).click()
     }
 
     fun fillRequiredFields(): IssueCreateDialog {
