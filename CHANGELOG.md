@@ -29,6 +29,9 @@ Dropping a requirement of a major version of a dependency is a new contract.
 ## [3.23.2] - 2025-05-20
 [3.23.2]: https://github.com/atlassian/jira-actions/compare/release-3.28.1...release-3.28.2
 
+This version is not published to the https://mvnrepository.com/, but is available in the Atlassian's maven repositories:
+https://developer.atlassian.com/server/framework/atlassian-sdk/atlassian-maven-repositories-2818705/
+
 ### Fixed
 - Fix for `Create Issue` action to support both legacy and new create issue dialog's headers.
 
