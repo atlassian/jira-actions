@@ -24,7 +24,13 @@ Adding a requirement of a major version of a dependency is breaking a contract.
 Dropping a requirement of a major version of a dependency is a new contract.
 
 ## [Unreleased]
-[Unreleased]: https://github.com/atlassian/jira-actions/compare/release-3.28.1...master
+[Unreleased]: https://github.com/atlassian/jira-actions/compare/release-3.28.2...master
+
+## [3.23.2] - 2025-05-20
+[3.23.2]: https://github.com/atlassian/jira-actions/compare/release-3.28.1...release-3.28.2
+
+### Fixed
+- Fix for `Create Issue` action to support both legacy and new create issue dialog's headers.
 
 ## [3.28.1] - 2024-06-18
 [3.28.1]: https://github.com/atlassian/jira-actions/compare/release-3.28.0...release-3.28.1
